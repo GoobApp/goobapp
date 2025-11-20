@@ -64,7 +64,7 @@ const ChatWindow =forwardRef((props, ref) => {
             }
         
         return (
-            <MessageObject key={message.newMessage.messageId} profilePicture={message.newMessage.userProfilePicture} displayName={message.newMessage.userDisplayName} time={message.newMessage.messageTime.toLocaleString()} content={message.newMessage.userContent} showAvatar={showAvatar} showSpacer={showSpacer}></MessageObject>
+            <MessageObject key={message.newMessage.messageId} profilePicture={message.newMessage.userProfilePicture} displayName={message.newMessage.userDisplayName} time={message.newMessage.messageTime.toLocaleString(undefined,{dateStyle: new Date().getDate != message.newMessage.messageTime.getDate() ? 'medium' : 'none', 'timeStyle': 'short'})} content={message.newMessage.userContent} showAvatar={showAvatar} showSpacer={showSpacer}></MessageObject>
         )})}
         </div>
     )

@@ -6,6 +6,8 @@ import ChatSendButton from './components/ChatSendButton';
 import ChatWindow from './components/ChatWindow';
 import SwitcherPanel from './components/SwitcherPanel';
 import createChatObject from './utils/ChatMessageObject';
+import ChatUsersPanel from './components/ChatUsersPanel';
+import ProfileTopBar from './components/ProfileTopBar';
 
 const App = () => {
   let [ messages, setMessages ] = useState([])
@@ -30,17 +32,19 @@ const App = () => {
     if (contentText.trim() != '') {
       const tempProfilePic = "https://picsum.photos/512/512";
       chatWindowRef.current.scrollToBottom();
-      addNewInput(createChatObject('John Smith', 0, tempProfilePic, contentText))
+      addNewInput(createChatObject('John Doe', 0, tempProfilePic, contentText))
     }
   }
 
   return (
     <div className='wrapper'>
+      <ProfileTopBar></ProfileTopBar>
+      <SwitcherPanel></SwitcherPanel>
       <ChatWindow messages={messages} ref={chatWindowRef}></ChatWindow>
       <ChatExtrasButton></ChatExtrasButton>
       <ChatInput onSend={handleMessageSent} ref={chatInputRef}></ChatInput>
       <ChatSendButton onSend={handleMessageSent}></ChatSendButton>
-      <SwitcherPanel></SwitcherPanel>
+      <ChatUsersPanel></ChatUsersPanel>
     </div>
   );
 }
