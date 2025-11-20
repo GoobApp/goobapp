@@ -1,18 +1,25 @@
-import { useEffect, useRef, useState } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useRef, useState } from 'react';
 import '../App.css';
 
-function ChatInput({onSend}) {
-    const inputRef = useRef(null); 
+const ChatInput = forwardRef(({onSend}, ref) => {
+    const inputRef = useRef(null);
     const [inputValue, setInputValue] = useState('');
 
     const onChange = (event) => {
         setInputValue(event.target.value)
-        console.log(inputValue)
     }
 
     const onSubmit = () => {
         onSend();
     }
+
+    useImperativeHandle(ref, () => ({
+        getInputValueToSend: () => {
+            inputRef.current.value = ''
+            setInputValue(inputRef.current.value);
+            return inputValue;
+        }
+    }));
 
     useEffect (() => {
         const handleKeyDown = (event) => {
@@ -50,6 +57,6 @@ function ChatInput({onSend}) {
         onKeyDown={onKeyDown}
         />
     )
-}
+})
 
 export default ChatInput;

@@ -1,15 +1,11 @@
 const createChatObject = (newUserDisplayName, newUserID, newUserProfilePicture, newUserContent) => {
     let inputObject = {
-        userDisplayName: String,
-        userID: BigInt,
-        userProfilePicture: Object,
-        userContent: String
+        userDisplayName: newUserDisplayName,
+        userID: newUserID,
+        userProfilePicture: newUserProfilePicture,
+        userContent: newUserContent,
+        messageId: Date.now()
     }
-    
-    inputObject.userDisplayName = newUserDisplayName
-    inputObject.userID = newUserID
-    inputObject.userProfilePicture = newUserProfilePicture
-    inputObject.userContent = newUserContent
 
     return inputObject;
 }

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useRef, useState } from 'react';
 import './App.css';
 import ChatExtrasButton from './components/ChatExtrasButton';
 import ChatInput from './components/ChatInput';
@@ -7,24 +7,27 @@ import ChatWindow from './components/ChatWindow';
 import SwitcherPanel from './components/SwitcherPanel';
 import createChatObject from './utils/ChatMessageObject';
 
-function App() {
-    let [ messages, setMessages ] = useState([])
+const App = () => {
+  let [ messages, setMessages ] = useState([])
+  const chatInputRef = useRef(null);
 
   const addNewInput = (newMessage) => {
         setMessages(messages.concat({ newMessage }))
-        console.log(messages)
     }
 
   const handleMessageSent = () => {
-    console.log("Message sent!")
-    addNewInput(createChatObject('John Smith', 0, './assets/react.svg', 'Lorem ipsum asdfsfa the quick brown fox jumps over the lazy dog!'))
+    const contentText = chatInputRef.current.getInputValueToSend();
+    if (contentText != '') {
+      const tempProfilePic = "https://picsum.photos/512/512";
+      addNewInput(createChatObject('John Smith', 0, tempProfilePic, contentText))
+    }
   }
 
   return (
     <div className='wrapper'>
       <ChatWindow messages={messages}></ChatWindow>
-      <ChatInput onSend={handleMessageSent}></ChatInput>
       <ChatExtrasButton></ChatExtrasButton>
+      <ChatInput onSend={handleMessageSent} ref={chatInputRef}></ChatInput>
       <ChatSendButton onSend={handleMessageSent}></ChatSendButton>
       <SwitcherPanel></SwitcherPanel>
     </div>

@@ -1,6 +1,6 @@
 import '../App.css';
 
-function ChatSendButton ({onSend}) {
+const ChatSendButton = ({onSend}) => {
     return (
         <button
         id='sendButton'
