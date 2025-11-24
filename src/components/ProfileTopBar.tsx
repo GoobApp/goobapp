@@ -8,7 +8,7 @@ const ProfileTopBar = ({profile}: {profile: UserProfileObject}) => {
         className='profile-top-bar'
         >
            <p className='{title-text}'>GoobApp</p>
-           <img className='profile-picture' src={profile.userProfilePicture} alt="Profile Picture"></img>
+           <img className='profile-picture' src={profile.userProfilePicture} alt=""></img>
 
         </div>
     )
