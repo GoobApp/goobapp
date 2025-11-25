@@ -3,15 +3,8 @@ import "../App.css";
 const ChatUsersPanel = () => {
   return (
     <div id="chatUsersPanelContainer" className="chat-users-panel-container">
-      <button>This button does nothing.</button>
-      <button>Nor does this one.</button>
-      <button>Or this one.</button>
-      <button>Or this one.</button>
-      <button>Or this one.</button>
-      <button>Or this one.</button>
-      <button>Or this one.</button>
-      <button>Or this one.</button>
-      <button>Or this one.</button>
+      <button className="panel-button">Chat</button>
+      <button className="panel-button">Not Chat</button>
     </div>
   );
 };

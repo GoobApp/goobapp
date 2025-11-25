@@ -12,6 +12,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+p {
+  place-self: center;
+}
+
 a {
   font-weight: 500;
   color: #646cff;
@@ -39,6 +43,10 @@ h1 {
   line-height: 1.1;
 }
 
+div {
+  border-radius: 8px;
+}
+
 button {
   border-radius: 8px;
   border: 1px solid transparent;
@@ -49,6 +57,7 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  width: 100%;
 }
 button:hover {
   border-color: #b9e89c;
@@ -92,13 +101,11 @@ button:focus-visible {
 /* Style the scrollbar track (the background) */
 ::-webkit-scrollbar-track {
   background: rgb(48, 52, 47);
-  border-radius: 10px; /* Adjust to match your container's rounding */
 }
 
 /* Style the scrollbar thumb (the draggable handle) */
 ::-webkit-scrollbar-thumb {
   background: var(--primary-color); /* Darker gray thumb */
-  border-radius: 10px; /* Adjust to match your container's rounding and track */
 }
 
 /* Style the thumb on hover */

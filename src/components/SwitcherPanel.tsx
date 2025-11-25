@@ -3,15 +3,9 @@ import "../App.css";
 const SwitcherPanel = () => {
   return (
     <div id="switcherPanelContainer" className="switcher-panel-container">
-      <button>This button does nothing.</button>
-      <button>Nor does this one.</button>
-      <button>Or this one.</button>
-      <button>Or this one.</button>
-      <button>Or this one.</button>
-      <button>Or this one.</button>
-      <button>Or this one.</button>
-      <button>Or this one.</button>
-      <button>Or this one.</button>
+      <p>Active users:</p>
+      <button className="panel-button">you</button>
+      <button className="panel-button">probably noone else</button>
     </div>
   );
 };

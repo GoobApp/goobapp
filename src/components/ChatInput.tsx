@@ -22,8 +22,11 @@ const ChatInput = forwardRef(({ onSend }: { onSend: () => void }, ref) => {
   };
 
   const onSubmit = (event: FormEvent | KeyboardEvent) => {
+    event.preventDefault();
     if (textAreaValue.length <= 1001) {
-      onSend(); // This will send the onSend function up to the parent
+      if (textAreaValue.trim() != "") {
+        onSend(); // This will send the onSend function up to the parent
+      }
     }
   };
 
@@ -42,10 +45,9 @@ const ChatInput = forwardRef(({ onSend }: { onSend: () => void }, ref) => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key == "Enter" && !event.shiftKey) {
         if (textAreaRef.current) {
-          if (textAreaValue.trim() != "") {
-            onSubmit(event);
-          }
+          onSubmit(event);
         }
+
         event.preventDefault(); // Prevent the default beheivor of stuff (textarea, form, etc). In this case its for textarea
         return;
       }
