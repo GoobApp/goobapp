@@ -65,7 +65,7 @@ const App = () => {
   const addNewInput = (newMessage: ChatMessageObject) => {
     newMessage.messageTime = new Date(newMessage.messageTime); // Websockets can't accept Dates, so they turn them into strings. This turns it back
     setMessages((prevMessage) =>
-      prevMessage.length < 50
+      prevMessage.length < 200
         ? prevMessage.concat(newMessage)
         : prevMessage.slice(1).concat(newMessage)
     );
