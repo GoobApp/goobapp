@@ -78,7 +78,7 @@ const App = () => {
     if (contentText.trim() != "") {
       // Make sure the content isn't blank!
       let message: ChatMessageObject = createChatObject({
-        newUserDisplayName: "not John Doe",
+        newUserDisplayName: "John Doe",
         newUserID: clientUserID,
         newUserProfilePicture: userProfilePicture,
         newMessageContent: contentText,
