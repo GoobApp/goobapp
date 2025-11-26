@@ -2,11 +2,11 @@ import type { Session } from "@supabase/supabase-js";
 import { useEffect, useRef, useState } from "react";
 import "./App.css";
 import ChatInput from "./components/Chat/Input";
-import ChatUsersPanel from "./components/Chat/UsersPanel";
+import SwitcherPanel from "./components/Chat/UsersPanel";
 import ChatWindow from "./components/Chat/Window";
 import TopBar from "./components/Profile/TopBar";
 import { Client } from "./components/supabase/Client";
-import SwitcherPanel from "./components/SwitcherPanel";
+import ChatUsersPanel from "./components/SwitcherPanel";
 import { socket } from "./socket";
 import ChatInputRef from "./types/ChatInputRef";
 import ChatMessageObject from "./types/ChatMessageObject";
@@ -120,7 +120,11 @@ const App = () => {
         if (session) {
           setSession(session);
 
-          if (_event == "SIGNED_IN" || _event == "TOKEN_REFRESHED") {
+          if (
+            _event == "INITIAL_SESSION" ||
+            "SIGNED_IN" ||
+            _event == "TOKEN_REFRESHED"
+          ) {
             retreiveUserData(session);
           }
         } else {
