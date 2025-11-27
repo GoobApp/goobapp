@@ -31,7 +31,7 @@ const SignupPanel = () => {
           captchaToken,
           data: {
             username: username,
-            profile_image_url: profilePicture.url,
+            picture: profilePicture.url,
           },
         },
       });
