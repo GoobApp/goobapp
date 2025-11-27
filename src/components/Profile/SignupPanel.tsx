@@ -51,9 +51,11 @@ const SignupPanel = () => {
     try {
       setError(null);
       setSignUpLoading(true);
-      Client.auth.signInWithOAuth({
+
+      const { data, error } = await Client.auth.signInWithOAuth({
         provider: provider,
       });
+
       if (error) throw error;
     } catch (err) {
       print();
