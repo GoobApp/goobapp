@@ -6,10 +6,10 @@ import type { Session } from "@supabase/supabase-js";
 import { useEffect, useRef, useState } from "react";
 import { Route, Routes } from "react-router";
 import "./App.css";
-import GamesList from "./components/Chat/GamesList";
 import ChatInput from "./components/Chat/Input";
 import ChatUsersPanel from "./components/Chat/UsersPanel";
 import ChatWindow from "./components/Chat/Window";
+import GamesList from "./components/GamesList";
 import TopBar from "./components/Profile/TopBar";
 import { Client } from "./components/supabase/Client";
 import SwitcherPanel from "./components/SwitcherPanel";
@@ -156,7 +156,7 @@ const App = () => {
         ></Route>
         <Route path="/games/*" element={<GamesList></GamesList>}></Route>
         <Route
-          path="/plat/*"
+          path="/games/plat/*"
           element={
             <iframe
               src="https://supkittymeow.github.io/plat"
@@ -165,7 +165,7 @@ const App = () => {
           }
         ></Route>
         <Route
-          path="/br2/*"
+          path="/games/br2/*"
           element={
             <iframe
               src="https://supkittymeow.github.io/br2"
@@ -174,7 +174,7 @@ const App = () => {
           }
         ></Route>
         <Route
-          path="/br3/*"
+          path="/games/br3/*"
           element={
             <iframe
               src="https://supkittymeow.github.io/super_secret_banana_run_3_build_thing"
@@ -183,7 +183,7 @@ const App = () => {
           }
         ></Route>
         <Route
-          path="/cfp/*"
+          path="/games/cfp/*"
           element={
             <iframe
               src="https://supkittymeow.github.io/cfp"
