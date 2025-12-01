@@ -17,7 +17,7 @@ const ChatInput = forwardRef(({ onSend }: { onSend: () => void }, ref) => {
   const textAreaRef = useRef<HTMLParagraphElement>(null);
   const [textAreaValue, setTextAreaValue] = useState(""); // useState is used to make React update stuff on the screen when something changes
   const [isInputBlank, setIsInputBlank] = useState(true);
-  const maxLength: number = 1001;
+  const maxLength: number = 1201;
 
   const onChange = (event: ChangeEvent<HTMLParagraphElement>) => {
     setIsInputBlank(event.target.textContent == "");
