@@ -1,9 +1,4 @@
-import {
-  forwardRef,
-  useImperativeHandle,
-  useLayoutEffect,
-  useRef,
-} from "react";
+import { forwardRef, useEffect, useLayoutEffect, useRef } from "react";
 import "../../App.css";
 import ChatInputRef from "../../types/ChatInputRef";
 import ChatMessageObject from "../../types/ChatMessageObject";
@@ -13,6 +8,7 @@ import MessageDisplay from "./Message";
 type ChatWindowProps = {
   messages: ChatMessageObject[];
   sendMessage: (contentText: string) => void;
+  clientUserID: string;
 };
 
 type ChatWindowRef = {
@@ -24,20 +20,6 @@ const ChatWindow = forwardRef<ChatWindowRef, ChatWindowProps>((props, ref) => {
   const chatInputRef = useRef<ChatInputRef>(null);
   const scrollContainerRef = useRef<HTMLDivElement>(null);
   let wasAtBottom = useRef<boolean>(true);
-
-  useImperativeHandle(ref, () => ({
-    // Think of this as a more complex version of a public method in C#
-    scrollToBottom: () => {
-      // this will, once called, animate a scroll to bottom animation
-      const el = scrollContainerRef.current;
-      if (!el) return;
-
-      el.scrollTo({
-        top: el.scrollHeight,
-        behavior: "smooth",
-      });
-    },
-  }));
 
   const handleSent = () => {
     if (!chatInputRef) return;
@@ -61,6 +43,26 @@ const ChatWindow = forwardRef<ChatWindowRef, ChatWindowProps>((props, ref) => {
     return () => el.removeEventListener("scroll", handleScroll); // Remove when done
   }, []);
 
+  const scrollToBottom = () => {
+    // this will, once called, animate a scroll to bottom animation
+    const el = scrollContainerRef.current;
+    if (!el) return;
+
+    el.scrollTo({
+      top: el.scrollHeight,
+      behavior: "smooth",
+    });
+  };
+
+  useEffect(() => {
+    if (props.messages.length == 0) return;
+    if (
+      props.messages[props.messages.length - 1].userID == props.clientUserID
+    ) {
+      scrollToBottom();
+    }
+  }, [props.messages]);
+
   useLayoutEffect(() => {
     // Actually handle the scrolling
     const el = scrollContainerRef.current;
@@ -74,41 +76,43 @@ const ChatWindow = forwardRef<ChatWindowRef, ChatWindowProps>((props, ref) => {
   }, [props.messages]); // This is in a different useLayoutEffect as you want this to be called ONLY when messages gets updated. Don't do it on a random button click!
 
   return (
-    <div id="chatWindow" className="chat-window" ref={scrollContainerRef}>
-      {props.messages.map((message, index) => {
-        let showAvatar = false;
-        let showSpacer = false;
+    <div id="chatWindow" className="chat-window">
+      <div id="chatMessages" className="chat-messages" ref={scrollContainerRef}>
+        {props.messages.map((message, index) => {
+          let showAvatar = false;
+          let showSpacer = false;
 
-        if (index === 0) {
-          showAvatar = true;
-          showSpacer = false;
-        } else {
-          let prev = props.messages[index - 1];
-          if (prev.userID !== message.userID) {
+          if (index === 0) {
             showAvatar = true;
-            showSpacer = true;
+            showSpacer = false;
+          } else {
+            let prev = props.messages[index - 1];
+            if (prev.userID !== message.userID) {
+              showAvatar = true;
+              showSpacer = true;
+            }
           }
-        }
 
-        return (
-          <MessageDisplay
-            userID={message.userID}
-            key={message.messageId}
-            profilePicture={message.userProfilePicture}
-            displayName={message.userDisplayName}
-            time={message.messageTime.toLocaleString(undefined, {
-              dateStyle:
-                new Date().getDate() != message.messageTime.getDate()
-                  ? "medium"
-                  : undefined,
-              timeStyle: "short",
-            })}
-            content={message.messageContent}
-            showAvatar={showAvatar}
-            showSpacer={showSpacer}
-          ></MessageDisplay>
-        );
-      })}
+          return (
+            <MessageDisplay
+              userID={message.userID}
+              key={message.messageId}
+              profilePicture={message.userProfilePicture}
+              displayName={message.userDisplayName}
+              time={message.messageTime.toLocaleString(undefined, {
+                dateStyle:
+                  new Date().getDate() != message.messageTime.getDate()
+                    ? "medium"
+                    : undefined,
+                timeStyle: "short",
+              })}
+              content={message.messageContent}
+              showAvatar={showAvatar}
+              showSpacer={showSpacer}
+            ></MessageDisplay>
+          );
+        })}
+      </div>
       <ChatInput onSend={handleSent} ref={chatInputRef}></ChatInput>
     </div>
   );

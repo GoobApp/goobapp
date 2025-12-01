@@ -1,5 +1,7 @@
 .chat-message-container,
 .chat-message-container-spaced {
+  grid-row: 1;
+
   display: grid;
   max-width: 90%;
   width: max-content;

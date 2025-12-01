@@ -1,5 +1,5 @@
 import type { Session } from "@supabase/supabase-js";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { createHashRouter, RouterProvider } from "react-router";
 import "./App.css";
 import ChatWindow from "./components/Chat/Window";
@@ -8,13 +8,11 @@ import Layout from "./components/Layout";
 import { Client } from "./components/supabase/Client";
 import { socket } from "./socket";
 import ChatMessageObject from "./types/ChatMessageObject";
-import ChatWindowRef from "./types/ChatWindowRef";
 import createChatObject from "./utils/ChatMessageCreator";
 import createProfileObject from "./utils/UserProfileCreator";
 
 const App = () => {
   const [messages, setMessages] = useState<ChatMessageObject[]>([]);
-  const chatWindowRef = useRef<ChatWindowRef>(null);
   const [userProfilePicture, setUserProfilePicture] = useState<string | null>(
     null
   );
@@ -81,6 +79,17 @@ const App = () => {
   };
 
   const handleMessageSent = (contentText: string) => {
+    if (!import.meta.env.PROD) {
+      addNewInput(
+        createChatObject({
+          newUserDisplayName: "Test User",
+          newUserID: "0",
+          newUserProfilePicture: null,
+          newMessageContent: contentText,
+        })
+      );
+    }
+
     if (!clientUserID) return;
     if (!username) return;
 
@@ -93,23 +102,13 @@ const App = () => {
         newMessageContent: contentText,
       });
       socket.emit("message sent", message, session);
-      console.log("Sent message!");
-      if (!chatWindowRef.current) return;
     }
   };
-
-  useEffect(() => {
-    if (!chatWindowRef.current) return;
-    if (messages.length == 0) return;
-    if (messages[messages.length - 1].userID == clientUserID) {
-      chatWindowRef.current.scrollToBottom();
-    }
-  }, [messages]);
 
   const [session, setSession] = useState<Session | null>(null);
 
   const retreiveUserData = async (session: Session) => {
-    console.log("retreiving");
+    console.log("Retreiving user data...");
     const { data, error } = await Client.from("profiles")
       .select("username, profile_image_url, user_id")
       .eq("user_uuid", session.user.id)
@@ -166,6 +165,7 @@ const App = () => {
             <ChatWindow
               messages={messages}
               sendMessage={handleMessageSent}
+              clientUserID={clientUserID}
             ></ChatWindow>
           ),
         },
