@@ -15,14 +15,15 @@ import createProfileObject from "./utils/UserProfileCreator";
 
 const App = () => {
   const [messages, setMessages] = useState<ChatMessageObject[]>([]);
-  const [userProfilePicture, setUserProfilePicture] = useState<string | null>(
-    null
-  );
-
-  const [username, setUsername] = useState<string | null>(null);
-
-  const [clientUserID, setClientUserID] = useState<string>("0");
   const [isConnected, setIsConnected] = useState<boolean>(socket.connected);
+  const [profile, setProfile] = useState<UserProfile>(
+    createProfileObject({
+      newUserDisplayName: null,
+      newUserProfilePicture: null,
+      newUserUUID: null,
+      newUserID: null,
+    })
+  );
 
   useEffect(() => {
     const onConnect = () => {
@@ -44,7 +45,7 @@ const App = () => {
       addNewInput(value);
     };
 
-    if (clientUserID && clientUserID !== "0") {
+    if (profile.userUUID && profile.userUUID !== "0") {
       socket.on("connect", onConnect);
       socket.on("disconnect", onDisconnect);
       socket.on("client receive message", clientReceiveMessage);
@@ -67,7 +68,7 @@ const App = () => {
         socket.disconnect();
       }
     };
-  }, [clientUserID]);
+  }, [profile.userUUID]);
 
   useEffect(() => {}, [messages]);
 
@@ -92,15 +93,15 @@ const App = () => {
       );
     }
 
-    if (!clientUserID) return;
-    if (!username) return;
+    if (!profile.userUUID) return;
+    if (!profile.username) return;
 
     if (contentText.trim() != "") {
       // Make sure the content isn't blank!
       let message: ChatMessageObject = createChatObject({
-        newUserDisplayName: username,
-        newUserID: clientUserID,
-        newUserProfilePicture: userProfilePicture,
+        newUserDisplayName: profile.username,
+        newUserID: profile.userID,
+        newUserProfilePicture: profile.userProfilePicture,
         newMessageContent: contentText,
       });
       socket.emit("message sent", message, session);
@@ -119,14 +120,12 @@ const App = () => {
       console.error("Error fetching data:", error.message);
       return;
     }
-    setUsername(data.username);
-    setUserProfilePicture(data.profile_image_url);
-    setClientUserID(data.user_id);
 
     setProfile(
       createProfileObject({
-        newUserDisplayName: username,
-        newUserProfilePicture: userProfilePicture,
+        newUserDisplayName: data.username,
+        newUserProfilePicture: data.profile_image_url,
+        newUserID: data.user_id,
         newUserUUID: session.user.id,
       })
     );
@@ -140,7 +139,7 @@ const App = () => {
 
           if (
             _event == "INITIAL_SESSION" ||
-            "SIGNED_IN" ||
+            _event == "SIGNED_IN" ||
             _event == "TOKEN_REFRESHED"
           ) {
             retreiveUserData(session);
@@ -156,14 +155,6 @@ const App = () => {
     };
   }, []);
 
-  const [profile, setProfile] = useState<UserProfile>(
-    createProfileObject({
-      newUserDisplayName: null,
-      newUserProfilePicture: null,
-      newUserUUID: null,
-    })
-  );
-
   const routes = [
     {
       path: "/",
@@ -175,7 +166,7 @@ const App = () => {
             <ChatWindow
               messages={messages}
               sendMessage={handleMessageSent}
-              clientUserID={clientUserID}
+              clientUserID={profile.userUUID}
             ></ChatWindow>
           ),
         },
