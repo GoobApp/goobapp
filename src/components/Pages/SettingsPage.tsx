@@ -131,9 +131,9 @@ const SettingsPage = ({ profile }: { profile: UserProfile }) => {
           <p className="setting-error">Error: {profileUrlError}</p>
         )}
       </form>
-      <button className="setting-delete-button" onClick={handleDeleteAccount}>
+      {/* <button className="setting-delete-button" onClick={handleDeleteAccount}>
         Delete Account!
-      </button>
+      </button> */}
     </div>
   );
 };
