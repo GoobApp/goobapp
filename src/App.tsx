@@ -173,13 +173,11 @@ const App = () => {
         if (session) {
           setSession(session);
 
-          if (
-            _event == "INITIAL_SESSION" ||
-            _event == "SIGNED_IN" ||
-            _event == "TOKEN_REFRESHED"
-          ) {
+          if (_event == "INITIAL_SESSION" || _event == "SIGNED_IN") {
             retreiveUserData(session);
             retreiveRecentMessages();
+          } else if (_event == "TOKEN_REFRESHED") {
+            retreiveUserData(session);
           }
         } else {
           setSession(null);
