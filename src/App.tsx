@@ -73,7 +73,7 @@ const App = () => {
   useEffect(() => {}, [messages]);
 
   const addNewInput = (newMessage: ChatMessageObject) => {
-    if (!document.hasFocus) {
+    if (!document.hasFocus()) {
       const img = newMessage.userProfilePicture;
       const text = `${newMessage.userDisplayName}: ${newMessage.messageContent}`;
       const notification = new Notification("New message!", {
