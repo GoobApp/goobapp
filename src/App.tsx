@@ -5,7 +5,9 @@ import "./App.css";
 import ChatWindow from "./components/Chat/Window";
 import Layout from "./components/Layout";
 import GamesList from "./components/Pages/GamesList";
+import PrivacyPolicy from "./components/Pages/PrivacyPolicy";
 import SettingsPage from "./components/Pages/SettingsPage";
+import TOS from "./components/Pages/TOS";
 import { Client } from "./components/supabase/Client";
 import { socket } from "./socket";
 import ChatMessageObject from "./types/ChatMessageObject";
@@ -115,7 +117,7 @@ const App = () => {
   };
 
   const handleMessageSent = (contentText: string) => {
-    if (!import.meta.env.PROD) {
+    if (!import.meta.env.PROD && !profile.userUUID) {
       addNewInput(
         createChatObject({
           newUserDisplayName: "Test User",
@@ -125,6 +127,7 @@ const App = () => {
         }),
         false
       );
+      return;
     }
 
     if (!profile.userUUID) return;
@@ -177,11 +180,14 @@ const App = () => {
         if (session) {
           setSession(session);
 
-          if (_event == "INITIAL_SESSION" || _event == "SIGNED_IN") {
+          if (
+            _event == "INITIAL_SESSION" ||
+            _event == "SIGNED_IN" ||
+            _event == "TOKEN_REFRESHED"
+          ) {
+            console.log("event");
             retreiveUserData(session);
             retreiveRecentMessages();
-          } else if (_event == "TOKEN_REFRESHED") {
-            retreiveUserData(session);
           }
         } else {
           setSession(null);
@@ -212,6 +218,14 @@ const App = () => {
         {
           path: "/settings/*",
           element: <SettingsPage profile={profile}></SettingsPage>,
+        },
+        {
+          path: "/tos/*",
+          element: <TOS></TOS>,
+        },
+        {
+          path: "/privacy/*",
+          element: <PrivacyPolicy></PrivacyPolicy>,
         },
         {
           path: "/games/*",

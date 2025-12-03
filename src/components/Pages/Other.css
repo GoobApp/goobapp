@@ -1,0 +1,15 @@
+.other-page {
+  border-color: var(--secondary-color);
+  background-color: var(--bg-color);
+  border-width: 2px;
+  border-style: solid;
+  font-size: 1rem;
+  padding: 1em;
+  overflow-y: auto;
+  word-break: break-word;
+
+  grid-column-start: 2;
+  grid-column-end: 3;
+
+  grid-row: 2;
+}

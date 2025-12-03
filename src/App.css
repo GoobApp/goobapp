@@ -37,6 +37,16 @@ body {
   overflow-y: auto;
 }
 
+.footnotes {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.footnote {
+  font-size: 10px;
+}
+
 .panel-button {
   width: 100%;
   min-height: 75px;

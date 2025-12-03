@@ -3,6 +3,7 @@
 import { Turnstile, TurnstileInstance } from "@marsidev/react-turnstile";
 import { Provider } from "@supabase/supabase-js";
 import { ChangeEvent, FormEvent, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 import "../../App.css";
 import { Client } from "../supabase/Client";
 import "./Profile.css";
@@ -54,6 +55,9 @@ const SignupPanel = () => {
 
       const { data, error } = await Client.auth.signInWithOAuth({
         provider: provider,
+        options: {
+          redirectTo: window.location.origin + "/auth/callback",
+        },
       });
 
       if (error) throw error;
@@ -148,6 +152,16 @@ const SignupPanel = () => {
         Sign up with GitHub
       </button>
       {error && <div className="error-message">{error}</div>}
+      <p className="footnote">
+        By signing up you are accepting to the{" "}
+        <Link to="/tos" className="footnote" viewTransition={true}>
+          Terms Of Service
+        </Link>{" "}
+        and the{" "}
+        <Link to="/privacy" className="footnote" viewTransition={true}>
+          Privacy Policy
+        </Link>
+      </p>
     </form>
   );
 };

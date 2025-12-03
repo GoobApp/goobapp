@@ -44,6 +44,9 @@ const LoginPanel = () => {
 
       const { data, error } = await Client.auth.signInWithOAuth({
         provider: provider,
+        options: {
+          redirectTo: window.location.origin + "/auth/callback",
+        },
       });
 
       if (error) throw error;

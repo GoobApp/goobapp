@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 import "../App.css";
 const SwitcherPanel = () => {
   const navigate = useNavigate();
@@ -26,6 +26,15 @@ const SwitcherPanel = () => {
       >
         Games
       </button>
+
+      <div className="footnotes">
+        <Link to="/tos" className="footnote" viewTransition={true}>
+          Terms Of Service
+        </Link>
+        <Link to="/privacy" className="footnote" viewTransition={true}>
+          Privacy Policy
+        </Link>
+      </div>
     </div>
   );
 };
