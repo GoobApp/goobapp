@@ -20,6 +20,7 @@ const App = () => {
   const [unreadMessageCount, setUnreadMessageCount] = useState<number>(0);
   const [messages, setMessages] = useState<ChatMessageObject[]>([]);
   const [isConnected, setIsConnected] = useState<boolean>(socket.connected);
+  const [isAuthLoading, setIsAuthLoading] = useState<boolean>(true);
   const [profile, setProfile] = useState<UserProfile>(
     createProfileObject({
       newUserDisplayName: null,
@@ -55,7 +56,7 @@ const App = () => {
       });
     };
 
-    if (profile.userID && profile.userID != "0") {
+    if (!isAuthLoading && session) {
       socket.on("connect", onConnect);
       socket.on("disconnect", onDisconnect);
       socket.on("client receive message", clientReceiveMessage);
@@ -66,7 +67,7 @@ const App = () => {
         socket.connect();
       }
     } else {
-      console.log("Not logged in!");
+      console.log("Not logged in or not finished loading!");
     }
 
     return () => {
@@ -87,11 +88,11 @@ const App = () => {
   //     unreadMessageCount == 0 ? "GoobApp" : `GoobApp (${unreadMessageCount})`;
   // }, [unreadMessageCount]);
 
-  useEffect(() => {
-    if (document.hasFocus()) {
-      setUnreadMessageCount(0);
-    }
-  }, [document.hasFocus()]);
+  // useEffect(() => {
+  //   if (document.hasFocus()) {
+  //     setUnreadMessageCount(0);
+  //   }
+  // }, [document.hasFocus()]);
 
   const addNewInput = (
     newMessage: ChatMessageObject,
@@ -178,15 +179,15 @@ const App = () => {
   useEffect(() => {
     const { data: authListener } = Client.auth.onAuthStateChange(
       (_event, session: Session | null) => {
+        setIsAuthLoading(false);
+        console.log(_event);
         if (session) {
           setSession(session);
-
           if (
             _event == "INITIAL_SESSION" ||
             _event == "SIGNED_IN" ||
             _event == "TOKEN_REFRESHED"
           ) {
-            console.log("event");
             retreiveUserData(session);
             retreiveRecentMessages();
           }
@@ -208,21 +209,22 @@ const App = () => {
       children: [
         {
           index: true,
-          element:
-            profile.userID && profile.userID != "0" ? (
-              <ChatWindow
-                messages={messages}
-                sendMessage={handleMessageSent}
-                clientUserUUID={profile.userUUID}
-              ></ChatWindow>
-            ) : (
-              <ChatLoggedOutWindow></ChatLoggedOutWindow>
-            ),
+          element: isAuthLoading ? (
+            <div></div>
+          ) : session != null ? (
+            <ChatWindow
+              messages={messages}
+              sendMessage={handleMessageSent}
+              clientUserUUID={profile.userUUID}
+            ></ChatWindow>
+          ) : (
+            <ChatLoggedOutWindow></ChatLoggedOutWindow>
+          ),
         },
         {
           path: "/settings/*",
           element:
-            profile.userID && profile.userID != "0" ? (
+            !isAuthLoading && session != null ? (
               <SettingsPage profile={profile}></SettingsPage>
             ) : (
               <ChatLoggedOutWindow></ChatLoggedOutWindow>
