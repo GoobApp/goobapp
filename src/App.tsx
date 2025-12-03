@@ -15,6 +15,7 @@ import ChatMessageObject from "./types/ChatMessageObject";
 import UserProfile from "./types/UserProfileObject";
 import createChatObject from "./utils/ChatMessageCreator";
 import createProfileObject from "./utils/UserProfileCreator";
+import EmptyPanel from "./components/Pages/EmptyPanel";
 
 const App = () => {
   const [session, setSession] = useState<Session | null>(null);
@@ -208,7 +209,7 @@ const App = () => {
         {
           index: true,
           element: isAuthLoading ? (
-            <div></div>
+            <EmptyPanel></EmptyPanel>
           ) : session != null ? (
             <ChatWindow
               messages={messages}
