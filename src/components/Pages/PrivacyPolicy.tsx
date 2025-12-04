@@ -6,9 +6,11 @@ const PrivacyPolicy = () => {
       <h1>Privacy Policy</h1>
       <h4>Last updated: December 3, 2025</h4>
       <h2>Welcome to GoobApp!</h2>
-      <p>The GoobApp developers ("we", "us", or "our") respect your privacy.</p>
+      <div>
+        The GoobApp developers ("we", "us", or "our") respect your privacy.
+      </div>
       <h2>What we collect</h2>
-      <p>To keep GoobApp secure and functional, we store:</p>
+      <div>To keep GoobApp secure and functional, we store:</div>
       <ul>
         <li>
           All information provided during sign-up, including but not limited to

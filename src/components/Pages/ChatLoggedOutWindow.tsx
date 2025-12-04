@@ -5,15 +5,15 @@ const ChatLoggedOutWindow = () => {
     <div className="logged-out-page">
       <h1 className="other-element">Welcome to GoobApp!</h1>
       <h2 className="other-element">
+        GoobApp is a web-based global chatroom, with some extra little features
+        on top.
+      </h2>
+      <h2 className="other-element">
         To start chatting, log in or create a new account.
       </h2>
       <h4 className="other-element">
         Or, you can instead just play games on the left.
       </h4>
-      <p className="other-element">
-        GoobApp is a web-based global chatroom, with some extra little features
-        on top.
-      </p>
       <a
         className="other-element"
         href="https://github.com/GoobApp"
