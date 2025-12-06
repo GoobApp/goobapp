@@ -5,6 +5,8 @@ import "./App.css";
 import ChatWindow from "./components/Chat/Window";
 import Layout from "./components/Layout";
 import ChatLoggedOutWindow from "./components/Pages/ChatLoggedOutWindow";
+import EmptyPanel from "./components/Pages/EmptyPanel";
+import ErrorPage from "./components/Pages/ErrorPage";
 import GamesList from "./components/Pages/GamesList";
 import PrivacyPolicy from "./components/Pages/PrivacyPolicy";
 import SettingsPage from "./components/Pages/SettingsPage";
@@ -15,8 +17,6 @@ import ChatMessageObject from "./types/ChatMessageObject";
 import UserProfile from "./types/UserProfileObject";
 import createChatObject from "./utils/ChatMessageCreator";
 import createProfileObject from "./utils/UserProfileCreator";
-import EmptyPanel from "./components/Pages/EmptyPanel";
-import ErrorPage from "./components/Pages/ErrorPage"
 const App = () => {
   const [session, setSession] = useState<Session | null>(null);
   const [unreadMessageCount, setUnreadMessageCount] = useState<number>(0);
@@ -51,7 +51,7 @@ const App = () => {
 
     const clientReceiveMessage = (value: ChatMessageObject) => {
       if (value.userUUID != profile.userUUID && !isWindowFocused) {
-        setUnreadMessageCount(prevCount => prevCount + 1)
+        setUnreadMessageCount((prevCount) => prevCount + 1);
       }
 
       addNewInput(value);
@@ -96,21 +96,21 @@ const App = () => {
   }, [unreadMessageCount]);
 
   useEffect(() => {
-    window.addEventListener('focus', () => {
+    window.addEventListener("focus", () => {
       setUnreadMessageCount(0);
       setIsWindowFocused(true);
-  });
-    window.addEventListener('blur', () => {
+    });
+    window.addEventListener("blur", () => {
       setIsWindowFocused(false);
-  });
+    });
 
     return () => {
-      window.removeEventListener('focus', () => {
-      setUnreadMessageCount(0);
-      setIsWindowFocused(true);
-  });
-      window.removeEventListener('blur', () => {
-          setIsWindowFocused(false);
+      window.removeEventListener("focus", () => {
+        setUnreadMessageCount(0);
+        setIsWindowFocused(true);
+      });
+      window.removeEventListener("blur", () => {
+        setIsWindowFocused(false);
       });
     };
   }, []);
@@ -168,9 +168,9 @@ const App = () => {
     }
   };
 
-  const retreiveUserData = async (session: Session) => {
-    console.log("Retreiving user data...");
-    if (!Client) return; 
+  const retrieveUserData = async (session: Session) => {
+    console.log("Retrieving user data...");
+    if (!Client) return;
     const { data, error } = await Client.from("profiles")
       .select("username, profile_image_url, user_id")
       .eq("user_uuid", session.user.id)
@@ -190,8 +190,8 @@ const App = () => {
     );
   };
 
-  const retreiveRecentMessages = () => {
-    console.log("Retreiving previous messages...");
+  const retrieveRecentMessages = () => {
+    console.log("Retrieving previous messages...");
     socket.emit("request recent messages");
   };
 
@@ -199,7 +199,7 @@ const App = () => {
     if (!Client) {
       setIsAuthLoading(false);
       return;
-    };
+    }
 
     const { data: authListener } = Client.auth.onAuthStateChange(
       (_event, session: Session | null) => {
@@ -207,10 +207,10 @@ const App = () => {
         if (session) {
           setSession(session);
           if (_event == "INITIAL_SESSION") {
-            retreiveUserData(session);
-            retreiveRecentMessages();
+            retrieveUserData(session);
+            retrieveRecentMessages();
           } else if (_event == "TOKEN_REFRESHED") {
-            retreiveUserData(session);
+            retrieveUserData(session);
           }
         } else {
           setSession(null);
@@ -223,11 +223,31 @@ const App = () => {
     };
   }, []);
 
+  const chatWindow = (
+    <ChatWindow
+      messages={messages}
+      sendMessage={handleMessageSent}
+      clientUserUUID={profile.userUUID}
+    ></ChatWindow>
+  );
+
   const routes = [
     {
       path: "/",
-      element: <Layout session={session} profileObject={profile}></Layout>,
-      errorElement: <ErrorPage/>,
+      element: (
+        <Layout
+          session={session}
+          profileObject={profile}
+          chatWindow={
+            <ChatWindow
+              messages={messages}
+              sendMessage={handleMessageSent}
+              clientUserUUID={profile.userUUID}
+            ></ChatWindow>
+          }
+        ></Layout>
+      ),
+      errorElement: <ErrorPage />,
       children: [
         {
           index: true,
@@ -322,10 +342,10 @@ const App = () => {
                 allow="fullscreen"
               ></iframe>
             </div>
-          )
-        }
+          ),
+        },
       ],
-    }
+    },
   ];
 
   const router = createBrowserRouter(routes, {
