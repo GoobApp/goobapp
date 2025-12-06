@@ -76,7 +76,7 @@ const MiniWindow = forwardRef<ChatWindowRef, ChatWindowProps>((props, ref) => {
   }, [props.messages]); // This is in a different useLayoutEffect as you want this to be called ONLY when messages gets updated. Don't do it on a random button click!
 
   return (
-    <div id="chatWindow" className="chat-mini-window">
+    <div id="chatUsersPanelContainer" className="chat-users-panel-container">
       <div id="chatMessages" className="chat-messages" ref={scrollContainerRef}>
         {props.messages.map((message, index) => {
           let showAvatar = false;
@@ -99,27 +99,22 @@ const MiniWindow = forwardRef<ChatWindowRef, ChatWindowProps>((props, ref) => {
           }
 
           return (
-            <div
-              id="chatUsersPanelContainer"
-              className="chat-users-panel-container"
-            >
-              <MessageDisplay
-                userID={message.userUUID}
-                key={message.messageId}
-                profilePicture={message.userProfilePicture}
-                displayName={message.userDisplayName}
-                time={message.messageTime.toLocaleString(undefined, {
-                  dateStyle:
-                    new Date().getDate() != message.messageTime.getDate()
-                      ? "medium"
-                      : undefined,
-                  timeStyle: "short",
-                })}
-                content={message.messageContent}
-                showAvatar={showAvatar}
-                showSpacer={showSpacer}
-              ></MessageDisplay>
-            </div>
+            <MessageDisplay
+              userID={message.userUUID}
+              key={message.messageId}
+              profilePicture={message.userProfilePicture}
+              displayName={message.userDisplayName}
+              time={message.messageTime.toLocaleString(undefined, {
+                dateStyle:
+                  new Date().getDate() != message.messageTime.getDate()
+                    ? "medium"
+                    : undefined,
+                timeStyle: "short",
+              })}
+              content={message.messageContent}
+              showAvatar={showAvatar}
+              showSpacer={showSpacer}
+            ></MessageDisplay>
           );
         })}
       </div>
