@@ -76,7 +76,7 @@ const MiniWindow = forwardRef<ChatWindowRef, ChatWindowProps>((props, ref) => {
   }, [props.messages]); // This is in a different useLayoutEffect as you want this to be called ONLY when messages gets updated. Don't do it on a random button click!
 
   return (
-    <div id="chatUsersPanelContainer" className="chat-users-panel-container">
+    <div id="chatUsersPanelContainer" className="chat-mini-window">
       <div id="chatMessages" className="chat-messages" ref={scrollContainerRef}>
         {props.messages.map((message, index) => {
           let showAvatar = false;

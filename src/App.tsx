@@ -232,7 +232,7 @@ const App = () => {
           session={session}
           profileObject={profile}
           chatWindow={
-            isAuthLoading || session == null ? (
+            (isAuthLoading || session == null) && import.meta.env.PROD ? (
               <div className="chat-users-panel-container"></div>
             ) : (
               <MiniWindow
@@ -250,7 +250,7 @@ const App = () => {
           index: true,
           element: isAuthLoading ? (
             <EmptyPanel></EmptyPanel>
-          ) : session != null ? (
+          ) : session != null || !import.meta.env.PROD ? (
             <ChatWindow
               messages={messages}
               sendMessage={handleMessageSent}

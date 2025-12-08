@@ -1,6 +1,6 @@
 .chat-input-form {
   grid-row: 2;
-  gap: 25px;
+  gap: 5%;
   display: flex;
   height: var(--input-size);
   justify-items: center;

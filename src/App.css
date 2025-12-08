@@ -85,7 +85,6 @@ body {
   font-size: 1rem;
   padding: 1em;
   overflow-y: auto;
-  flex-basis: 100%;
   overflow-x: hidden;
   word-break: break-word;
 
@@ -104,6 +103,7 @@ body {
 }
 
 .chat-messages {
+  width: 100%;
   font-size: 1rem;
   padding: 1em;
   overflow-y: auto;
@@ -123,10 +123,10 @@ body {
   grid-column: 3;
   grid-row: 2;
 
-  width: 100%;
+  transform-origin: left;
 
   width: 100%;
-
+  
   justify-self: center;
 
   word-break: break-word;
@@ -137,6 +137,7 @@ body {
 
 @media screen and (max-width: 1000px) {
   .chat-users-panel-container,
+  .chat-mini-window,
   .switcher-panel-container {
     display: none;
     pointer-events: none;
