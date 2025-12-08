@@ -6,7 +6,6 @@
   justify-items: center;
   --input-size: 60px;
   --max-input-size: 200px;
-  width: 100%;
 }
 
 .chat-input-div {
@@ -36,13 +35,12 @@
   box-shadow: 0px 0px 0px var(--secondary-color);
   transition: box-shadow 0.25s ease-in-out;
 
+  width: 50%;
   min-height: var(--input-size);
   max-height: var(--max-input-size);
 
   padding-left: 25px;
   padding-right: 100px;
-
-  flex-basis: 100%;
 }
 
 .chat-input-placeholder {
