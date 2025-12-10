@@ -182,38 +182,7 @@ button {
 button,
 input {
   color: var(--text-color);
-  border: 0px;
-  box-shadow: none;
-}
-
-input:focus,
-input:focus-visible,
-button:focus,
-button:focus-visible,
-input:hover,
-button:hover {
-  box-shadow: 0px 0px 10px var(--primary);
-  transition: box-shadow 0.25s ease-in-out;
-}
-
-input:active,
-button:active {
-  box-shadow: 0px 0px 5px var(--primary);
-  transition: box-shadow 0.25s ease-in-out;
-}
-
-button:disabled,
-input:disabled {
-  box-shadow: 0px 0px 0px var(--primary);
-  transition: box-shadow 0.25s ease-in-out;
-  background-color: var(--disabled-primary);
-  transition: background-color 0.25s ease-in-out;
-}
-
-button:not(:disabled),
-input:not(:disabled) {
-  background-color: var(--primary);
-  transition: background-color 0.25s ease-in-out;
+  box-shadow: 0px 2px 2px oklch(0 0 0 / 0.2), 0px 4px 4px oklch(0 0 0 / 0.1);
 }
 
 @view-transition {
