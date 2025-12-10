@@ -131,7 +131,7 @@ body {
 
   justify-self: center;
 
-  overflow-y: scroll;
+  overflow-y: hidden;
 
   word-break: break-word;
 

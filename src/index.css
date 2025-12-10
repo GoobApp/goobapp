@@ -31,6 +31,8 @@ body {
   min-height: 100vh;
   color: var(--text);
   font-family: Verdana, Geneva, Tahoma, sans-serif;
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 h1 {
@@ -148,29 +150,7 @@ button:focus-visible {
 
 /* Style the entire scrollbar */
 ::-webkit-scrollbar {
-  width: 10px; /* Adjust as needed */
-  height: 10px; /* Adjust as needed for horizontal scrollbars */
-}
-
-/* Style the scrollbar track (the background) */
-::-webkit-scrollbar-track {
-  background: var(--primary);
-  border-radius: var(--roundness);
-}
-
-/* Style the scrollbar thumb (the draggable handle) */
-::-webkit-scrollbar-thumb {
-  background: var(--secondary);
-  border-radius: var(--roundness);
-}
-
-/* Style the thumb on hover */
-::-webkit-scrollbar-thumb:hover {
-  background: var(--secondary);
-}
-
-::-webkit-scrollbar-corner {
-  background: rgba(0, 0, 0, 0); /* Make the corner completely transparent */
+  display: none;
 }
 
 button {
