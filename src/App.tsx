@@ -21,7 +21,6 @@ import createProfileObject from "./utils/UserProfileCreator";
 const App = () => {
   const [session, setSession] = useState<Session | null>(null);
   const [unreadMessageCount, setUnreadMessageCount] = useState<number>(0);
-  const [isWindowFocused, setIsWindowFocused] = useState<boolean>(true);
   const [messages, setMessages] = useState<ChatMessageObject[]>([]);
   const [isConnected, setIsConnected] = useState<boolean>(socket.connected);
   const [isAuthLoading, setIsAuthLoading] = useState<boolean>(true);
@@ -92,31 +91,11 @@ const App = () => {
       unreadMessageCount === 0 ? "GoobApp" : `GoobApp (${unreadMessageCount})`;
   }, [unreadMessageCount]);
 
-  const onBlur = () => {
-    setIsWindowFocused(false);
-  };
-
-  const onFocus = () => {
-    setUnreadMessageCount(0);
-    setIsWindowFocused(true);
-  };
-
-  useEffect(() => {
-    window.addEventListener("focus", onFocus);
-    window.addEventListener("blur", onBlur);
-
-    return () => {
-      window.removeEventListener("focus", onFocus);
-      window.removeEventListener("blur", onBlur);
-    };
-  }, []);
-
   const addNewInput = (
     newMessage: ChatMessageObject,
     shouldNotify: boolean = true
   ) => {
-    console.log("Is window focused: ", isWindowFocused);
-    if (!isWindowFocused) {
+    if (!document.hasFocus()) {
       // FIXME: profile.userUUID is null
       setUnreadMessageCount((prevCount) => prevCount + 1);
 
