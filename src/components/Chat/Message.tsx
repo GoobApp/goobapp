@@ -82,21 +82,15 @@ const MessageDisplay = ({
           className="chat-message-profile-picture"
         />
       ) : (
-        <></>
+        <div className="chat-message-no-avatar"></div>
       )}
-      {showAvatar ? (
+      {showAvatar && (
         <p className="chat-message-display-name">
           {userID == "0" ? "Deleted user" : displayName}
         </p>
-      ) : (
-        <></>
       )}
-      {showAvatar ? <p className="chat-message-time">{time}</p> : <></>}
-      {showAvatar ? (
-        <pre className="chat-message-content">{styledContent}</pre>
-      ) : (
-        <pre className="chat-message-content-no-avatar">{styledContent}</pre>
-      )}
+      {showAvatar && <p className="chat-message-time">{time}</p>}
+      <pre className="chat-message-content">{styledContent}</pre>
     </div>
   );
 };
