@@ -42,8 +42,8 @@ const App = () => {
       console.log("Connected!");
       setIsConnected(true);
 
-      if (profile.userUUID != null) {
-        socket.emit("add to active users list", profile);
+      if (profile.userUUID != null && session) {
+        socket.emit("add to active users list", profile, session);
       }
     };
 
