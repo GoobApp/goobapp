@@ -111,13 +111,9 @@ const App = () => {
     const onRemoveActiveUser = (value: UserProfile) => {
       console.log("User left :(");
       setActiveUsers((prevActiveUsers) => {
-        const newActiveUsers = prevActiveUsers.slice();
-        newActiveUsers.forEach((element, index) => {
-          if (element.userUUID == value.userUUID) {
-            delete newActiveUsers[index];
-            return newActiveUsers;
-          }
-        });
+        const newActiveUsers = prevActiveUsers.filter(
+          (user) => user.userUUID !== value.userUUID
+        );
         return newActiveUsers;
       });
     };
