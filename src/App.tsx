@@ -78,7 +78,7 @@ const App = () => {
 
     const onRecentMessagesRequestReceived = (
       value: ChatMessageObject[],
-      users: UserProfile[] | null
+      users: UserProfile[]
     ) => {
       if (users) {
         setActiveUsers(users);
@@ -90,31 +90,24 @@ const App = () => {
     };
 
     const onAddActiveUser = (value: UserProfile) => {
-      console.log("new active user!");
-      let newActiveUsers = activeUsers.slice();
-      const index = newActiveUsers.findIndex((element) => {
-        return element.userUUID == value.userUUID;
+      const newActiveUsers = { ...activeUsers };
+      newActiveUsers.forEach((element, index) => {
+        if (element.userUUID == value.userUUID) {
+          activeUsers[index] = value;
+          return;
+        }
       });
 
-      if (index > -1) {
-        // js no if exists function :(
-        newActiveUsers.splice(index, 1);
-      }
-
-      newActiveUsers.push(value);
-
-      setActiveUsers(newActiveUsers);
+      activeUsers.push(value);
     };
 
     const onRemoveActiveUser = (value: UserProfile) => {
-      let newActiveUsers = activeUsers.slice();
-      const index = newActiveUsers.findIndex((element) => {
-        return element.userUUID == value.userUUID;
+      const newActiveUsers = { ...activeUsers };
+      newActiveUsers.forEach((element, index) => {
+        if (element.userUUID == value.userUUID) {
+          delete activeUsers[index];
+        }
       });
-      if (index > -1) {
-        // js no if exists function :(
-        newActiveUsers.splice(index, 1);
-      }
 
       setActiveUsers(newActiveUsers);
     };
