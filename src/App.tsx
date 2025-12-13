@@ -41,10 +41,6 @@ const App = () => {
     const onConnect = () => {
       console.log("Connected!");
       setIsConnected(true);
-
-      if (session?.user.id != null && session) {
-        socket.emit("add to active users list", session.user.id);
-      }
     };
 
     const onDisconnect = () => {
@@ -227,6 +223,8 @@ const App = () => {
         newUserUUID: session.user.id,
       })
     );
+
+    socket.emit("add to active users list", data);
   };
 
   const retrieveRecentMessages = () => {
