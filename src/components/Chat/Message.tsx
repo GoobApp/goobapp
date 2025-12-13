@@ -31,7 +31,7 @@ const MessageDisplay = ({
     cfp_clicked: cfp_clicked,
   };
 
-  if (!content) return;
+  if (!content) return null;
   const splitContent = content.split(/(:[^:]+:)/);
   const styledContent = splitContent.map((item) => {
     if (item[0] === ":" && item[item.length - 1] === ":") {
