@@ -225,7 +225,7 @@ const App = () => {
     });
 
     setProfile(newProfile);
-    // socket.emit("add to active users list", newProfile);
+    socket.emit("add to active users list", newProfile);
   };
 
   const retrieveRecentMessages = () => {
@@ -253,11 +253,9 @@ const App = () => {
             retrieveUserData(session);
             retrieveRecentMessages();
             retrieveActiveUsers();
-            socket.emit("add to active users list", profile);
           } else if (_event == "TOKEN_REFRESHED") {
             retrieveUserData(session);
             retrieveActiveUsers();
-            socket.emit("add to active users list", profile);
           }
         } else {
           setSession(null);
