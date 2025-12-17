@@ -44,6 +44,8 @@ const App = () => {
   useEffect(() => {
     const onConnect = () => {
       console.log("Connected!");
+
+      socket.auth = { token: session?.access_token };
       setIsConnected(true);
 
       if (profile.userUUID != null) {
@@ -127,7 +129,7 @@ const App = () => {
       const messageIndex = messages.findIndex(
         (event) => event.messageId == messageId
       );
-      if (messageIndex) {
+      if (messageIndex != -1) {
         let newMessages = messages;
 
         newMessages[messageIndex] = createChatObject({
