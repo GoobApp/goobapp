@@ -1,13 +1,16 @@
 .chat-input-form {
+  view-transition-name: chat-input-form;
   grid-row: 2;
   gap: 10px;
 
+  background-color: var(--primary);
+  border-radius: 30px;
+
   box-sizing: border-box;
 
-  border-radius: 0px;
-  display: grid;
-  grid-template-columns: 1fr 10fr 1fr;
   justify-items: center;
+
+  display: flex;
 
   --input-size: 60px;
   --max-input-size: 200px;
@@ -15,7 +18,6 @@
 }
 
 .chat-input-div {
-  grid-column: 2;
   display: flex;
   align-items: center;
   align-self: center;
@@ -26,11 +28,9 @@
 
 .chat-input {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
-  border-radius: 30px;
-  background-color: var(--primary);
 
   align-content: center;
-  font-size: 15px;
+  font-size: 16px;
 
   width: 100%;
 
@@ -43,14 +43,19 @@
   align-self: center;
   min-height: var(--input-size);
   max-height: var(--max-input-size);
+}
 
-  padding-left: var(--input-padding);
-  padding-right: var(--input-padding);
+.chat-input::placeholder {
+  color: white;
 }
 
 .chat-input::-webkit-scrollbar-thumb {
   background: var(--bg);
   border-radius: var(--roundness);
+}
+
+.chat-input:focus {
+  outline: none;
 }
 
 .chat-input-placeholder {
@@ -63,17 +68,7 @@
 
   text-align: start;
 
-  padding-left: var(--input-padding);
-
   left: 1;
-}
-
-.chat-send-button {
-  grid-column: 3;
-}
-
-.chat-extras-button {
-  grid-column: 1;
 }
 
 .chat-send-button,
@@ -87,5 +82,5 @@
   max-height: var(--input-size);
   border-radius: 100%;
 
-  background-color: var(--primary);
+  background-color: var(--secondary);
 }

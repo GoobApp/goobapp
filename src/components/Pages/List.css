@@ -4,6 +4,7 @@
   background-color: var(--bg);
   font-size: 1rem;
   padding: 1em;
+  margin: 1em;
   overflow-y: auto;
   word-break: break-word;
 

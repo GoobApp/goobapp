@@ -4,7 +4,7 @@
 
   color-scheme: light dark;
 
-  background-color: var(--bg);
+  background-color: var(--bg-dark);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -86,8 +86,8 @@ button:focus-visible {
 /* Thanks to https://www.iamsajid.com/ui-colors/ for this template/picker thing*/
 :root {
   /* hsl (fallback color) */
-  --bg-dark: hsl(120, 7%, 22%);
-  --bg: hsl(124, 16%, 17%);
+  --bg-dark: hsl(124, 16%, 17%);
+  --bg: hsl(120, 7%, 22%);
   --bg-light: hsl(116, 36%, 68%);
   --text: hsl(116 100% 91%);
   --text-muted: hsl(116 27% 66%);
@@ -96,14 +96,10 @@ button:focus-visible {
   --border-muted: hsl(119 57% 14%);
   --primary: hsl(117 31% 34%);
   --disabled-primary: hsla(117, 31%, 34%, 0.5);
-  --secondary: hsl(294 42% 72%);
-  --danger: hsl(9 42% 65%);
-  --warning: hsl(51 29% 53%);
-  --success: hsl(148 27% 56%);
-  --info: hsl(217 46% 66%);
+  --secondary: hsl(116, 41%, 53%);
   /* oklch */
-  --bg-dark: oklch(34.596% 0.01739 145.292);
-  --bg: oklch(30% 0.03 145);
+  --bg-dark: oklch(30% 0.03 145);
+  --bg: oklch(34.596% 0.01739 145.292);
   --bg-light: oklch(61% 0.08 143);
   --text: oklch(0.96 0.08 143);
   --text-muted: oklch(0.76 0.08 143);
@@ -112,45 +108,37 @@ button:focus-visible {
   --border-muted: oklch(0.3 0.08 143);
   --primary: oklch(0.5 0.1 143);
   --disabled-primary: oklch(50.127% 0.10113 142.811 / 0.5);
-  --secondary: oklch(0.76 0.1 323);
-  --danger: oklch(0.7 0.08 30);
-  --warning: oklch(0.7 0.08 100);
-  --success: oklch(0.7 0.08 160);
-  --info: oklch(0.7 0.08 260);
+  --secondary: oklch(70.697% 0.16107 142.332);
+
+  background-color: var(--bg-dark);
 }
 
 @media (prefers-color-scheme: light) {
   :root {
     /* hsl (fallback color) */
-    --bg-dark: hsl(115 39% 88%);
-    --bg: hsl(115 68% 93%);
-    --bg-light: hsl(115 100% 98%);
+    --bg-dark: hsl(115 68% 93%);
+    --bg: hsl(115 39% 88%);
+    --bg-light: hsl(0, 0%, 100%);
     --text: hsl(125 100% 2%);
     --text-muted: hsl(117 33% 24%);
     --highlight: hsl(116 100% 96%);
     --border: hsl(116 19% 47%);
     --border-muted: hsl(116 21% 58%);
     --primary: hsl(116 18% 58%);
-    --secondary: hsl(293 34% 30%);
-    --danger: hsl(8 32% 41%);
-    --warning: hsl(51 46% 30%);
-    --success: hsl(150 37% 33%);
-    --info: hsl(217 34% 43%);
+    --secondary: hsl(116, 41%, 53%);
     /* oklch */
-    --bg-dark: oklch(0.92 0.04 143);
-    --bg: oklch(0.96 0.04 143);
-    --bg-light: oklch(1 0.04 143);
+    --bg-dark: oklch(0.96 0.04 143);
+    --bg: oklch(0.92 0.04 143);
+    --bg-light: oklch(100% 0.00011 271.152);
     --text: oklch(0.15 0.08 143);
     --text-muted: oklch(0.4 0.08 143);
     --highlight: oklch(1 0.08 143);
     --border: oklch(0.6 0.08 143);
     --border-muted: oklch(0.7 0.08 143);
     --primary: oklch(69% 0.07 143);
-    --secondary: oklch(0.4 0.1 323);
-    --danger: oklch(0.5 0.08 30);
-    --warning: oklch(0.5 0.08 100);
-    --success: oklch(0.5 0.08 160);
-    --info: oklch(0.5 0.08 260);
+    --secondary: oklch(70.697% 0.16107 142.332);
+
+    background-color: var(--bg-light);
   }
 }
 

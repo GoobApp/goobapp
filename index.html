@@ -3,13 +3,17 @@
   <head>
     <title>GoobApp</title>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no, interactive-widget=resizes-content"
+    />
     <meta
       http-equiv="Content-Security-Policy"
       content="
       default-src 'self';
       script-src 'self' https://*.cloudflare.com;
-      frame-src 'self' https://*.cloudflare.com https://supkittymeow.github.io https://scratch.mit.edu/projects/1175964459/embed;
+      frame-src *;
+      frame-ancestors 'self';
       connect-src 'self'
       http://localhost:3000
       ws://localhost:3000

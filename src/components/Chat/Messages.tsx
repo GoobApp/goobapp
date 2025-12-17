@@ -42,6 +42,15 @@ const Messages = forwardRef<ChatWindowRef, ChatWindowProps>((props, ref) => {
     if (value) props.sendMessage(value);
   };
 
+  useEffect(() => {
+    const el = scrollContainerRef.current;
+    if (!el) return;
+    el.scrollTo({
+      top: el.scrollHeight,
+      behavior: "instant",
+    });
+  }, []);
+
   useLayoutEffect(() => {
     // Runs before the screen gets rendered but after the screen gets painted
     const el = scrollContainerRef.current;

@@ -9,7 +9,7 @@ input {
 
 .setting-panel {
   border: 2px solid;
-  background-color: var(--bg-light);
+  background-color: var(--primary);
   border-color: var(--primary);
   display: flex;
   flex-direction: column;
@@ -17,11 +17,18 @@ input {
   align-items: center;
   padding: 25px;
   gap: 10px;
+
+  aspect-ratio: 1 / 1;
 }
 
+.setting-button,
 .setting-element {
   place-self: center;
   text-align: center;
+}
+
+.setting-button {
+  background-color: var(--secondary);
 }
 
 .setting-delete-button {
@@ -38,9 +45,11 @@ input {
 }
 
 .settings-page {
-  background-color: var(--bg);
+  /* background-color: var(--bg); */
   font-size: 1rem;
   padding: 1em;
+  margin: 1em;
+
   overflow-y: auto;
   word-break: break-word;
 
@@ -50,8 +59,8 @@ input {
   grid-row: 2;
 
   display: grid;
-  grid-template-rows: 1fr 1fr 1fr;
-  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 1fr;
   gap: 15px;
 }
 
