@@ -123,20 +123,10 @@ const Messages = forwardRef<ChatWindowRef, ChatWindowProps>((props, ref) => {
 
         return (
           <MessageDisplay
-            userID={message.userUUID}
-            key={message.messageId}
-            profilePicture={message.userProfilePicture}
-            displayName={message.userDisplayName}
-            time={message.messageTime.toLocaleString(undefined, {
-              dateStyle:
-                new Date().getDate() != message.messageTime.getDate()
-                  ? "medium"
-                  : undefined,
-              timeStyle: "short",
-            })}
-            content={message.messageContent}
+            message={message}
             showAvatar={showAvatar}
             showSpacer={showSpacer}
+            key={index}
           ></MessageDisplay>
         );
       })}

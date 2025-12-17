@@ -14,7 +14,11 @@ const ChatUsersPanel = ({
       {activeUsers.length > 0 && <p>Active users ({maxUsers})</p>}
       {activeUsers.map((value: UserProfile, index: number) => {
         return (
-          <UserDisplay userData={value} isDarkBG={index % 2 == 0}></UserDisplay>
+          <UserDisplay
+            userData={value}
+            isDarkBG={index % 2 == 0}
+            key={index}
+          ></UserDisplay>
         );
       })}
     </div>

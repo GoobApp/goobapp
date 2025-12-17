@@ -122,11 +122,32 @@ const App = () => {
       });
     };
 
-    if (!isAuthLoading && session) {
+    const onMessageEdited = (messageId: number, messageContent: string) => {
+      console.log("edited");
+      const messageIndex = messages.findIndex(
+        (event) => event.messageId == messageId
+      );
+      if (messageIndex) {
+        let newMessages = messages;
+
+        newMessages[messageIndex] = createChatObject({
+          newUserDisplayName: messages[messageIndex].userDisplayName,
+          newMessageContent: messageContent,
+          newUserProfilePicture: messages[messageIndex].userProfilePicture,
+          newUserUUID: messages[messageIndex].userUUID,
+          newIsEdited: true,
+        });
+
+        setMessages(newMessages);
+      }
+    };
+
+    if ((!isAuthLoading && session) || !import.meta.env.PROD) {
       socket.on("connect", onConnect);
       socket.on("disconnect", onDisconnect);
       socket.on("client receive message", clientReceiveMessage);
       socket.on("rate limited", onRateLimited);
+      socket.on("message edited", onMessageEdited);
       socket.on("receive recent messages", onRecentMessagesRequestReceived);
       socket.on("receive active users", onActiveUsersRequestReceived);
       socket.on("new active user", onAddActiveUser);
@@ -144,6 +165,7 @@ const App = () => {
       socket.off("disconnect", onDisconnect);
       socket.off("client receive message", clientReceiveMessage);
       socket.off("rate limited", onRateLimited);
+      socket.off("message edited", onMessageEdited);
       socket.off("receive recent messages", onRecentMessagesRequestReceived);
       socket.off("receive active users", onActiveUsersRequestReceived);
       socket.off("new active user", onAddActiveUser);
@@ -184,14 +206,17 @@ const App = () => {
 
   const handleMessageSent = (contentText: string) => {
     if (!import.meta.env.PROD && !session?.user.id) {
-      addNewInput(
-        createChatObject({
-          newUserDisplayName: "Test User",
-          newUserUUID: "1",
-          newUserProfilePicture: null,
-          newMessageContent: contentText,
-        })
-      );
+      let input = createChatObject({
+        newUserDisplayName: "Test User",
+        newUserUUID: "1",
+        newUserProfilePicture: null,
+        newMessageContent: contentText,
+        newIsEdited: false,
+      });
+
+      // addNewInput(input);
+
+      socket.emit("message sent", input, session);
       return;
     }
 
@@ -204,6 +229,7 @@ const App = () => {
         newUserUUID: profile.userUUID,
         newUserProfilePicture: profile.userProfilePicture,
         newMessageContent: contentText,
+        newIsEdited: false,
       });
 
       socket.emit("message sent", message, session);
@@ -258,8 +284,7 @@ const App = () => {
 
       setActiveUsers([newProfile, newProfile, newProfile]);
       setIsAuthLoading(false);
-
-      return;
+      setSession(session);
     }
 
     if (!Client) {
