@@ -6,8 +6,6 @@
 
 html,
 body {
-  /* overflow: hidden; */
-  /* overflow: hidden; */
   height: 100%;
 }
 
@@ -16,8 +14,6 @@ body {
   justify-content: center;
   margin: 0;
   padding: 0;
-
-  /* overflow: hidden; */
 
   max-width: 100dvw;
   min-height: 0;
