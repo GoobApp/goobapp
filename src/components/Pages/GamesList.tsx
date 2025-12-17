@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router";
 import "../../App.css";
-import "./GamesList.css";
+import "./List.css";
 
 const GamesList = () => {
   const navigate = useNavigate();
@@ -35,11 +35,12 @@ const GamesList = () => {
 
       <button
         className="games-list-button"
-        onClick={() => navigate("/games/amazing-game-idk-name-yet", { viewTransition: true })}
+        onClick={() =>
+          navigate("/games/amazing-game-idk-name-yet", { viewTransition: true })
+        }
       >
         Amazing Game IDK Name Yet (Scratch)
       </button>
-
     </div>
   );
 };

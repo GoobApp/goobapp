@@ -6,7 +6,7 @@
 
 html,
 body {
-  overflow: hidden;
+  /* overflow: hidden; */
   height: 100%;
 }
 
@@ -26,20 +26,23 @@ body {
   display: grid;
   grid-template-columns: 1fr 5fr 1.5fr;
   grid-template-rows: min-content 15fr min-content;
+  view-transition-name: wrapper;
 
   width: 100dvw;
   height: 100dvh;
 
+  padding: 10px;
+
   min-height: 0;
 
-  overflow-y: hidden;
+  column-gap: 1em;
 }
 
 .chat-users-panel-container,
 .switcher-panel-container {
-  background-color: var(--bg);
   font-size: 1rem;
   padding: 1em;
+  margin: 1em;
 
   grid-row: 2;
 
@@ -81,14 +84,13 @@ body {
 }
 
 .switcher-panel-container {
+  margin: 1em;
   transform-origin: right;
   grid-column: 1;
 }
 
 .iframe-wrapper {
-  padding-top: 1em;
-  padding-bottom: 1em;
-  background-color: var(--bg);
+  margin: 1em;
   font-size: 1rem;
 
   grid-column-start: 2;
@@ -98,6 +100,7 @@ body {
 }
 
 .chat-window {
+  view-transition-name: chat-window;
   padding-top: 1em;
 
   font-size: 1rem;
@@ -118,7 +121,7 @@ body {
 }
 
 .chat-messages {
-  background-color: var(--bg-dark);
+  background-color: var(--bg);
   border-radius: 18px;
   overflow-x: hidden;
   overflow-y: auto;
@@ -136,10 +139,11 @@ body {
 }
 
 .chat-mini-window {
+  view-transition-name: chat-window;
   overflow: hidden;
 
-  background-color: var(--bg);
   padding: 1em;
+  margin: 1em;
 
   grid-column: 3;
   grid-row: 2;

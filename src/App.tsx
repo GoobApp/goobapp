@@ -8,8 +8,11 @@ import Layout from "./components/Layout";
 import ChatLoggedOutWindow from "./components/Pages/ChatLoggedOutWindow";
 import EmptyPanel from "./components/Pages/EmptyPanel";
 import ErrorPage from "./components/Pages/ErrorPage";
+import ExtrasList from "./components/Pages/ExtrasList";
 import GamesList from "./components/Pages/GamesList";
+import IFrameLearnMore from "./components/Pages/iframeLearnMore";
 import PrivacyPolicy from "./components/Pages/PrivacyPolicy";
+import Search from "./components/Pages/Search";
 import SettingsPage from "./components/Pages/SettingsPage";
 import TOS from "./components/Pages/TOS";
 import { Client } from "./components/supabase/Client";
@@ -325,8 +328,20 @@ const App = () => {
           element: <PrivacyPolicy></PrivacyPolicy>,
         },
         {
-          path: "/dev/logout",
+          path: "/dev/logout/*",
           element: <ChatLoggedOutWindow></ChatLoggedOutWindow>,
+        },
+        {
+          path: "/extras/*",
+          element: <ExtrasList></ExtrasList>,
+        },
+        {
+          path: "/extras/search/*",
+          element: <Search></Search>,
+        },
+        {
+          path: "/extras/search/learnmore/*",
+          element: <IFrameLearnMore></IFrameLearnMore>,
         },
         {
           path: "/games/*",

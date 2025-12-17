@@ -77,7 +77,7 @@ const SettingsPage = ({ profile }: { profile: UserProfile }) => {
         ></input>
         <button
           type="submit"
-          className="setting-element"
+          className="setting-button"
           disabled={username == ""}
         >
           Update
@@ -102,7 +102,7 @@ const SettingsPage = ({ profile }: { profile: UserProfile }) => {
         ></input>
         <button
           type="submit"
-          className="setting-element"
+          className="setting-button"
           disabled={
             password == "" || confPassword == "" || password != confPassword
           }
@@ -125,7 +125,7 @@ const SettingsPage = ({ profile }: { profile: UserProfile }) => {
         ></input>
         <button
           type="submit"
-          className="setting-element"
+          className="setting-button"
           disabled={profileUrl == ""}
         >
           Update

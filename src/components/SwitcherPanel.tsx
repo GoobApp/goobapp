@@ -26,6 +26,12 @@ const SwitcherPanel = () => {
       >
         Games
       </button>
+      <button
+        className="panel-button"
+        onClick={() => navigate("/extras", { viewTransition: true })}
+      >
+        Extras
+      </button>
 
       <div className="footnotes">
         <Link to="/tos" className="footnote" viewTransition={true}>

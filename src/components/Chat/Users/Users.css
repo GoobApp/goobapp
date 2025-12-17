@@ -18,7 +18,7 @@
 }
 
 .user-container-light {
-  background-color: var(--highlight);
+  background-color: var(--secondary);
 }
 
 .user-profile-picture {
