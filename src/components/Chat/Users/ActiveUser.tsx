@@ -15,7 +15,10 @@ const UserDisplay = ({
   const clickedUser = () => {
     if (clientUserData.userRole == "Owner" || !import.meta.env.PROD) {
       const role = window.prompt("Role name to give?");
-      socket.emit("give user role", userData.userUUID, role);
+
+      if (role != null) {
+        socket.emit("give user role", userData.userUUID, role);
+      }
     }
   };
 
