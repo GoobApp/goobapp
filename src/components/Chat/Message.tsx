@@ -79,6 +79,7 @@ const MessageDisplay = ({
               className="chat-message-content-text"
               key={indexIndex}
               to={`/extras/search/?q=${itemItem}`}
+              viewTransition={true}
             >
               {itemItem}
             </Link>
