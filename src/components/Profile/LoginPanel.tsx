@@ -2,12 +2,23 @@
 
 import { Turnstile, TurnstileInstance } from "@marsidev/react-turnstile";
 import { Provider } from "@supabase/supabase-js";
-import { FormEvent, useRef, useState } from "react";
+import {
+  FocusEvent,
+  FocusEventHandler,
+  FormEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import "../../App.css";
 import { Client } from "../supabase/Client";
 import "./Profile.css";
 
-const LoginPanel = () => {
+const LoginPanel = ({
+  onClose,
+}: {
+  onClose: FocusEventHandler<HTMLDivElement> | undefined;
+}) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -20,6 +31,8 @@ const LoginPanel = () => {
     try {
       setError(null);
       setLogInLoading(true);
+
+      if (!Client) return;
       const { error } = await Client.auth.signInWithPassword({
         email,
         password,
@@ -42,6 +55,7 @@ const LoginPanel = () => {
       setError(null);
       setLogInLoading(true);
 
+      if (!Client) return;
       const { data, error } = await Client.auth.signInWithOAuth({
         provider: provider,
       });
@@ -56,47 +70,68 @@ const LoginPanel = () => {
     }
   };
 
+  const panelRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const panel = panelRef.current;
+    if (panel) panel.focus();
+  }, []);
+
+  const handleBlur = (event: FocusEvent<HTMLDivElement>) => {
+    if (!panelRef.current?.contains(event.relatedTarget)) {
+      onClose?.(event);
+    }
+  };
+
   return (
-    <form className="login-panel-form" onSubmit={handleLogIn}>
-      <Turnstile
-        siteKey="0x4AAAAAACDL09dyN0WgJyZL"
-        onSuccess={(token) => {
-          setCaptchaToken(token);
-        }}
-        ref={turnstileRef}
-      />
-      <input
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-        disabled={logInLoading}
-        className="login-signup-input"
-      />
-      <input
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-        placeholder="Password"
-        type="password"
-        disabled={logInLoading}
-        className="login-signup-input"
-      />
-      <br></br>
-      <button
-        type="submit"
-        disabled={logInLoading || email == "" || password == ""}
-        className="login-signup-panel-button"
-      >
-        {logInLoading ? "Loading..." : "Sign In"}
-      </button>
-      <hr className="login-signup-panel-divider"></hr>or
-      <button type="button" onClick={() => handleSignInWithProvider("google")}>
-        Sign in with Google
-      </button>
-      <button type="button" onClick={() => handleSignInWithProvider("github")}>
-        Sign in with GitHub
-      </button>
-      {error && <div className="error-message">{error}</div>}
-    </form>
+    <div onBlur={handleBlur} tabIndex={-1} ref={panelRef}>
+      <form className="login-panel-form" onSubmit={handleLogIn}>
+        <Turnstile
+          siteKey="0x4AAAAAACDL09dyN0WgJyZL"
+          onSuccess={(token) => {
+            setCaptchaToken(token);
+          }}
+          ref={turnstileRef}
+        />
+        <input
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+          disabled={logInLoading}
+          className="login-signup-input"
+        />
+        <input
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          placeholder="Password"
+          type="password"
+          disabled={logInLoading}
+          className="login-signup-input"
+        />
+        <br></br>
+        <button
+          type="submit"
+          disabled={logInLoading || email == "" || password == ""}
+          className="login-signup-panel-button"
+        >
+          {logInLoading ? "Loading..." : "Sign In"}
+        </button>
+        <hr className="login-signup-panel-divider"></hr>or
+        <button
+          type="button"
+          onClick={() => handleSignInWithProvider("google")}
+        >
+          Sign in with Google
+        </button>
+        <button
+          type="button"
+          onClick={() => handleSignInWithProvider("github")}
+        >
+          Sign in with GitHub
+        </button>
+        {error && <div className="error-message">{error}</div>}
+      </form>
+    </div>
   );
 };
 

@@ -294,7 +294,7 @@ const App = () => {
   useEffect(() => {
     if (!import.meta.env.PROD) {
       const newProfile = createProfileObject({
-        newUserDisplayName: "Hampter Hampter Hampter Hampter",
+        newUserDisplayName: "Test User",
         newUserUUID: "1",
         newUserProfilePicture: null,
         newUserRole: "Owner",

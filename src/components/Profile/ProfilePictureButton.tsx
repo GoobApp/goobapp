@@ -14,7 +14,14 @@ const ProfilePictureButton = ({ profile }: { profile: UserProfileObject }) => {
       <button className="profile-picture-button" onClick={handleClick}>
         <img src={profile.userProfilePicture} className="profile-picture"></img>
       </button>
-      {panelOpened && <ProfilePanel profile={profile}></ProfilePanel>}
+      {panelOpened && (
+        <ProfilePanel
+          profile={profile}
+          onClose={() => {
+            setPanelOpened(false);
+          }}
+        ></ProfilePanel>
+      )}
     </div>
   );
 };

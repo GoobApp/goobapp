@@ -1,6 +1,7 @@
+import { useState } from "react";
 import "../../../App.css";
-import { socket } from "../../../socket";
 import UserProfile from "../../../types/UserProfileObject";
+import UserPanel from "./UserPanel";
 import "./Users.css";
 
 const UserDisplay = ({
@@ -12,32 +13,40 @@ const UserDisplay = ({
   isDarkBG: boolean;
   clientUserData: UserProfile;
 }) => {
-  const clickedUser = () => {
-    if (clientUserData.userRole == "Owner" || !import.meta.env.PROD) {
-      const role = window.prompt("Role name to give?");
+  const [openedUserMenu, setOpenedUserMenu] = useState(false);
 
-      if (role != null) {
-        socket.emit("give user role", userData.userUUID, role);
-      }
-    }
+  const clickedUser = () => {
+    setOpenedUserMenu(!openedUserMenu);
   };
 
   return (
-    <button
-      className={isDarkBG ? "user-container-dark" : "user-container-light"}
-      onClick={clickedUser}
-    >
-      <img
-        src={userData.userProfilePicture}
-        alt=""
-        className="user-profile-picture"
-      />
+    <main>
+      <button
+        className={isDarkBG ? "user-container-dark" : "user-container-light"}
+        onClick={clickedUser}
+      >
+        <img
+          src={userData.userProfilePicture}
+          alt=""
+          className="user-profile-picture"
+        />
 
-      <span className="username">
-        {userData.userID == "0" ? "Deleted user" : userData.username}
-      </span>
-      {userData.userRole && <span className="role">{userData.userRole}</span>}
-    </button>
+        <span className="username">
+          {userData.userID == "0" ? "Deleted user" : userData.username}
+        </span>
+        {userData.userRole && <span className="role">{userData.userRole}</span>}
+      </button>
+
+      {openedUserMenu && (
+        <UserPanel
+          user={userData}
+          clientUser={clientUserData}
+          onClose={() => {
+            setOpenedUserMenu(false);
+          }}
+        ></UserPanel>
+      )}
+    </main>
   );
 };
 

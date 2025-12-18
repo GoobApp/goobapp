@@ -2,13 +2,25 @@
 
 import { Turnstile, TurnstileInstance } from "@marsidev/react-turnstile";
 import { Provider } from "@supabase/supabase-js";
-import { ChangeEvent, FormEvent, useRef, useState } from "react";
+import {
+  ChangeEvent,
+  FocusEvent,
+  FocusEventHandler,
+  FormEvent,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Link } from "react-router-dom";
 import "../../App.css";
 import { Client } from "../supabase/Client";
 import "./Profile.css";
 
-const SignupPanel = () => {
+const SignupPanel = ({
+  onClose,
+}: {
+  onClose: FocusEventHandler<HTMLDivElement> | undefined;
+}) => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -25,6 +37,8 @@ const SignupPanel = () => {
       setError(null);
       setSignUpLoading(true);
       const profilePicture = await fetch("https://picsum.photos/512");
+
+      if (!Client) return;
       const { error } = await Client.auth.signUp({
         email,
         password,
@@ -53,6 +67,7 @@ const SignupPanel = () => {
       setError(null);
       setSignUpLoading(true);
 
+      if (!Client) return;
       const { data, error } = await Client.auth.signInWithOAuth({
         provider: provider,
       });
@@ -78,88 +93,109 @@ const SignupPanel = () => {
     setPasswordsMatch(password == e.target.value);
   };
 
+  const panelRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const panel = panelRef.current;
+    if (panel) panel.focus();
+  }, []);
+
+  const handleBlur = (event: FocusEvent<HTMLDivElement>) => {
+    if (!panelRef.current?.contains(event.relatedTarget)) {
+      onClose?.(event);
+    }
+  };
+
   return (
-    <form className="signup-panel-form" onSubmit={handleSignUp}>
-      <Turnstile
-        siteKey="0x4AAAAAACDL09dyN0WgJyZL"
-        onSuccess={(token) => {
-          setCaptchaToken(token);
-        }}
-        onExpire={() => setCaptchaToken("")}
-        ref={turnstileRef}
-      />
-      <input
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        placeholder="Email"
-        disabled={signUpLoading}
-        className="login-signup-input"
-      />
-      <input
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        placeholder="Username"
-        disabled={signUpLoading}
-        className="login-signup-input"
-      />
-      <input
-        value={password}
-        onChange={handleUpdatePassword}
-        placeholder="Password"
-        type="password"
-        disabled={signUpLoading}
-        className="login-signup-input"
-      />
-      <input
-        value={confirm_password}
-        onChange={handleUpdateConfirmPassword}
-        placeholder="Confirm Password"
-        type="password"
-        disabled={signUpLoading}
-        className="login-signup-input"
-      />
-      {!passwords_match && (
-        <p className="password-error-text">Passwords do not match!</p>
-      )}
-      {password != "" && passwords_match && password.length < 6 && (
-        <p className="password-error-text">
-          Password must be at least 6 characters!
+    <div onBlur={handleBlur} tabIndex={-1} ref={panelRef}>
+      <form className="signup-panel-form" onSubmit={handleSignUp}>
+        <Turnstile
+          siteKey="0x4AAAAAACDL09dyN0WgJyZL"
+          onSuccess={(token) => {
+            setCaptchaToken(token);
+          }}
+          onExpire={() => setCaptchaToken("")}
+          ref={turnstileRef}
+        />
+        <input
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          placeholder="Email"
+          disabled={signUpLoading}
+          className="login-signup-input"
+        />
+        <input
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          placeholder="Username"
+          disabled={signUpLoading}
+          className="login-signup-input"
+        />
+        <input
+          value={password}
+          onChange={handleUpdatePassword}
+          placeholder="Password"
+          type="password"
+          disabled={signUpLoading}
+          className="login-signup-input"
+        />
+        <input
+          value={confirm_password}
+          onChange={handleUpdateConfirmPassword}
+          placeholder="Confirm Password"
+          type="password"
+          disabled={signUpLoading}
+          className="login-signup-input"
+        />
+        {!passwords_match && (
+          <p className="password-error-text">Passwords do not match!</p>
+        )}
+        {password != "" && passwords_match && password.length < 6 && (
+          <p className="password-error-text">
+            Password must be at least 6 characters!
+          </p>
+        )}
+        <br></br>
+        <button
+          type="submit"
+          disabled={
+            signUpLoading ||
+            email == "" ||
+            username == "" ||
+            !passwords_match ||
+            password == "" ||
+            password.length < 6
+          }
+          className="login-signup-panel-button"
+        >
+          {signUpLoading ? "Loading..." : "Sign Up"}
+        </button>
+        <hr className="login-signup-panel-divider"></hr>or
+        <button
+          type="button"
+          onClick={() => handleSignUpWithProvider("google")}
+        >
+          Sign up with Google
+        </button>
+        <button
+          type="button"
+          onClick={() => handleSignUpWithProvider("github")}
+        >
+          Sign up with GitHub
+        </button>
+        {error && <div className="error-message">{error}</div>}
+        <p className="footnote">
+          By signing up you are accepting to the{" "}
+          <Link to="/tos" className="footnote" viewTransition={true}>
+            Terms Of Service
+          </Link>{" "}
+          and the{" "}
+          <Link to="/privacy" className="footnote" viewTransition={true}>
+            Privacy Policy
+          </Link>
         </p>
-      )}
-      <br></br>
-      <button
-        type="submit"
-        disabled={
-          signUpLoading ||
-          email == "" ||
-          username == "" ||
-          !passwords_match ||
-          password == "" ||
-          password.length < 6
-        }
-        className="login-signup-panel-button"
-      >
-        {signUpLoading ? "Loading..." : "Sign Up"}
-      </button>
-      <hr className="login-signup-panel-divider"></hr>or
-      <button type="button" onClick={() => handleSignUpWithProvider("google")}>
-        Sign up with Google
-      </button>
-      <button type="button" onClick={() => handleSignUpWithProvider("github")}>
-        Sign up with GitHub
-      </button>
-      {error && <div className="error-message">{error}</div>}
-      <p className="footnote">
-        By signing up you are accepting to the{" "}
-        <Link to="/tos" className="footnote" viewTransition={true}>
-          Terms Of Service
-        </Link>{" "}
-        and the{" "}
-        <Link to="/privacy" className="footnote" viewTransition={true}>
-          Privacy Policy
-        </Link>
-      </p>
-    </form>
+      </form>
+    </div>
   );
 };
 

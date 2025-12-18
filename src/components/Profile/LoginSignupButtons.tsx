@@ -31,8 +31,20 @@ const LoginSignupButtons = () => {
       <button className="login-signup-button" onClick={handleSignUpClick}>
         Sign Up
       </button>
-      {loginOpened && <LoginPanel></LoginPanel>}
-      {signupOpened && <SignupPanel></SignupPanel>}
+      {loginOpened && (
+        <LoginPanel
+          onClose={() => {
+            setLoginOpened(false);
+          }}
+        ></LoginPanel>
+      )}
+      {signupOpened && (
+        <SignupPanel
+          onClose={() => {
+            setSignupOpened(false);
+          }}
+        ></SignupPanel>
+      )}
     </div>
   );
 };

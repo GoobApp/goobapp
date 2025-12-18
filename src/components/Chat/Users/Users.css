@@ -53,3 +53,38 @@
   background-color: green;
   border: 1px solid lightgreen;
 }
+
+.user-panel-div {
+  position: absolute;
+  right: 0%;
+  background-color: var(--bg);
+  width: auto;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
+  place-items: center;
+  gap: 10px;
+  padding: 50px;
+  box-shadow: 0px 0px 10px var(--primary);
+}
+
+.user-panel-username {
+  font-weight: bold;
+  font-size: 30px;
+  width: 250px;
+  text-align: center;
+  word-wrap: break-word;
+  margin: 0;
+}
+
+.user-panel-profile-picture {
+  aspect-ratio: 1/1;
+  border-radius: 100%;
+  border: 3px;
+  border-style: solid;
+  border-color: var(--primary);
+  width: 150px;
+  height: 150px;
+  background-color: var(--primary);
+}

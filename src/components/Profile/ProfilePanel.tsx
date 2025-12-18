@@ -1,11 +1,23 @@
-import { useState } from "react";
+import {
+  FocusEvent,
+  FocusEventHandler,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useNavigate } from "react-router";
 import "../../App.css";
 import UserProfileObject from "../../types/UserProfileObject";
 import { Client } from "../supabase/Client";
 import "./Profile.css";
 
-const ProfilePanel = ({ profile }: { profile: UserProfileObject }) => {
+const ProfilePanel = ({
+  profile,
+  onClose,
+}: {
+  profile: UserProfileObject;
+  onClose: FocusEventHandler<HTMLDivElement> | undefined;
+}) => {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -29,8 +41,26 @@ const ProfilePanel = ({ profile }: { profile: UserProfileObject }) => {
     }
   };
 
+  const panelRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const panel = panelRef.current;
+    if (panel) panel.focus();
+  }, []);
+
+  const handleBlur = (event: FocusEvent<HTMLDivElement>) => {
+    if (!panelRef.current?.contains(event.relatedTarget)) {
+      onClose?.(event);
+    }
+  };
+
   return (
-    <div className="profile-panel-div">
+    <div
+      className="profile-panel-div"
+      onBlur={handleBlur}
+      tabIndex={-1}
+      ref={panelRef}
+    >
       <p className="profile-panel-username">Hello, {profile.username}!</p>
       <img
         src={profile.userProfilePicture}
