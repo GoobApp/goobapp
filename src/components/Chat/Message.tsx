@@ -211,6 +211,15 @@ const MessageDisplay = ({
             {isEditing ? message.messageContent : styledContent}
           </pre>
           {message.isEdited && <p className="chat-message-edited"> (edited)</p>}
+          {message.messageImageUrl && (
+            <div>
+              <br />
+              <img
+                src={message.messageImageUrl}
+                className="chat-message-image"
+              />
+            </div>
+          )}
         </div>
       </div>
 

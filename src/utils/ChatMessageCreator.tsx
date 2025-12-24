@@ -18,6 +18,7 @@ const createChatObject = ({
     userUUID: newUserUUID,
     userProfilePicture: newUserProfilePicture,
     messageContent: newMessageContent,
+    messageImageUrl: "",
     messageTime: new Date(),
     messageId: Date.now(), // This gets autoset by supabase but no reason not to set it also here (local testing)
     isEdited: newIsEdited,

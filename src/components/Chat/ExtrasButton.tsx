@@ -10,7 +10,7 @@ const ChatExtrasButton = () => {
     inputRef.current.click();
   };
 
-  const handleInputClick = (event: ChangeEvent<HTMLInputElement>) => {
+  const handleInputClick = async (event: ChangeEvent<HTMLInputElement>) => {
     const formData = new FormData();
 
     if (!event.currentTarget.files) return;
@@ -24,8 +24,10 @@ const ChatExtrasButton = () => {
 
     formData.append("file", file);
 
-    console.log(formData);
-    socket.emit("upload image", formData);
+    let bytes = await file.arrayBuffer();
+
+    console.log(bytes);
+    socket.emit("upload image", bytes, file.type);
   };
 
   return (
