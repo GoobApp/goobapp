@@ -26,7 +26,7 @@ const ChatExtrasButton = () => {
 
     let bytes = await file.arrayBuffer();
 
-    console.log(bytes);
+    if (!import.meta.env.PROD) console.log(bytes);
     socket.emit("upload image", bytes, file.type);
   };
 

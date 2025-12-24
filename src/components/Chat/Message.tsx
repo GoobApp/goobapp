@@ -215,6 +215,7 @@ const MessageDisplay = ({
             <div>
               <br />
               <img
+                loading="lazy"
                 src={message.messageImageUrl}
                 className="chat-message-image"
               />
