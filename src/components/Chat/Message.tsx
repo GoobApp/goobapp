@@ -115,13 +115,15 @@ const MessageDisplay = ({
     const ref = contentRef.current;
     if (ref) {
       setIsEditing(true);
-      ref.contentEditable = "true";
-      ref.focus();
-      let range = document.createRange();
-      range.selectNodeContents(ref);
-      let sel = window.getSelection()!;
-      sel.removeAllRanges();
-      sel.addRange(range);
+      setTimeout(() => {
+        ref.contentEditable = "true";
+        ref.focus();
+        let range = document.createRange();
+        range.selectNodeContents(ref);
+        let sel = window.getSelection()!;
+        sel.removeAllRanges();
+        sel.addRange(range);
+      }, 0);
     }
   };
 
@@ -178,9 +180,13 @@ const MessageDisplay = ({
             : "chat-message-container"
         }
       >
-        {message.userProfilePicture && showAvatar ? (
+        {showAvatar ? (
           <img
-            src={message.userProfilePicture}
+            src={
+              message.userProfilePicture == ""
+                ? undefined
+                : message.userProfilePicture
+            }
             alt=""
             className="chat-message-profile-picture"
             referrerPolicy="no-referrer"
@@ -189,12 +195,12 @@ const MessageDisplay = ({
         ) : (
           <div className="chat-message-no-avatar"></div>
         )}
-        {message.userProfilePicture && showAvatar && (
+        {showAvatar && (
           <p className="chat-message-display-name">
             {message.userUUID == "0" ? "Deleted user" : message.userDisplayName}
           </p>
         )}
-        {message.userProfilePicture && showAvatar && (
+        {showAvatar && (
           <p className="chat-message-time">
             {message.messageTime.toLocaleString(undefined, {
               dateStyle:
