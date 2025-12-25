@@ -112,7 +112,30 @@ const PrivacyPolicy = () => {
             Learn more
           </a>
           {". "}
-          To prevent this from happening, do not use Gooble search.
+          To prevent this, do not use Gooble search.
+        </li>
+        <li>
+          When uploading or viewing images on GoobApp, these images are hosted
+          through ImgBB.{" "}
+          <a
+            href="https://imgbb.com/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Learn more
+          </a>
+        </li>
+        <li>User's profile pictures are loaded from user-provided URLs.</li>
+        <li>
+          The default profile pictures are provided by Lorem Picsum.{" "}
+          <a
+            href="https://picsum.photos/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Learn more
+          </a>
+          . NOTE: They do not have a privacy policy.
         </li>
       </ul>
       <h2>Contact information</h2>

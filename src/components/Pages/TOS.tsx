@@ -68,6 +68,10 @@ const TOS = () => {
           user or message at any time, without prior warning. This includes
           terminating accounts. There does not have to be a reason provided.
         </li>
+        <li>
+          Don’t use names or avatars, send messages, or upload files that track
+          users or contain illegal/explicit content.
+        </li>
         <li>We hold the right to update the Terms at any time.</li>
       </ul>
 
