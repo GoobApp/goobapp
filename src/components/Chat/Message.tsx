@@ -194,7 +194,7 @@ const MessageDisplay = ({
         )}
         {showAvatar && (
           <p className="chat-message-display-name">
-            {message.userUUID == "0" ? "Deleted user" : message.userDisplayName}
+            {message.userUUID == "" ? "Deleted user" : message.userDisplayName}
           </p>
         )}
         {showAvatar && message.userRole && (
