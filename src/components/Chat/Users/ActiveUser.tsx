@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "../../../App.css";
 import UserProfile from "../../../types/UserProfileObject";
-import UserPanel from "./UserPanel";
+import UserPanel, { BotPanel } from "./UserPanel";
 import "./Users.css";
 
 const UserDisplay = ({
@@ -20,11 +20,8 @@ const UserDisplay = ({
   };
 
   return (
-    <main>
-      <button
-        className={isDarkBG ? "user-container-dark" : "user-container-light"}
-        onClick={clickedUser}
-      >
+    <main className={isDarkBG ? "user-container-dark" : "user-container-light"}>
+      <button className={"user-container-button"} onClick={clickedUser}>
         <img
           src={userData.userProfilePicture}
           alt=""
@@ -68,8 +65,8 @@ export const BotDisplay = ({
   };
 
   return (
-    <main>
-      <button className={"user-container-dark"} onClick={clickedUser}>
+    <div className={"user-container-dark"}>
+      <button className={"user-container-button"} onClick={clickedUser}>
         <img src={botProfilePicture} alt="" className="user-profile-picture" />
 
         <div className="stacked-div">
@@ -79,6 +76,17 @@ export const BotDisplay = ({
 
         <span className="role">{"Bot"}</span>
       </button>
-    </main>
+
+      {openedUserMenu && (
+        <BotPanel
+          username={botName}
+          bot_call={botCall}
+          profile_picture={botProfilePicture}
+          onClose={() => {
+            setOpenedUserMenu(false);
+          }}
+        ></BotPanel>
+      )}
+    </div>
   );
 };

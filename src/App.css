@@ -74,6 +74,7 @@ body {
 }
 
 .chat-users-panel-container {
+  overflow: visible;
   width: 80%;
   transform-origin: left;
   grid-column: 3;

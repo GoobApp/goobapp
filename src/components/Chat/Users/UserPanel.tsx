@@ -58,3 +58,42 @@ const UserPanel = ({
 };
 
 export default UserPanel;
+
+export const BotPanel = ({
+  username,
+  profile_picture,
+  bot_call,
+  onClose,
+}: {
+  username: string;
+  profile_picture: string;
+  bot_call: string;
+  onClose: FocusEventHandler<HTMLDivElement> | undefined;
+}) => {
+  const panelRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const panel = panelRef.current;
+    if (panel) panel.focus();
+  }, []);
+
+  const handleBlur = (event: FocusEvent<HTMLDivElement>) => {
+    if (!panelRef.current?.contains(event.relatedTarget)) {
+      onClose?.(event);
+    }
+  };
+
+  return (
+    <div
+      className="user-panel-div"
+      onBlur={handleBlur}
+      tabIndex={-1}
+      ref={panelRef}
+    >
+      <p className="user-panel-username">{username}</p>
+      <img src={profile_picture} className="user-panel-profile-picture"></img>
+      <span className="user-panel-role">Bot</span>
+      <p>Use {bot_call} to ask</p>
+    </div>
+  );
+};
