@@ -80,7 +80,7 @@
 }
 
 .chat-message-content-text {
-  display: inline-block;
+  display: inline;
 }
 
 .chat-message-content[contenteditable="true"],
