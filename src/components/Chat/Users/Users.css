@@ -39,6 +39,21 @@
   color: black;
 }
 
+.bot-call {
+  font-size: x-small;
+  color: var(--bg);
+}
+
+.stacked-div {
+  flex-basis: 100%;
+  display: inline;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  flex-direction: column;
+}
+
 .role {
   display: inline;
   white-space: nowrap;

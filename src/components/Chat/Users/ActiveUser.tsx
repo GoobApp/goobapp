@@ -51,3 +51,34 @@ const UserDisplay = ({
 };
 
 export default UserDisplay;
+
+export const BotDisplay = ({
+  botName,
+  botCall,
+  botProfilePicture,
+}: {
+  botName: string;
+  botCall: string;
+  botProfilePicture: string;
+}) => {
+  const [openedUserMenu, setOpenedUserMenu] = useState(false);
+
+  const clickedUser = () => {
+    setOpenedUserMenu(!openedUserMenu);
+  };
+
+  return (
+    <main>
+      <button className={"user-container-dark"} onClick={clickedUser}>
+        <img src={botProfilePicture} alt="" className="user-profile-picture" />
+
+        <div className="stacked-div">
+          <span className="username">{botName}</span>
+          <span className="username bot-call">Use {botCall} to ask</span>
+        </div>
+
+        <span className="role">{"Bot"}</span>
+      </button>
+    </main>
+  );
+};

@@ -1,6 +1,6 @@
 import "../../../App.css";
 import UserProfile from "../../../types/UserProfileObject";
-import UserDisplay from "./ActiveUser";
+import UserDisplay, { BotDisplay } from "./ActiveUser";
 
 const ChatUsersPanel = ({
   activeUsers,
@@ -24,6 +24,12 @@ const ChatUsersPanel = ({
           ></UserDisplay>
         );
       })}
+
+      <BotDisplay
+        botName="Goofy Goober"
+        botCall="@goob"
+        botProfilePicture="https://raw.githubusercontent.com/GoobApp/backend/refs/heads/main/goofy-goober.png"
+      ></BotDisplay>
     </div>
   );
 };
