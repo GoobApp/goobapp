@@ -49,6 +49,8 @@ const App = () => {
       if (profile.userUUID != null) {
         retrieveActiveUsers();
         socket.emit("add to active users list", profile);
+      } else {
+        console.error("User UUID is null!");
       }
     };
 
@@ -323,7 +325,7 @@ const App = () => {
         setIsAuthLoading(false);
         if (session) {
           setSession(session);
-          if (_event == "INITIAL_SESSION") {
+          if (_event == "INITIAL_SESSION" || _event == "SIGNED_IN") {
             retrieveUserData(session);
             retrieveRecentMessages();
             retrieveActiveUsers();
