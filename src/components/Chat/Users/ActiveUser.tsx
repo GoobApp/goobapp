@@ -54,11 +54,13 @@ export const BotDisplay = ({
   botCall,
   botProfilePicture,
   isDarkBG,
+  clientUserData,
 }: {
   botName: string;
   botCall: string;
   botProfilePicture: string;
   isDarkBG: boolean;
+  clientUserData: UserProfile;
 }) => {
   const [openedUserMenu, setOpenedUserMenu] = useState(false);
 
@@ -87,6 +89,7 @@ export const BotDisplay = ({
           onClose={() => {
             setOpenedUserMenu(false);
           }}
+          clientUser={clientUserData}
         ></BotPanel>
       )}
     </main>

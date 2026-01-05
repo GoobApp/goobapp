@@ -1,4 +1,10 @@
-import { FocusEvent, FocusEventHandler, useEffect, useRef } from "react";
+import {
+  FocusEvent,
+  FocusEventHandler,
+  MouseEvent,
+  useEffect,
+  useRef,
+} from "react";
 import "../../../App.css";
 import { socket } from "../../../socket";
 import UserProfileObject from "../../../types/UserProfileObject";
@@ -70,10 +76,12 @@ export const BotPanel = ({
   profile_picture,
   bot_call,
   onClose,
+  clientUser,
 }: {
   username: string;
   profile_picture: string;
   bot_call: string;
+  clientUser: UserProfileObject;
   onClose: FocusEventHandler<HTMLDivElement> | undefined;
 }) => {
   const panelRef = useRef<HTMLDivElement | null>(null);
@@ -86,6 +94,23 @@ export const BotPanel = ({
   const handleBlur = (event: FocusEvent<HTMLDivElement>) => {
     if (!panelRef.current?.contains(event.relatedTarget)) {
       onClose?.(event);
+    }
+  };
+
+  const customSystemPrompt = (event: MouseEvent<HTMLButtonElement>) => {
+    const prompt = window.prompt("What do you want to set the prompt to?");
+    if (prompt != null) {
+      socket.emit("set system prompt", prompt);
+    }
+  };
+
+  const resetSystemPrompt = (event: MouseEvent<HTMLButtonElement>) => {
+    if (
+      window.confirm(
+        "Are you sure you want to reset the system prompt back to default?"
+      )
+    ) {
+      socket.emit("reset system prompt");
     }
   };
 
@@ -106,6 +131,16 @@ export const BotPanel = ({
       <img src={profile_picture} className="user-panel-profile-picture"></img>
       <span className="user-panel-role">Bot</span>
       <p>Use {bot_call} to ask</p>
+      {clientUser.userRole == "Owner" && (
+        <button className="user-panel-button" onClick={customSystemPrompt}>
+          Custom system prompt (this commit only)
+        </button>
+      )}
+      {clientUser.userRole == "Owner" && (
+        <button className="user-panel-button" onClick={resetSystemPrompt}>
+          Reset system prompt
+        </button>
+      )}
     </div>
   );
 };
