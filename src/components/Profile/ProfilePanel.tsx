@@ -59,6 +59,10 @@ const ProfilePanel = ({
       <p className="profile-panel-username">Hello, {profile.username}!</p>
       <img
         src={profile.userProfilePicture}
+        className="profile-panel-background"
+      ></img>
+      <img
+        src={profile.userProfilePicture}
         className="profile-panel-profile-picture"
       ></img>
       {profile.userRole && (
