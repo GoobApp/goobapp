@@ -5,7 +5,7 @@ const TOS = () => {
     <div className="other-page">
       <h1>Terms of Service</h1>
 
-      <h4>Last updated: December 3, 2025</h4>
+      <h4>Last updated: December 25, 2025</h4>
 
       <h2>Binding Agreement</h2>
       <ul>
@@ -64,9 +64,13 @@ const TOS = () => {
           kind.
         </li>
         <li>
-          We hold the right to, modify, update, or do any other action to any
-          user at any time, without prior warning. This includes terminating
-          accounts. There does not have to be a reason provided.
+          We hold the right to modify, update, or do any other action to any
+          user or message at any time, without prior warning. This includes
+          terminating accounts. There does not have to be a reason provided.
+        </li>
+        <li>
+          Don’t use names or avatars, send messages, or upload files that track
+          users or contain illegal/explicit content.
         </li>
         <li>We hold the right to update the Terms at any time.</li>
       </ul>

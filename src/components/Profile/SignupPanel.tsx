@@ -185,7 +185,7 @@ const SignupPanel = ({
         </button>
         {error && <div className="error-message">{error}</div>}
         <p className="footnote">
-          By signing up you are accepting to the{" "}
+          By using GoobApp, you agree to the{" "}
           <Link to="/tos" className="footnote" viewTransition={true}>
             Terms Of Service
           </Link>{" "}

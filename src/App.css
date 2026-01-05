@@ -74,6 +74,7 @@ body {
 }
 
 .chat-users-panel-container {
+  width: 80%;
   transform-origin: left;
   grid-column: 3;
   padding-left: 0%;

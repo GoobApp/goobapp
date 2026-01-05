@@ -4,11 +4,9 @@
 .user-container-light {
   display: flex;
   padding: 5px;
-  width: 80%;
   height: 50px;
-  justify-self: center;
+  place-self: center;
   align-items: center;
-  justify-content: center;
   gap: 10px;
 }
 
