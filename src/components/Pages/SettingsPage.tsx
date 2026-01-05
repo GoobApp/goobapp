@@ -51,7 +51,14 @@ const SettingsPage = ({ profile }: { profile: UserProfile }) => {
   };
 
   const handleDeleteAccount = () => {
-    socket.emit("delete account");
+    if (
+      window.confirm(
+        "Are you sure you want to delete your account? This action is irreversible."
+      )
+    ) {
+      socket.emit("delete account");
+      Client?.auth.signOut();
+    }
   };
 
   const [username, setUsername] = useState<string>("");
@@ -65,9 +72,6 @@ const SettingsPage = ({ profile }: { profile: UserProfile }) => {
 
   return (
     <div className="settings-page">
-      <div className="setting-panel">
-        <h1 className="setting-element">Settings</h1>
-      </div>
       <form className="setting-panel" onSubmit={handleUsernameChange}>
         <h2 className="setting-element">Change username</h2>
         <input
@@ -134,9 +138,9 @@ const SettingsPage = ({ profile }: { profile: UserProfile }) => {
           <p className="setting-error">Error: {profileUrlError}</p>
         )}
       </form>
-      {/* <button className="setting-delete-button" onClick={handleDeleteAccount}>
+      <button className="setting-delete-button" onClick={handleDeleteAccount}>
         Delete Account!
-      </button> */}
+      </button>
     </div>
   );
 };

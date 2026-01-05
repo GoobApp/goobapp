@@ -8,17 +8,14 @@ input {
 }
 
 .setting-panel {
-  border: 2px solid;
   background-color: var(--primary);
-  border-color: var(--primary);
+  transition: background-color 0.25s;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   padding: 25px;
   gap: 10px;
-
-  aspect-ratio: 1 / 1;
 }
 
 .setting-button,
@@ -31,8 +28,14 @@ input {
   background-color: var(--secondary);
 }
 
-.setting-delete-button {
-  background-color: red;
+.setting-panel:hover {
+  background-color: var(--bg-light);
+  transition: background-color 0.25s;
+}
+
+.setting-delete-button:hover {
+  background-color: darkred;
+  transition: background-color 0.25s;
 }
 
 .setting-input {
@@ -45,10 +48,10 @@ input {
 }
 
 .settings-page {
-  /* background-color: var(--bg); */
+  background-color: var(--bg);
   font-size: 1rem;
   padding: 1em;
-  /* margin: 1em; */
+  margin-top: 1em;
 
   overflow-y: auto;
   word-break: break-word;
