@@ -165,21 +165,18 @@ const MessageDisplay = ({
 
   return (
     <div
-      className={
-        showHover
-          ? "chat-message-container-container-hover"
-          : "chat-message-container-container"
-      }
+      className={`
+        ${
+          showHover
+            ? "chat-message-container-container-hover"
+            : "chat-message-container-container"
+        }
+        ${showSpacer && "top-spacer"}
+        `}
       onMouseOver={mouseOver}
       onMouseLeave={mouseLeave}
     >
-      <div
-        className={
-          showSpacer
-            ? "chat-message-container-spaced"
-            : "chat-message-container"
-        }
-      >
+      <div className={"chat-message-container"}>
         {showAvatar ? (
           <img
             src={
@@ -199,6 +196,9 @@ const MessageDisplay = ({
           <p className="chat-message-display-name">
             {message.userUUID == "0" ? "Deleted user" : message.userDisplayName}
           </p>
+        )}
+        {showAvatar && message.userRole && (
+          <span className="chat-message-role role">{message.userRole}</span>
         )}
         {showAvatar && (
           <p className="chat-message-time">

@@ -1,5 +1,4 @@
-.chat-message-container,
-.chat-message-container-spaced {
+.chat-message-container {
   grid-row: 1;
 
   display: grid;
@@ -11,9 +10,19 @@
   column-gap: 10px;
 
   justify-content: start;
+  align-items: center;
+
+  position: relative;
 }
 
-.chat-message-container-spaced {
+.chat-message-role {
+  margin: 0;
+  grid-row: 2;
+  grid-column: 3;
+  align-self: center;
+}
+
+.top-spacer {
   margin-top: 25px;
 }
 
@@ -49,11 +58,10 @@
 }
 
 .chat-message-time {
-  width: 100%;
   margin: 0;
   font-size: 50%;
   grid-row: 2;
-  grid-column: 3;
+  grid-column: 4;
   align-self: center;
   font-style: italic;
 }
@@ -104,7 +112,6 @@
 .chat-message-container-container {
   position: relative;
   display: flex;
-  flex-shrink: shrink;
 }
 
 .chat-message-container-container-hover {
