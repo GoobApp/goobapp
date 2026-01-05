@@ -46,12 +46,12 @@ const App = () => {
 
       setIsConnected(true);
 
-      if (profile.userUUID != null) {
-        retrieveActiveUsers();
-        socket.emit("add to active users list", profile);
-      } else {
-        console.error("User UUID is null!");
-      }
+      // if (profile.userUUID != null) {
+      //   retrieveActiveUsers();
+      //   socket.emit("add to active users list", profile);
+      // } else {
+      //   console.error("User UUID is null!");
+      // }
     };
 
     const onDisconnect = () => {
