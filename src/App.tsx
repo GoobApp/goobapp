@@ -152,6 +152,7 @@ const App = () => {
     };
 
     const onDeletedAccount = () => {
+      console.log("Account deleted! Signing out...");
       Client?.auth.signOut();
     };
 
