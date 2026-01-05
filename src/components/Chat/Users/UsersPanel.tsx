@@ -13,7 +13,7 @@ const ChatUsersPanel = ({
 }) => {
   return (
     <div id="chatUsersPanelContainer" className="chat-users-panel-container">
-      <p>Active users ({maxUsers + 1})</p>
+      {activeUsers.length > 0 && <p>Active users ({maxUsers + 1})</p>}
       {activeUsers.map((value: UserProfile, index: number) => {
         return (
           <UserDisplay
@@ -25,12 +25,14 @@ const ChatUsersPanel = ({
         );
       })}
 
-      <BotDisplay
-        isDarkBG={activeUsers.length % 2 == 0}
-        botName="Goofy Goober"
-        botCall="@goob"
-        botProfilePicture="https://raw.githubusercontent.com/GoobApp/backend/refs/heads/main/goofy-goober.png"
-      ></BotDisplay>
+      {activeUsers.length > 0 && (
+        <BotDisplay
+          isDarkBG={activeUsers.length % 2 == 0}
+          botName="Goofy Goober"
+          botCall="@goob"
+          botProfilePicture="https://raw.githubusercontent.com/GoobApp/backend/refs/heads/main/goofy-goober.png"
+        ></BotDisplay>
+      )}
     </div>
   );
 };
