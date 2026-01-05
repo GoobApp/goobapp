@@ -230,7 +230,7 @@ const App = () => {
         newUserDisplayName: "Test User",
         newUserUUID: "1",
         newUserProfilePicture: null,
-        newUserRole: "Owner",
+        newUserRole: "Test",
         newMessageContent: contentText,
         newMessageImageURL: null,
         newIsEdited: false,
