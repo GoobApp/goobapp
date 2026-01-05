@@ -151,6 +151,10 @@ const App = () => {
       });
     };
 
+    const onDeletedAccount = () => {
+      Client?.auth.signOut();
+    };
+
     if ((!isAuthLoading && session) || !import.meta.env.PROD) {
       socket.on("connect", onConnect);
       socket.on("disconnect", onDisconnect);
@@ -162,6 +166,7 @@ const App = () => {
       socket.on("receive active users", onActiveUsersRequestReceived);
       socket.on("new active user", onAddActiveUser);
       socket.on("remove active user", onRemoveActiveUser);
+      socket.on("deleted account", onDeletedAccount);
 
       if ((!isAuthLoading && session) || !import.meta.env.PROD) {
         socket.auth = { token: session?.access_token };
@@ -189,6 +194,7 @@ const App = () => {
       socket.off("receive active users", onActiveUsersRequestReceived);
       socket.off("new active user", onAddActiveUser);
       socket.off("remove active user", onRemoveActiveUser);
+      socket.off("deleted account", onDeletedAccount);
     };
   }, [session, isAuthLoading]);
 

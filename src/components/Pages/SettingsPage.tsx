@@ -50,14 +50,16 @@ const SettingsPage = ({ profile }: { profile: UserProfile }) => {
     }
   };
 
+  const [isDeletingAccount, setIsDeletingAccount] = useState<boolean>(false);
+
   const handleDeleteAccount = () => {
     if (
       window.confirm(
         "Are you sure you want to delete your account? This action is irreversible."
       )
     ) {
-      socket.emit("delete account");
-      Client?.auth.signOut();
+      socket.emit("delete account", null);
+      setIsDeletingAccount(true);
     }
   };
 
@@ -139,7 +141,7 @@ const SettingsPage = ({ profile }: { profile: UserProfile }) => {
         )}
       </form>
       <button className="setting-delete-button" onClick={handleDeleteAccount}>
-        Delete Account!
+        {isDeletingAccount ? "Deleting..." : "Delete Account!"}
       </button>
     </div>
   );
