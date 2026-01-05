@@ -169,13 +169,18 @@
   top: 0;
   bottom: 0;
   right: 0;
-  object-fit: cover;
   -webkit-filter: blur(75px);
   -moz-filter: blur(75px);
   -o-filter: blur(75px);
   -ms-filter: blur(75px);
   filter: blur(50px);
   z-index: -1;
+}
+
+.profile-panel-background-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .profile-panel-role {

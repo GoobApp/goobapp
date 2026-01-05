@@ -57,10 +57,12 @@ const ProfilePanel = ({
       ref={panelRef}
     >
       <p className="profile-panel-username">Hello, {profile.username}!</p>
-      <img
-        src={profile.userProfilePicture}
-        className="profile-panel-background"
-      ></img>
+      <div className="profile-panel-background">
+        <img
+          src={profile.userProfilePicture}
+          className="profile-panel-background-image"
+        ></img>
+      </div>
       <img
         src={profile.userProfilePicture}
         className="profile-panel-profile-picture"

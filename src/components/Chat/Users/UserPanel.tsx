@@ -40,10 +40,12 @@ const UserPanel = ({
       tabIndex={-1}
       ref={panelRef}
     >
-      <img
-        className="user-panel-background"
-        src={user.userProfilePicture}
-      ></img>
+      <div className="user-panel-background">
+        <img
+          src={user.userProfilePicture}
+          className="user-panel-background-image"
+        ></img>
+      </div>
       <p className="user-panel-username">{user.username}</p>
       <img
         src={user.userProfilePicture}
@@ -94,7 +96,12 @@ export const BotPanel = ({
       tabIndex={-1}
       ref={panelRef}
     >
-      <img className="user-panel-background" src={profile_picture}></img>
+      <div className="user-panel-background">
+        <img
+          src={profile_picture}
+          className="user-panel-background-image"
+        ></img>
+      </div>
       <p className="user-panel-username">{username}</p>
       <img src={profile_picture} className="user-panel-profile-picture"></img>
       <span className="user-panel-role">Bot</span>
