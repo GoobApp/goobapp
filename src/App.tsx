@@ -88,6 +88,7 @@ const App = () => {
     };
 
     const onActiveUsersRequestReceived = (users: UserProfile[]) => {
+      console.log("Retrieved active users!");
       if (users) {
         setActiveUsers(users);
       }
@@ -236,7 +237,6 @@ const App = () => {
 
       addNewInput(input);
 
-      // socket.emit("message sent", input);
       return;
     }
 

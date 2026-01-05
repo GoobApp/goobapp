@@ -13,7 +13,7 @@ const ChatUsersPanel = ({
 }) => {
   return (
     <div id="chatUsersPanelContainer" className="chat-users-panel-container">
-      {activeUsers.length > 0 && <p>Active users ({maxUsers})</p>}
+      <p>Active users ({maxUsers + 1})</p>
       {activeUsers.map((value: UserProfile, index: number) => {
         return (
           <UserDisplay
