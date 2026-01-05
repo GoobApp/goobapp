@@ -6,7 +6,7 @@
   width: 95%;
 
   grid-auto-columns: auto;
-  grid-auto-rows: max-content;
+  grid-auto-rows: auto;
   column-gap: 10px;
 
   justify-content: start;
@@ -20,6 +20,7 @@
   grid-row: 2;
   grid-column: 3;
   align-self: center;
+  width: max-content;
 }
 
 .top-spacer {
@@ -101,7 +102,7 @@
 .chat-message-content-no-avatar {
   margin: 0;
   grid-row: 3;
-  grid-column: 2 / span 3;
+  grid-column: 2 / span 4;
   white-space: pre-wrap;
   overflow-wrap: break-word;
   font-family: Verdana, Geneva, Tahoma, sans-serif;

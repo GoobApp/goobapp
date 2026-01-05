@@ -201,7 +201,7 @@ const MessageDisplay = ({
           <span className="chat-message-role role">{message.userRole}</span>
         )}
         {showAvatar && (
-          <p className="chat-message-time">
+          <p className={message.userRole ? "chat-message-time" : "chat-messa"}>
             {message.messageTime.toLocaleString(undefined, {
               dateStyle:
                 new Date().getDate() != message.messageTime.getDate()

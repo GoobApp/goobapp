@@ -53,10 +53,12 @@ export const BotDisplay = ({
   botName,
   botCall,
   botProfilePicture,
+  isDarkBG,
 }: {
   botName: string;
   botCall: string;
   botProfilePicture: string;
+  isDarkBG: boolean;
 }) => {
   const [openedUserMenu, setOpenedUserMenu] = useState(false);
 
@@ -65,7 +67,7 @@ export const BotDisplay = ({
   };
 
   return (
-    <div className={"user-container-dark"}>
+    <main className={isDarkBG ? "user-container-dark" : "user-container-light"}>
       <button className={"user-container-button"} onClick={clickedUser}>
         <img src={botProfilePicture} alt="" className="user-profile-picture" />
 
@@ -87,6 +89,6 @@ export const BotDisplay = ({
           }}
         ></BotPanel>
       )}
-    </div>
+    </main>
   );
 };

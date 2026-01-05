@@ -26,6 +26,7 @@ const ChatUsersPanel = ({
       })}
 
       <BotDisplay
+        isDarkBG={activeUsers.length % 2 == 0}
         botName="Goofy Goober"
         botCall="@goob"
         botProfilePicture="https://raw.githubusercontent.com/GoobApp/backend/refs/heads/main/goofy-goober.png"
