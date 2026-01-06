@@ -99,7 +99,7 @@ export const BotPanel = ({
 
   const customSystemPrompt = (event: MouseEvent<HTMLButtonElement>) => {
     const prompt = window.prompt("What do you want to set the prompt to?");
-    if (prompt != null) {
+    if (prompt !== null) {
       socket.emit("set system prompt", prompt);
     }
   };

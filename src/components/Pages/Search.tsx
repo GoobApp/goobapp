@@ -3,6 +3,12 @@ import { Link, useLocation, useSearchParams } from "react-router-dom";
 import "../../App.css";
 import "./Other.css";
 
+declare global {
+  interface Window {
+    google: any;
+  }
+}
+
 const Search = () => {
   const searchInputRef = useRef<HTMLInputElement>(null);
   const [isSearch, setIsSearch] = useState(false);
@@ -11,6 +17,8 @@ const Search = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const urlTestRegex =
     /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/; // AAAA THANK YOU SO MUCH TO https://gist.github.com/StaticCloud/c58069c315c9c8191f1f9ebf377bf52d
+
+  const q = searchParams.get("q");
 
   useEffect(() => {
     searchInputRef.current?.focus();
@@ -23,7 +31,13 @@ const Search = () => {
     } else {
       searchInputRef.current?.select();
     }
-  }, [location]);
+  }, [q]);
+
+  useEffect(() => {
+    if (!isSearch) return;
+    if (!q) return;
+    window.google.search.cse.element.getElement("results").execute(q);
+  }, [q]);
 
   const submitForm = (event: FormEvent) => {
     event.preventDefault();
@@ -37,13 +51,16 @@ const Search = () => {
       }
     }
 
-    setPageURL("");
     setSearchParams({ q: value });
-    window.location.reload();
   };
 
   return (
     <div className="search-page">
+      <script
+        async
+        src="https://cse.google.com/cse.js?cx=23d18495b2d8a47f5"
+      ></script>
+
       <form onSubmit={submitForm}>
         <input
           placeholder="Search Gooble or type a URL"
@@ -57,15 +74,18 @@ const Search = () => {
         ></input>
       </form>
 
-      {isSearch ? (
-        <div className="search-view">
-          <script
-            async
-            src="https://cse.google.com/cse.js?cx=23d18495b2d8a47f5"
-          ></script>
-          <div className="gcse-searchresults-only"></div>
-        </div>
-      ) : (
+      <div className={isSearch ? "search-view" : "search-view hidden"}>
+        <div
+          className={
+            isSearch
+              ? "gcse-searchresults-only"
+              : "gcse-searchresults-only hidden"
+          }
+          data-gname="results"
+        ></div>
+      </div>
+
+      {!isSearch && (
         <div className="search-view">
           {pageURL != "" && (
             <iframe className="search-frame" src={pageURL}></iframe>
