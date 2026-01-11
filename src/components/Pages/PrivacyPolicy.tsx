@@ -4,7 +4,7 @@ const PrivacyPolicy = () => {
   return (
     <div className="other-page">
       <h1>Privacy Policy</h1>
-      <h4>Last updated: December 25, 2025</h4>
+      <h4>Last updated: January 11, 2026</h4>
       <h2>Welcome to GoobApp!</h2>
       <div>
         The GoobApp developers ("we", "us", or "our") respect your privacy.
@@ -101,9 +101,9 @@ const PrivacyPolicy = () => {
           </a>
         </li>
         <li>
-          When using Gooble search and search something (not direct URLs),
-          results are provided through Google's Programmable Search Engine. This
-          configuration may show ads, and Google's privacy policy may apply.{" "}
+          When using the Gooble search service, results are provided through
+          Google's Programmable Search Engine. This configuration may have
+          tracking or show ads, and Google's privacy policy may apply.{" "}
           <a
             href="https://policies.google.com/privacy"
             target="_blank"

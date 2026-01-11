@@ -40,6 +40,9 @@ const SwitcherPanel = () => {
         <Link to="/privacy" className="footnote" viewTransition={true}>
           Privacy Policy
         </Link>
+        <em className="footnote">
+          GoobApp v{import.meta.env.VITE_APP_VERSION}
+        </em>
       </div>
     </div>
   );
