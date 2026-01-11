@@ -13,6 +13,17 @@ interface EmojiDict {
   [key: string]: string; // Keys are strings, values are strings
 }
 
+interface MessageChunk {
+  style: {
+    italics: boolean;
+    bold: boolean;
+  };
+
+  type: "text" | "emoji" | "link";
+
+  content: string;
+}
+
 const MessageDisplay = ({
   message,
   showAvatar,
@@ -26,7 +37,7 @@ const MessageDisplay = ({
 }) => {
   const [showHover, setShowHover] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
-  const contentRef = useRef<HTMLPreElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
 
   const emojis: EmojiDict = {
     goob: goob,
@@ -34,81 +45,178 @@ const MessageDisplay = ({
     cfp_clicked: cfp_clicked,
   };
 
+  if (!message.messageContent && message.messageContent != "") return null;
+
   const urlSplitRegex =
     /(\b(?:https?|ftp|file):\/\/[-A-Z0-9+&@#\/%?=~_|!:,.;]*[-A-Z0-9+&@#\/%=~_|])/gi;
   const urlTestRegex = /^(https?|ftp|file):\/\//i;
+  const markdownRegex = /([*]+[^*\s][^*]*[*]+)/gi;
+  const emojiRegex = /(:[a-zA-Z0-9_]+:)/;
 
-  var emojiRegex = /(:[a-zA-Z0-9_]+:)/;
-  if (!message.messageContent && message.messageContent != "") return null;
-  let splitContent = message.messageContent.split(emojiRegex);
+  let messageChunks: MessageChunk[] = [];
+  const defaultMessageChunk: MessageChunk = {
+    style: {
+      italics: false,
+      bold: false,
+    },
 
-  const styledContent = splitContent.map((item, index) => {
-    if (item[0] === ":" && item[item.length - 1] === ":") {
-      const emojiName = item.slice(1, item.length - 1);
-      if (emojiName in emojis) {
-        if (item === message.messageContent) {
-          return (
-            <img
-              className="chat-message-content-emoji-big"
-              src={emojis[emojiName]}
-              key={index}
-            ></img>
-          );
-        }
+    type: "text",
+    content: message.messageContent,
+  };
 
-        return (
-          <img
-            className="chat-message-content-emoji"
-            src={emojis[emojiName]}
-            key={index}
-          ></img>
-        );
-      } else {
-        const splitItem = item.split(urlSplitRegex);
-        return splitItem.map((itemItem, indexIndex) => {
-          if (urlTestRegex.test(itemItem)) {
-            return (
-              <Link
-                className="chat-message-content-text"
-                key={indexIndex}
-                to={`/extras/search/?q=${itemItem}`}
-                viewTransition={true}
-              >
-                {itemItem}
-              </Link>
-            );
-          } else {
-            return (
-              <div className="chat-message-content-text" key={indexIndex}>
-                {itemItem}
-              </div>
-            );
-          }
-        });
+  messageChunks.push(defaultMessageChunk);
+
+  messageChunks.forEach((object) => {
+    let urlSplitContent = object.content.split(urlSplitRegex);
+    let newObjects: MessageChunk[] = [];
+
+    urlSplitContent.forEach((item) => {
+      let newObject: MessageChunk = { ...object };
+      newObject.style = { ...object.style };
+      newObject.content = item;
+
+      if (urlTestRegex.test(item)) {
+        newObject.type = "link";
       }
-    } else {
-      const splitItem = item.split(urlSplitRegex);
-      return splitItem.map((itemItem, indexIndex) => {
-        if (urlTestRegex.test(itemItem)) {
-          return (
-            <Link
-              className="chat-message-content-text"
-              key={indexIndex}
-              to={`/extras/search/?q=${itemItem}`}
-              viewTransition={true}
-            >
-              {itemItem}
-            </Link>
-          );
-        } else {
-          return (
-            <div className="chat-message-content-text" key={indexIndex}>
-              {itemItem}
-            </div>
-          );
-        }
-      });
+
+      newObjects.push(newObject);
+    });
+
+    messageChunks.splice(messageChunks.indexOf(object), 1, ...newObjects);
+  });
+
+  messageChunks.forEach((object) => {
+    let italicsSplitContent = object.content.split(markdownRegex);
+    let newObjects: MessageChunk[] = [];
+
+    if (object.type == "link") {
+      return;
     }
+
+    italicsSplitContent.forEach((item) => {
+      let newObject: MessageChunk = { ...object };
+      newObject.style = { ...object.style };
+      newObject.content = item;
+
+      if (item.length > 1 && item[0] === "*" && item[item.length - 1] === "*") {
+        // Italics
+        let newItem = item.slice(1, -1);
+        if (
+          newItem.length > 1 &&
+          newItem[0] === "*" &&
+          newItem[newItem.length - 1] === "*"
+        ) {
+          // Bold
+          newItem = item.slice(2, -2);
+          newObject.style.bold = true;
+
+          if (
+            newItem.length > 1 &&
+            newItem[0] === "*" &&
+            newItem[newItem.length - 1] === "*"
+          ) {
+            // Italics + Bold
+            newItem = item.slice(3, -3);
+            newObject.style.italics = true;
+          }
+        } else {
+          newObject.style.italics = true;
+        }
+
+        newObject.content = newItem;
+      } else {
+        newObject.style.italics = false;
+      }
+
+      if (newObject.content != "") {
+        newObjects.push(newObject);
+      }
+    });
+
+    messageChunks.splice(messageChunks.indexOf(object), 1, ...newObjects);
+  });
+
+  messageChunks.forEach((object) => {
+    let emojiSplitContent = object.content.split(emojiRegex);
+    let newObjects: MessageChunk[] = [];
+
+    if (object.type == "link") {
+      return;
+    }
+
+    emojiSplitContent.forEach((item) => {
+      let newObject: MessageChunk = { ...object };
+      newObject.style = { ...object.style };
+      newObject.content = item;
+
+      if (item[0] === ":" && item[item.length - 1] === ":") {
+        const emojiName = item.slice(1, item.length - 1);
+        if (emojiName in emojis) {
+          newObject.type = "emoji";
+          newObject.content = emojiName;
+        }
+      }
+
+      if (newObject.content != "") {
+        newObjects.push(newObject);
+      }
+    });
+
+    messageChunks.splice(messageChunks.indexOf(object), 1, ...newObjects);
+  });
+
+  const styledContent = messageChunks.map((object, index) => {
+    let node;
+
+    switch (object.type) {
+      case "emoji":
+        node = (
+          <img
+            className={
+              messageChunks.length == 1
+                ? "chat-message-content-emoji-big"
+                : "chat-message-content-emoji"
+            }
+            src={emojis[object.content]}
+            key={index}
+          />
+        );
+        break;
+      case "link":
+        node = (
+          <Link
+            to={`/extras/search/?q=${object.content}`}
+            viewTransition={true}
+            key={index}
+          >
+            {object.content}
+          </Link>
+        );
+        break;
+      case "text":
+        node = (
+          <p className="chat-message-content-text" key={index}>
+            {object.content}
+          </p>
+        );
+        break;
+      default: // Should never happen but doesn't hurt
+        node = (
+          <p className="chat-message-content-text" key={index}>
+            {object.content}
+          </p>
+        );
+        break;
+    }
+
+    if (object.style.bold) {
+      node = <b key={index}>{node}</b>;
+    }
+    if (object.style.italics) {
+      node = <i key={index}>{node}</i>;
+    }
+
+    return node;
   });
 
   const editClicked = () => {
@@ -213,9 +321,9 @@ const MessageDisplay = ({
         )}
 
         <div className="chat-message-content">
-          <pre className="chat-message-content" ref={contentRef}>
+          <div className="chat-message-content" ref={contentRef}>
             {isEditing ? message.messageContent : styledContent}
-          </pre>
+          </div>
           {message.isEdited && <p className="chat-message-edited"> (edited)</p>}
           {message.messageImageUrl && (
             <div>
