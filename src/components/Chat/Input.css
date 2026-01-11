@@ -71,8 +71,7 @@
   left: 1;
 }
 
-.chat-send-button,
-.chat-extras-button {
+.chat-button {
   position: relative;
 
   align-self: end;

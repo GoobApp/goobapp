@@ -33,6 +33,10 @@
   border-radius: var(--roundness);
 }
 
+::-webkit-scrollbar-corner {
+  display: none;
+}
+
 p {
   place-self: center;
 }

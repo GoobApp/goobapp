@@ -64,8 +64,8 @@ const ChatExtrasButton = ({ session }: { session: Session | null }) => {
   };
 
   return (
-    <main>
-      <button className="chat-extras-button" onClick={handleClick}>
+    <div className="chat-button">
+      <button type="button" className="chat-button" onClick={handleClick}>
         <div className="chat-extras-text">+</div>
       </button>
       <input
@@ -75,7 +75,7 @@ const ChatExtrasButton = ({ session }: { session: Session | null }) => {
         onChange={handleInputClick}
         accept="image/*"
       />
-    </main>
+    </div>
   );
 };
 

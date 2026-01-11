@@ -107,13 +107,191 @@ const ChatInput = forwardRef(
           "Insert",
           " ",
         ];
+
         if (
-          event.altKey ||
-          event.ctrlKey ||
-          event.metaKey ||
-          otherKeys.includes(event.key)
+          (event.altKey ||
+            event.ctrlKey ||
+            event.metaKey ||
+            otherKeys.includes(event.key)) &&
+          !(event.metaKey && ["v", "a", "b", "i"].includes(event.key)) // V is paste, A is select all, B is bold, and I is italics
         ) {
           return; // Don't refocus if it's not a valid character
+        }
+
+        if (event.metaKey && ["b", "i"].includes(event.key)) {
+          if (textAreaRef.current) {
+            const selection = window.getSelection();
+            if (!selection) return;
+
+            let thingToInsert = "*";
+            switch (event.key) {
+              case "b":
+                thingToInsert = "**";
+                break;
+              case "i":
+                thingToInsert = "*";
+                break;
+              default:
+                break;
+            }
+
+            // FIXME: These next ~130 lines are some of the worst code I've ever written in my life. Be warned
+            let selectionRange = selection.getRangeAt(0);
+            let start = selectionRange.startOffset;
+            let end = selectionRange.endOffset;
+            let is_already_bold = false;
+            let is_already_italics = false;
+            let is_weird_ctrl_z_issue_thing_yeah_idk_man = false;
+            let thingToInsertAmount = 0;
+
+            const range = document.createRange();
+
+            if (selectionRange.toString() == "") {
+              document.execCommand(
+                "insertText",
+                true,
+                thingToInsert + thingToInsert
+              ); // TODO: Replace with a non-deprecated command that still has ctrl-z functionality
+
+              selectionRange = selection.getRangeAt(0);
+              start = selectionRange.startOffset;
+              end = selectionRange.endOffset;
+
+              range.setStart(
+                selectionRange.startContainer,
+                start - thingToInsert.length
+              );
+              range.setEnd(
+                selectionRange.endContainer,
+                end - thingToInsert.length
+              );
+
+              selection.removeAllRanges();
+              selection.addRange(range);
+              return;
+            }
+
+            selectionRange = selection.getRangeAt(0);
+            start = selectionRange.startOffset;
+            end = selectionRange.endOffset;
+            range.setStart(selectionRange.startContainer, start - 1); // Checking for if already created
+            range.setEnd(selectionRange.endContainer, end + 1); // Checking for if already created
+            let rangeString = range.toString();
+            if (
+              rangeString[0] == "*" &&
+              rangeString[rangeString.length - 1] == "*"
+            ) {
+              is_already_italics = true;
+              thingToInsertAmount = 1;
+              range.setStart(selectionRange.startContainer, start - 2); // Checking for if already created
+              range.setEnd(selectionRange.endContainer, end + 2); // Checking for if already created
+              rangeString = range.toString();
+              if (
+                rangeString[0] == "*" &&
+                rangeString[rangeString.length - 1] == "*"
+              ) {
+                is_already_italics = false;
+                is_already_bold = true;
+                thingToInsertAmount = 2;
+                range.setStart(selectionRange.startContainer, start - 3); // Checking for if already created
+                range.setEnd(selectionRange.endContainer, end + 3); // Checking for if already created
+                rangeString = range.toString();
+                if (
+                  rangeString[0] == "*" &&
+                  rangeString[rangeString.length - 1] == "*"
+                ) {
+                  is_already_italics = true;
+                  thingToInsertAmount = 3;
+                }
+              }
+            }
+
+            range.setStart(selectionRange.startContainer, start); // Checking for if already created
+            range.setEnd(selectionRange.endContainer, end); // Checking for if already created
+            rangeString = range.toString();
+            if (
+              rangeString[0] == "*" &&
+              rangeString[rangeString.length - 1] == "*"
+            ) {
+              is_weird_ctrl_z_issue_thing_yeah_idk_man = true;
+              is_already_italics = true;
+              thingToInsertAmount = 1;
+              range.setStart(selectionRange.startContainer, start + 1); // Checking for if already created
+              range.setEnd(selectionRange.endContainer, end - 1); // Checking for if already created
+              rangeString = range.toString();
+              if (
+                rangeString[0] == "*" &&
+                rangeString[rangeString.length - 1] == "*"
+              ) {
+                is_already_italics = false;
+                is_already_bold = true;
+                thingToInsertAmount = 2;
+                range.setStart(selectionRange.startContainer, start + 2); // Checking for if already created
+                range.setEnd(selectionRange.endContainer, end - 2); // Checking for if already created
+                rangeString = range.toString();
+                if (
+                  rangeString[0] == "*" &&
+                  rangeString[rangeString.length - 1] == "*"
+                ) {
+                  is_already_italics = true;
+                  thingToInsertAmount = 3;
+                }
+              }
+            }
+
+            range.setStart(
+              selectionRange.startContainer,
+              is_weird_ctrl_z_issue_thing_yeah_idk_man
+                ? start
+                : start - thingToInsertAmount
+            );
+            range.setEnd(
+              selectionRange.endContainer,
+              is_weird_ctrl_z_issue_thing_yeah_idk_man
+                ? end
+                : end + thingToInsertAmount
+            );
+
+            selection.removeAllRanges();
+            selection.addRange(range);
+
+            rangeString = range.toString();
+            document.execCommand(
+              "insertText",
+              true,
+              is_weird_ctrl_z_issue_thing_yeah_idk_man
+                ? rangeString.substring(
+                    thingToInsertAmount,
+                    rangeString.length - thingToInsertAmount
+                  )
+                : is_already_bold || is_already_italics
+                ? rangeString.substring(
+                    thingToInsertAmount,
+                    rangeString.length - thingToInsertAmount
+                  )
+                : thingToInsert + range.toString() + thingToInsert
+            ); // TODO: Replace with a non-deprecated command that still has ctrl-z functionality
+
+            range.setStart(
+              selectionRange.startContainer,
+              is_weird_ctrl_z_issue_thing_yeah_idk_man
+                ? start
+                : is_already_bold || is_already_italics
+                ? start - thingToInsert.length
+                : start + thingToInsert.length
+            );
+            range.setEnd(
+              selectionRange.endContainer,
+              is_weird_ctrl_z_issue_thing_yeah_idk_man
+                ? end - thingToInsert.length - thingToInsert.length
+                : is_already_bold || is_already_italics
+                ? end - thingToInsert.length
+                : end + thingToInsert.length
+            );
+
+            selection.removeAllRanges();
+            selection.addRange(range);
+          }
         }
 
         if (document.activeElement !== textAreaRef.current) {
@@ -127,7 +305,7 @@ const ChatInput = forwardRef(
           range.collapse(false); // Place the cursor at the end
           selection?.removeAllRanges(); // Remove existing selections
 
-          // 7. Add the new range to the selection
+          // Add the new range to the selection
           selection?.addRange(range);
         }
       };
