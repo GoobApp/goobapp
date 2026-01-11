@@ -2,7 +2,7 @@ import "./Other.css";
 
 const TOS = () => {
   return (
-    <div className="other-page">
+    <main className="other-page">
       <h1>Terms of Service</h1>
 
       <h4>Last updated: December 25, 2025</h4>
@@ -89,7 +89,7 @@ const TOS = () => {
           .
         </li>
       </ul>
-    </div>
+    </main>
   );
 };
 

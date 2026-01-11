@@ -65,6 +65,7 @@ h1 {
 
 iframe,
 form,
+main,
 div {
   border-radius: var(--roundness);
 }

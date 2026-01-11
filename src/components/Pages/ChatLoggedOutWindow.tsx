@@ -1,9 +1,9 @@
-import "./Other.css";
 import goober from "../../assets/images/goofy_goober.png";
+import "./Other.css";
 
 const ChatLoggedOutWindow = () => {
   return (
-    <div className="logged-out-page">
+    <main className="logged-out-page">
       <h1 className="other-element">Welcome to GoobApp!</h1>
       <h2 className="other-element">
         GoobApp is a web-based global chatroom, with some extra little features
@@ -27,7 +27,7 @@ const ChatLoggedOutWindow = () => {
       </a>
 
       <img src={goober} className="goofy-goober"></img>
-    </div>
+    </main>
   );
 };
 

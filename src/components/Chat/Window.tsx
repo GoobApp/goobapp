@@ -36,7 +36,7 @@ const ChatWindow = forwardRef<MessagesRef, ChatWindowProps>((props, ref) => {
   };
 
   return (
-    <div
+    <main
       id="chatWindow"
       className={props.isMini ? "chat-mini-window" : "chat-window"}
     >
@@ -51,7 +51,7 @@ const ChatWindow = forwardRef<MessagesRef, ChatWindowProps>((props, ref) => {
         ref={chatInputRef}
         session={props.session}
       ></ChatInput>
-    </div>
+    </main>
   );
 });
 

@@ -1,9 +1,7 @@
 import "./Other.css";
 
 const ChatLoggedOutWindow = () => {
-  return (
-    <div className="other-page"></div>
-  );
+  return <main className="other-page"></main>;
 };
 
 export default ChatLoggedOutWindow;

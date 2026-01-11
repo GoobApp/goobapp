@@ -55,7 +55,7 @@ const Search = () => {
   };
 
   return (
-    <div className="search-page">
+    <main className="search-page">
       <script
         async
         src="https://cse.google.com/cse.js?cx=23d18495b2d8a47f5"
@@ -104,7 +104,7 @@ const Search = () => {
           )}
         </div>
       )}
-    </div>
+    </main>
   );
 };
 

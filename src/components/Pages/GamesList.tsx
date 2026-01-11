@@ -6,7 +6,7 @@ const GamesList = () => {
   const navigate = useNavigate();
 
   return (
-    <div className={"games-list"}>
+    <main className={"games-list"}>
       <button
         className="games-list-button"
         onClick={() => navigate("/games/plat", { viewTransition: true })}
@@ -41,7 +41,7 @@ const GamesList = () => {
       >
         Amazing Game IDK Name Yet (Scratch)
       </button>
-    </div>
+    </main>
   );
 };
 

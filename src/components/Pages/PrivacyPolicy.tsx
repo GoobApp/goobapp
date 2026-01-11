@@ -2,7 +2,7 @@ import "./Other.css";
 
 const PrivacyPolicy = () => {
   return (
-    <div className="other-page">
+    <main className="other-page">
       <h1>Privacy Policy</h1>
       <h4>Last updated: January 11, 2026</h4>
       <h2>Welcome to GoobApp!</h2>
@@ -145,7 +145,7 @@ const PrivacyPolicy = () => {
           <a href="mailto:support@goobapp.org">support@goobapp.org</a>.
         </li>
       </ul>
-    </div>
+    </main>
   );
 };
 

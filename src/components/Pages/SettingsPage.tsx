@@ -73,7 +73,7 @@ const SettingsPage = ({ profile }: { profile: UserProfile }) => {
   const [profileUrlError, setProfileURLError] = useState<string>("");
 
   return (
-    <div className="settings-page">
+    <main className="settings-page">
       <form className="setting-panel" onSubmit={handleUsernameChange}>
         <h2 className="setting-element">Change username</h2>
         <input
@@ -143,7 +143,7 @@ const SettingsPage = ({ profile }: { profile: UserProfile }) => {
       <button className="setting-delete-button" onClick={handleDeleteAccount}>
         {isDeletingAccount ? "Deleting..." : "Delete Account!"}
       </button>
-    </div>
+    </main>
   );
 };
 
