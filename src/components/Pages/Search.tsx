@@ -54,8 +54,10 @@ const Search = () => {
     setSearchParams({ q: value });
   };
 
+  const searchResultsRef = useRef<HTMLDivElement>(null);
+
   return (
-    <main className="search-page">
+    <div className="search-page">
       <script
         async
         src="https://cse.google.com/cse.js?cx=23d18495b2d8a47f5"
@@ -82,6 +84,7 @@ const Search = () => {
               : "gcse-searchresults-only hidden"
           }
           data-gname="results"
+          ref={searchResultsRef}
         ></div>
       </div>
 
@@ -104,7 +107,7 @@ const Search = () => {
           )}
         </div>
       )}
-    </main>
+    </div>
   );
 };
 

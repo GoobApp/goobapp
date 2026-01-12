@@ -118,7 +118,11 @@ const ChatInput = forwardRef(
           return; // Don't refocus if it's not a valid character
         }
 
-        if (event.metaKey && ["b", "i"].includes(event.key)) {
+        if (
+          ((navigator.userAgent.includes("Mac") && event.metaKey) ||
+            (!navigator.userAgent.includes("Mac") && event.ctrlKey)) &&
+          ["b", "i"].includes(event.key)
+        ) {
           if (textAreaRef.current) {
             const selection = window.getSelection();
             if (!selection) return;
