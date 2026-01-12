@@ -113,7 +113,11 @@ const ChatInput = forwardRef(
             event.ctrlKey ||
             event.metaKey ||
             otherKeys.includes(event.key)) &&
-          !(event.metaKey && ["v", "a", "b", "i"].includes(event.key)) // V is paste, A is select all, B is bold, and I is italics
+          !(
+            ((navigator.userAgent.includes("Mac") && event.metaKey) ||
+              (!navigator.userAgent.includes("Mac") && event.ctrlKey)) &&
+            ["v", "a", "b", "i"].includes(event.key.toLowerCase())
+          ) // V is paste, A is select all, B is bold, and I is italics
         ) {
           return; // Don't refocus if it's not a valid character
         }
@@ -121,8 +125,9 @@ const ChatInput = forwardRef(
         if (
           ((navigator.userAgent.includes("Mac") && event.metaKey) ||
             (!navigator.userAgent.includes("Mac") && event.ctrlKey)) &&
-          ["b", "i"].includes(event.key)
+          ["b", "i"].includes(event.key.toLowerCase())
         ) {
+          event.preventDefault();
           if (textAreaRef.current) {
             const selection = window.getSelection();
             if (!selection) return;
