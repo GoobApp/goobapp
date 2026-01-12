@@ -2,6 +2,7 @@ import type { Session } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import "./App.css";
+import GroupChatWindow from "./components/Chat/GroupChatWindow";
 import ChatWindow from "./components/Chat/Window";
 import Layout from "./components/Layout";
 import ChatLoggedOutWindow from "./components/Pages/ChatLoggedOutWindow";
@@ -9,6 +10,7 @@ import EmptyPanel from "./components/Pages/EmptyPanel";
 import ErrorPage from "./components/Pages/ErrorPage";
 import ExtrasList from "./components/Pages/ExtrasList";
 import GamesList from "./components/Pages/GamesList";
+import GroupsList from "./components/Pages/GroupsList";
 import IFrameLearnMore from "./components/Pages/iframeLearnMore";
 import PrivacyPolicy from "./components/Pages/PrivacyPolicy";
 import Search from "./components/Pages/Search";
@@ -43,7 +45,6 @@ const App = () => {
   useEffect(() => {
     const onConnect = () => {
       console.log("Connected!");
-
       setIsConnected(true);
     };
 
@@ -313,6 +314,9 @@ const App = () => {
       setActiveUsers([newProfile, newProfile, newProfile]);
       setIsAuthLoading(false);
       setSession(session);
+
+      retrieveRecentMessages();
+      retrieveActiveUsers();
     }
 
     if (!Client) {
@@ -394,6 +398,29 @@ const App = () => {
           ) : (
             <ChatLoggedOutWindow></ChatLoggedOutWindow>
           ),
+        },
+        {
+          path: "/groups",
+          element:
+            (!isAuthLoading && session != null) || !import.meta.env.PROD ? (
+              <GroupsList />
+            ) : (
+              <ChatLoggedOutWindow></ChatLoggedOutWindow>
+            ),
+        },
+        {
+          path: "/groups/*",
+          element:
+            (!isAuthLoading && session != null) || !import.meta.env.PROD ? (
+              <GroupChatWindow
+                messages={messages}
+                sendMessage={handleMessageSent}
+                clientProfile={profile}
+                session={session}
+              />
+            ) : (
+              <ChatLoggedOutWindow></ChatLoggedOutWindow>
+            ),
         },
         {
           path: "/settings/*",

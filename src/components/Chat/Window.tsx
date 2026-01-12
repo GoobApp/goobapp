@@ -50,6 +50,7 @@ const ChatWindow = forwardRef<MessagesRef, ChatWindowProps>((props, ref) => {
         onSend={handleSent}
         ref={chatInputRef}
         session={props.session}
+        isGroup={false}
       ></ChatInput>
     </main>
   );

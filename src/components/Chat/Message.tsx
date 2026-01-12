@@ -179,6 +179,7 @@ const MessageDisplay = ({
             }
             src={emojis[object.content]}
             key={index}
+            draggable={false}
           />
         );
         break;

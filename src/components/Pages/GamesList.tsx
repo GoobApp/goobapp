@@ -6,35 +6,35 @@ const GamesList = () => {
   const navigate = useNavigate();
 
   return (
-    <main className={"games-list"}>
+    <main className={"list"}>
       <button
-        className="games-list-button"
+        className="list-button"
         onClick={() => navigate("/games/plat", { viewTransition: true })}
       >
         Plat
       </button>
       <button
-        className="games-list-button"
+        className="list-button"
         onClick={() => navigate("/games/br2", { viewTransition: true })}
       >
         Banana Run 2
       </button>
       <button
-        className="games-list-button"
+        className="list-button"
         onClick={() => navigate("/games/br3", { viewTransition: true })}
       >
         Banana Run 3
       </button>
 
       <button
-        className="games-list-button"
+        className="list-button"
         onClick={() => navigate("/games/cfp", { viewTransition: true })}
       >
         Click For Points Web
       </button>
 
       <button
-        className="games-list-button"
+        className="list-button"
         onClick={() =>
           navigate("/games/amazing-game-idk-name-yet", { viewTransition: true })
         }

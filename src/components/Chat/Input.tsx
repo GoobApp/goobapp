@@ -15,7 +15,11 @@ import ChatSendButton from "./SendButton";
 
 const ChatInput = forwardRef(
   (
-    { onSend, session }: { onSend: () => void; session: Session | null },
+    {
+      onSend,
+      session,
+      isGroup,
+    }: { onSend: () => void; session: Session | null; isGroup: boolean },
     ref
   ) => {
     // Wrap the component with forwardRef so the parent can pass a ref;  useImperativeHandle exposes methods to that ref
@@ -334,7 +338,7 @@ const ChatInput = forwardRef(
 
     return (
       <form
-        className="chat-input-form"
+        className={isGroup ? "chat-input-form" : "chat-input-form group-input"}
         id="chatInputForm"
         onSubmit={onSubmit}
         autoComplete="off"

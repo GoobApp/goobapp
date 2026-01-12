@@ -143,6 +143,7 @@ body {
   overflow: hidden;
 
   padding: 1em;
+  padding-bottom: 0;
 
   grid-column: 3;
   grid-row: 2;
@@ -155,6 +156,14 @@ body {
 
   display: grid;
   grid-template-rows: 1fr min-content;
+}
+
+.group {
+  view-transition-name: group;
+}
+
+.group-input {
+  view-transition-name: group-input;
 }
 
 @media screen and (max-width: 1000px) {
