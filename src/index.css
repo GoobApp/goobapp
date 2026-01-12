@@ -88,7 +88,7 @@ button {
 }
 
 button:hover {
-  background-color: var(--bg-light);
+  background-color: var(--secondary);
 }
 
 button:active {
@@ -128,27 +128,28 @@ button:active {
 @media (prefers-color-scheme: light) {
   :root {
     /* hsl (fallback color) */
-    --bg-dark: hsl(115 68% 93%);
-    --bg: hsl(115 39% 88%);
-    --bg-light: hsl(0, 0%, 100%);
+    --bg-dark: hsl(115, 67%, 93%);
+    --bg-light: #f1f1f1;
+    --bg: hsl(0, 0%, 100%);
     --text: hsl(125 100% 2%);
     --text-muted: hsl(117 33% 24%);
     --highlight: hsl(116 100% 96%);
     --border: hsl(116 19% 47%);
     --border-muted: hsl(116 21% 58%);
     --primary: hsl(116 18% 58%);
-    --secondary: hsl(116, 41%, 53%);
+    --secondary: hsl(116, 29%, 57%);
+
     /* oklch */
     --bg-dark: oklch(0.96 0.04 143);
-    --bg: oklch(0.92 0.04 143);
-    --bg-light: oklch(100% 0.00011 271.152);
+    --bg-light: oklch(95.815% 0.00011 271.152);
+    --bg: oklch(100% 0.00011 271.152);
     --text: oklch(0.15 0.08 143);
     --text-muted: oklch(0.4 0.08 143);
     --highlight: oklch(1 0.08 143);
     --border: oklch(0.6 0.08 143);
     --border-muted: oklch(0.7 0.08 143);
     --primary: oklch(69% 0.07 143);
-    --secondary: oklch(70.697% 0.16107 142.332);
+    --secondary: oklch(70.36% 0.10885 142.897);
 
     background-color: var(--bg-light);
   }
