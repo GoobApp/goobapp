@@ -104,6 +104,15 @@ export const BotPanel = ({
     }
   };
 
+  const addToSystemPrompt = (event: MouseEvent<HTMLButtonElement>) => {
+    const prompt = window.prompt(
+      "What do you want to add the prompt to? NOTE: This will remove the original added prompt"
+    );
+    if (prompt !== null) {
+      socket.emit("add to system prompt", prompt);
+    }
+  };
+
   const resetSystemPrompt = (event: MouseEvent<HTMLButtonElement>) => {
     if (
       window.confirm(
@@ -134,6 +143,11 @@ export const BotPanel = ({
       {clientUser.userRole == "Owner" && (
         <button className="user-panel-button" onClick={customSystemPrompt}>
           Custom system prompt (this commit only)
+        </button>
+      )}
+      {clientUser.userRole == "Owner" && (
+        <button className="user-panel-button" onClick={addToSystemPrompt}>
+          Add to system prompt (this commit only)
         </button>
       )}
       {clientUser.userRole == "Owner" && (
