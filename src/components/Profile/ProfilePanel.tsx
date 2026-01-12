@@ -61,6 +61,7 @@ const ProfilePanel = ({
         <img
           src={profile.userProfilePicture}
           className="profile-panel-background-image"
+          draggable={false}
         ></img>
       </div>
       <img

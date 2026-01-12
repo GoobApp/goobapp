@@ -48,6 +48,7 @@ const UserPanel = ({
     >
       <div className="user-panel-background">
         <img
+          draggable={false}
           src={user.userProfilePicture}
           className="user-panel-background-image"
         ></img>
@@ -133,6 +134,7 @@ export const BotPanel = ({
       <div className="user-panel-background">
         <img
           src={profile_picture}
+          draggable={false}
           className="user-panel-background-image"
         ></img>
       </div>
