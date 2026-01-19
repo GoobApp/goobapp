@@ -437,7 +437,7 @@ const App = () => {
           element: (
             <div className="iframe-wrapper">
               <iframe
-                src="https://supkittymeow.github.io/plat"
+                src="https://precontation.github.io/plat"
                 className="fullscreen-game"
                 allow="fullscreen"
               ></iframe>
@@ -449,7 +449,7 @@ const App = () => {
           element: (
             <div className="iframe-wrapper">
               <iframe
-                src="https://supkittymeow.github.io/br2"
+                src="https://precontation.github.io/br2"
                 className="fullscreen-game"
                 allow="fullscreen"
               ></iframe>
@@ -461,7 +461,7 @@ const App = () => {
           element: (
             <div className="iframe-wrapper">
               <iframe
-                src="https://supkittymeow.github.io/super_secret_banana_run_3_build_thing"
+                src="https://precontation.github.io/super_secret_banana_run_3_build_thing"
                 className="fullscreen-game"
                 allow="fullscreen"
               ></iframe>
@@ -473,7 +473,7 @@ const App = () => {
           element: (
             <div className="iframe-wrapper">
               <iframe
-                src="https://supkittymeow.github.io/cfp"
+                src="https://precontation.github.io/cfp"
                 className="fullscreen-game"
                 allow="fullscreen"
               ></iframe>
