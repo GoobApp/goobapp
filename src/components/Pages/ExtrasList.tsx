@@ -6,13 +6,16 @@ const ExtrasList = () => {
   const navigate = useNavigate();
 
   return (
-    <main className={"games-list"}>
-      <button
-        className="games-list-button"
-        onClick={() => navigate("/extras/search", { viewTransition: true })}
-      >
-        Search
-      </button>
+    <main className="list-window">
+      <h1>Extras</h1>
+      <div className={"list"}>
+        <button
+          className="list-button"
+          onClick={() => navigate("/extras/search", { viewTransition: true })}
+        >
+          Search
+        </button>
+      </div>
     </main>
   );
 };

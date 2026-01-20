@@ -50,8 +50,6 @@ input {
 .settings-page {
   background-color: var(--bg);
   font-size: 1rem;
-  padding: 1em;
-  margin-top: 1em;
 
   overflow-y: auto;
   word-break: break-word;
@@ -64,7 +62,7 @@ input {
   display: grid;
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 1fr 1fr;
-  gap: 15px;
+  gap: 10px;
 }
 
 @media screen and (max-width: 1000px) {
