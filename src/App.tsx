@@ -37,7 +37,7 @@ const App = () => {
       newUserUUID: null,
       newUserID: null,
       newUserRole: null,
-    })
+    }),
   );
 
   useEffect(() => {
@@ -71,7 +71,7 @@ const App = () => {
           {
             body: value.messageContent,
             icon: img,
-          }
+          },
         );
       }
     };
@@ -95,7 +95,7 @@ const App = () => {
       setActiveUsers((prevActiveUsers) => {
         const newActiveUsers = prevActiveUsers.slice();
         const index = newActiveUsers.findIndex(
-          (e) => e.userUUID === value.userUUID
+          (e) => e.userUUID === value.userUUID,
         );
 
         if (index != -1) {
@@ -112,7 +112,7 @@ const App = () => {
       console.log("User left :(");
       setActiveUsers((prevActiveUsers) => {
         const newActiveUsers = prevActiveUsers.filter(
-          (user) => user.userUUID !== value.userUUID
+          (user) => user.userUUID !== value.userUUID,
         );
         return newActiveUsers;
       });
@@ -121,7 +121,7 @@ const App = () => {
     const onMessageEdited = (messageId: number, messageContent: string) => {
       setMessages((prevMessages) => {
         const messageIndex = prevMessages.findIndex(
-          (event) => event.messageId == messageId
+          (event) => event.messageId == messageId,
         );
         if (messageIndex != -1) {
           const newMessages = prevMessages.slice();
@@ -138,7 +138,7 @@ const App = () => {
     const onMessageDeleted = (messageId: number) => {
       setMessages((prevMessages) => {
         const messageIndex = prevMessages.findIndex(
-          (event) => event.messageId == messageId
+          (event) => event.messageId == messageId,
         );
         if (messageIndex != -1) {
           const newMessages = prevMessages.slice();
@@ -222,7 +222,7 @@ const App = () => {
     setMessages((prevMessage) =>
       prevMessage.length < 200
         ? prevMessage.concat(newMessage)
-        : prevMessage.slice(1).concat(newMessage)
+        : prevMessage.slice(1).concat(newMessage),
     );
   };
 
@@ -345,7 +345,7 @@ const App = () => {
         } else {
           setSession(null);
         }
-      }
+      },
     );
 
     return () => {
@@ -461,7 +461,7 @@ const App = () => {
           element: (
             <div className="iframe-wrapper">
               <iframe
-                src="https://precontation.github.io/super_secret_banana_run_3_build_thing"
+                src="https://precontation.github.io/br3"
                 className="fullscreen-game"
                 allow="fullscreen"
               ></iframe>
