@@ -372,6 +372,7 @@ const App = () => {
                 clientProfile={profile}
                 isMini={true}
                 session={session}
+                isConnected={import.meta.env.PROD ? isConnected : true}
               ></ChatWindow>
             )
           }
@@ -390,6 +391,7 @@ const App = () => {
               clientProfile={profile}
               isMini={false}
               session={session}
+              isConnected={import.meta.env.PROD ? isConnected : true}
             ></ChatWindow>
           ) : (
             <ChatLoggedOutWindow></ChatLoggedOutWindow>
