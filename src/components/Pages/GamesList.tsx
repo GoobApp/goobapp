@@ -46,7 +46,7 @@ const GamesList = () => {
           Amazing Game IDK Name Yet (Scratch)
         </button>
       </div>
-      <p>
+      <p className="centered">
         Games by{" "}
         <a
           href={"https://precontation.github.io/"}

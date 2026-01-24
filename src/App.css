@@ -187,6 +187,10 @@ body {
   }
 }
 
+.centered {
+  text-align: center;
+}
+
 @media screen and (max-width: 1000px) {
   .chat-users-panel-container,
   .chat-mini-window,
