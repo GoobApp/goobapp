@@ -1,10 +1,4 @@
-import {
-  FocusEvent,
-  FocusEventHandler,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { FocusEvent, useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router";
 import "../../App.css";
 import UserProfileObject from "../../types/UserProfileObject";
@@ -16,13 +10,14 @@ const ProfilePanel = ({
   onClose,
 }: {
   profile: UserProfileObject;
-  onClose: FocusEventHandler<HTMLDivElement> | undefined;
+  onClose: () => void;
 }) => {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
 
   const handleSettings = () => {
+    onClose();
     navigate("/settings", { viewTransition: true });
   };
 
@@ -50,7 +45,7 @@ const ProfilePanel = ({
 
   const handleBlur = (event: FocusEvent<HTMLDivElement>) => {
     if (!panelRef.current?.contains(event.relatedTarget)) {
-      onClose?.(event);
+      onClose();
     }
   };
 
@@ -62,6 +57,13 @@ const ProfilePanel = ({
       ref={panelRef}
     >
       <p className="profile-panel-username">Hello, {profile.username}!</p>
+      <div className="profile-panel-background">
+        <img
+          src={profile.userProfilePicture}
+          className="profile-panel-background-image"
+          draggable={false}
+        ></img>
+      </div>
       <img
         src={profile.userProfilePicture}
         className="profile-panel-profile-picture"

@@ -33,6 +33,10 @@
   border-radius: var(--roundness);
 }
 
+::-webkit-scrollbar-corner {
+  display: none;
+}
+
 p {
   place-self: center;
 }
@@ -61,11 +65,13 @@ h1 {
 
 iframe,
 form,
+main,
 div {
   border-radius: var(--roundness);
 }
 
 button {
+  background-color: var(--primary);
   border-radius: var(--roundness);
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
@@ -73,16 +79,20 @@ button {
   font-weight: 500;
   font-family: inherit;
   cursor: pointer;
-  transition: border-color 0.25s;
   width: 100%;
+
+  transition: background-color 0.25s;
+
+  appearance: none;
+  -webkit-appearance: none;
 }
 
 button:hover {
-  border-color: var(--highlight);
+  background-color: var(--secondary);
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+
+button:active {
+  background-color: var(--disabled-primary);
 }
 
 /* Thanks to https://www.iamsajid.com/ui-colors/ for this template/picker thing*/
@@ -118,27 +128,28 @@ button:focus-visible {
 @media (prefers-color-scheme: light) {
   :root {
     /* hsl (fallback color) */
-    --bg-dark: hsl(115 68% 93%);
-    --bg: hsl(115 39% 88%);
+    --bg-dark: hwb(115 88% 2%);
     --bg-light: hsl(0, 0%, 100%);
+    --bg: hsl(0, 0%, 95%);
     --text: hsl(125 100% 2%);
     --text-muted: hsl(117 33% 24%);
     --highlight: hsl(116 100% 96%);
     --border: hsl(116 19% 47%);
     --border-muted: hsl(116 21% 58%);
     --primary: hsl(116 18% 58%);
-    --secondary: hsl(116, 41%, 53%);
+    --secondary: hsl(116, 29%, 57%);
+
     /* oklch */
     --bg-dark: oklch(0.96 0.04 143);
-    --bg: oklch(0.92 0.04 143);
     --bg-light: oklch(100% 0.00011 271.152);
+    --bg: oklch(95.815% 0.00011 271.152);
     --text: oklch(0.15 0.08 143);
     --text-muted: oklch(0.4 0.08 143);
     --highlight: oklch(1 0.08 143);
     --border: oklch(0.6 0.08 143);
     --border-muted: oklch(0.7 0.08 143);
     --primary: oklch(69% 0.07 143);
-    --secondary: oklch(70.697% 0.16107 142.332);
+    --secondary: oklch(70.36% 0.10885 142.897);
 
     background-color: var(--bg-light);
   }
@@ -153,23 +164,6 @@ button:focus-visible {
 }
 
 button {
-  background-color: var(--primary);
-  box-shadow: 0px 0px 0px var(--primary);
-  transition: box-shadow 0.25s ease-in-out;
-}
-
-button,
-input {
   color: var(--text-color);
   box-shadow: 0px 2px 2px oklch(0 0 0 / 0.2), 0px 4px 4px oklch(0 0 0 / 0.1);
-}
-
-@view-transition {
-  navigation: auto;
-}
-
-::view-transition-group(root),
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation-duration: 0.2s;
 }

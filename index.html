@@ -11,9 +11,10 @@
       http-equiv="Content-Security-Policy"
       content="
       default-src 'self';
-      script-src 'self' https://*.cloudflare.com;
+      script-src 'self' https://*.cloudflare.com 'unsafe-eval' https://www.google.com https://www.gstatic.com http://cse.google.com;
       frame-src *;
-      connect-src 'self'
+      connect-src 'self' https://www.google.com/cse/
+      https://www.google.com/recaptcha
       http://localhost:3000
       ws://localhost:3000
       https://goobapp-server.koyeb.app/
@@ -22,8 +23,8 @@
       wss://wfdcqaqihwsilzegcknq.supabase.co
       https://picsum.photos
       https://fastly.picsum.photos;
-      style-src 'self' 'unsafe-inline';
-      img-src 'self' https: data:;
+      style-src 'self' 'unsafe-inline' https://www.google.com;
+      img-src 'self' https: data: http://clients1.google.com;
       object-src 'none';
       base-uri 'self';
       "

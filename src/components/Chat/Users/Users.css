@@ -2,14 +2,13 @@
 
 .user-container-dark,
 .user-container-light {
+  border-radius: var(--roundness);
   display: flex;
-  padding: 5px;
-  width: 80%;
   height: 50px;
-  justify-self: center;
+  width: 100%;
+  place-self: center;
   align-items: center;
-  justify-content: center;
-  gap: 10px;
+  position: relative;
 }
 
 .user-container-dark {
@@ -17,7 +16,19 @@
 }
 
 .user-container-light {
+  border-radius: 10px;
   background-color: var(--secondary);
+}
+
+.user-container-button {
+  background-color: transparent;
+  display: flex;
+  width: 100%;
+  padding: 5px;
+  height: 100%;
+  place-self: center;
+  align-items: center;
+  gap: 10px;
 }
 
 .user-profile-picture {
@@ -39,6 +50,21 @@
   color: black;
 }
 
+.bot-call {
+  font-size: x-small;
+  color: var(--bg);
+}
+
+.stacked-div {
+  flex-basis: 100%;
+  display: inline;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: flex;
+  flex-direction: column;
+}
+
 .role {
   display: inline;
   white-space: nowrap;
@@ -55,8 +81,10 @@
 }
 
 .user-panel-div {
+  z-index: 1;
   position: absolute;
-  right: 0%;
+  top: 100%;
+  right: 0;
   background-color: var(--bg);
   width: auto;
   height: auto;
@@ -67,6 +95,28 @@
   gap: 10px;
   padding: 50px;
   box-shadow: 0px 0px 10px var(--primary);
+  overflow: hidden;
+}
+
+.user-panel-background {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  -webkit-filter: blur(75px);
+  -moz-filter: blur(75px);
+  -o-filter: blur(75px);
+  -ms-filter: blur(75px);
+  filter: blur(50px);
+  z-index: -1;
+}
+
+.user-panel-background-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  user-select: none;
 }
 
 .user-panel-username {

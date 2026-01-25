@@ -29,6 +29,7 @@ const App: FC<LayoutProps> = ({
       <TopBar profile={profileObject} session={session}></TopBar>
       <SwitcherPanel></SwitcherPanel>
       <Outlet></Outlet>
+
       {location.pathname == "/" ? (
         <ChatUsersPanel
           activeUsers={usersList}

@@ -2,9 +2,9 @@ import "./Other.css";
 
 const PrivacyPolicy = () => {
   return (
-    <div className="other-page">
+    <main className="other-page">
       <h1>Privacy Policy</h1>
-      <h4>Last updated: December 3, 2025</h4>
+      <h4>Last updated: January 11, 2026</h4>
       <h2>Welcome to GoobApp!</h2>
       <div>
         The GoobApp developers ("we", "us", or "our") respect your privacy.
@@ -17,7 +17,7 @@ const PrivacyPolicy = () => {
           your email and encrypted password (we never store raw passwords).
         </li>
         <li>
-          Any information approved during the OAuth sign-in process (such as
+          Any information you approve during the OAuth sign-in process (such as
           your email or profile picture)
         </li>
         <li>Your current username and profile picture</li>
@@ -30,7 +30,7 @@ const PrivacyPolicy = () => {
       <h2>Info you should know</h2>
       <ul>
         <li>
-          All code is open-sourced under the MIT license, meaning you can look
+          All code is open source under the MIT license, meaning you can look
           into everything collected deeper yourself
         </li>
         <li>
@@ -47,18 +47,26 @@ const PrivacyPolicy = () => {
         </li>
         <li>
           The frontend website has a Content-Security Policy (CSP), meaning all
-          non-approved connections are blocked.
+          non-approved connections are blocked. You can find the approved
+          connections{" "}
+          <a
+            href="https://github.com/GoobApp/goobapp/blob/main/index.html"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            here.
+          </a>
         </li>
         <li>
           We take reasonable measures to secure GoobApp, but no online service
           is ever completely secure.
         </li>
         <li>You must be 13 years of age or older to use GoobApp.</li>
-        <li>We do not sell your data to any third-parties.</li>
+        <li>We do not sell your data to any third parties.</li>
         <li>We do not use tracking or advertising cookies.</li>
-        <li>We hold the right to update this Privacy Policy at any time.</li>
+        <li>We reserve the right to update this Privacy Policy at any time.</li>
       </ul>
-      <h2>Third-parties</h2>
+      <h2>Third parties</h2>
       <ul>
         <li>
           Both GoobApp's domain (goobapp.org) and frontend hosting is handled by
@@ -92,6 +100,43 @@ const PrivacyPolicy = () => {
             Learn more
           </a>
         </li>
+        <li>
+          When using the Gooble search service, results are provided through
+          Google's Programmable Search Engine. This configuration may have
+          tracking or show ads, and Google's privacy policy may apply.{" "}
+          <a
+            href="https://policies.google.com/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Learn more
+          </a>
+          {". "}
+          To prevent this, do not use Gooble search.
+        </li>
+        <li>
+          When uploading or viewing images on GoobApp, these images are hosted
+          through ImgBB.{" "}
+          <a
+            href="https://imgbb.com/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Learn more
+          </a>
+        </li>
+        <li>User's profile pictures are loaded from user-provided URLs.</li>
+        <li>
+          The default profile pictures are provided by Lorem Picsum.{" "}
+          <a
+            href="https://picsum.photos/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Learn more
+          </a>
+          . NOTE: They do not have a privacy policy.
+        </li>
       </ul>
       <h2>Contact information</h2>
       <ul>
@@ -100,7 +145,7 @@ const PrivacyPolicy = () => {
           <a href="mailto:support@goobapp.org">support@goobapp.org</a>.
         </li>
       </ul>
-    </div>
+    </main>
   );
 };
 

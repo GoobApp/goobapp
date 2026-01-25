@@ -8,8 +8,8 @@ import {
 import "../../App.css";
 import ChatInputRef from "../../types/ChatInputRef";
 import ChatMessageObject from "../../types/ChatMessageObject";
-import MessageDisplay from "./Message";
 import UserProfile from "../../types/UserProfileObject";
+import MessageDisplay from "./Message";
 
 type ChatWindowProps = {
   messages: ChatMessageObject[];
@@ -82,7 +82,8 @@ const Messages = forwardRef<ChatWindowRef, ChatWindowProps>((props, ref) => {
   useEffect(() => {
     if (props.messages.length == 0) return;
     if (
-      props.messages[props.messages.length - 1].userUUID == props.clientProfile.userUUID
+      props.messages[props.messages.length - 1].userUUID ==
+      props.clientProfile.userUUID
     ) {
       scrollToBottom();
     }

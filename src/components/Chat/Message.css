@@ -1,5 +1,4 @@
-.chat-message-container,
-.chat-message-container-spaced {
+.chat-message-container {
   grid-row: 1;
 
   display: grid;
@@ -7,13 +6,26 @@
   width: 95%;
 
   grid-auto-columns: auto;
-  grid-auto-rows: max-content;
+  grid-auto-rows: auto;
   column-gap: 10px;
 
   justify-content: start;
+  align-items: center;
+
+  position: relative;
 }
 
-.chat-message-container-spaced {
+.chat-message-role {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin: 0;
+  grid-row: 2;
+  grid-column: 3;
+  align-self: center;
+  width: max-content;
+}
+
+.top-spacer {
   margin-top: 25px;
 }
 
@@ -24,6 +36,7 @@
   background-color: gray;
   aspect-ratio: 1/1;
   border-radius: 100%;
+  align-self: start;
 
   grid-row: 2 / span 3;
   grid-column: 1;
@@ -38,9 +51,12 @@
 }
 
 .chat-message-display-name {
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
   width: 100%;
   margin: 0;
-  font-size: 100%;
+  font-size: 1em;
   grid-row: 2;
   grid-column: 2;
   font-weight: bold;
@@ -49,11 +65,12 @@
 }
 
 .chat-message-time {
-  width: 100%;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
   margin: 0;
   font-size: 50%;
   grid-row: 2;
-  grid-column: 3;
   align-self: center;
   font-style: italic;
 }
@@ -80,7 +97,7 @@
 }
 
 .chat-message-content-text {
-  display: inline-block;
+  display: inline;
 }
 
 .chat-message-content[contenteditable="true"],
@@ -93,7 +110,7 @@
 .chat-message-content-no-avatar {
   margin: 0;
   grid-row: 3;
-  grid-column: 2 / span 3;
+  grid-column: 2 / span 4;
   white-space: pre-wrap;
   overflow-wrap: break-word;
   font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -104,7 +121,6 @@
 .chat-message-container-container {
   position: relative;
   display: flex;
-  flex-shrink: shrink;
 }
 
 .chat-message-container-container-hover {
@@ -132,4 +148,17 @@
   width: 75px;
   height: 30px;
   font-size: 10px;
+}
+
+.chat-message-image {
+  /* max-width: 300px; */
+  max-height: 300px;
+  display: inline-block;
+  position: relative;
+  border-radius: var(--roundness);
+  transition: border-radius 0.1s ease-in-out;
+}
+
+.chat-message-image:hover {
+  border-radius: 0;
 }

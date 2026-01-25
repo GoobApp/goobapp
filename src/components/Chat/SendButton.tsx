@@ -10,7 +10,7 @@ const ChatSendButton = ({
   return (
     <button
       id="sendButton"
-      className="chat-send-button"
+      className="chat-button"
       onClick={onSend}
       disabled={disabled}
     >

@@ -2,7 +2,6 @@ import type { Session } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import "./App.css";
-import MiniWindow from "./components/Chat/MiniWindow";
 import ChatWindow from "./components/Chat/Window";
 import Layout from "./components/Layout";
 import ChatLoggedOutWindow from "./components/Pages/ChatLoggedOutWindow";
@@ -38,7 +37,7 @@ const App = () => {
       newUserUUID: null,
       newUserID: null,
       newUserRole: null,
-    })
+    }),
   );
 
   useEffect(() => {
@@ -46,11 +45,6 @@ const App = () => {
       console.log("Connected!");
 
       setIsConnected(true);
-
-      if (profile.userUUID != null) {
-        retrieveActiveUsers();
-        socket.emit("add to active users list", profile);
-      }
     };
 
     const onDisconnect = () => {
@@ -64,7 +58,6 @@ const App = () => {
     };
 
     const clientReceiveMessage = (value: ChatMessageObject) => {
-      console.log("Message received!");
       addNewInput(value);
 
       if (session?.user.id == value.userUUID || document.hasFocus()) return;
@@ -78,7 +71,7 @@ const App = () => {
           {
             body: value.messageContent,
             icon: img,
-          }
+          },
         );
       }
     };
@@ -90,6 +83,7 @@ const App = () => {
     };
 
     const onActiveUsersRequestReceived = (users: UserProfile[]) => {
+      console.log("Retrieved active users!");
       if (users) {
         setActiveUsers(users);
       }
@@ -101,7 +95,7 @@ const App = () => {
       setActiveUsers((prevActiveUsers) => {
         const newActiveUsers = prevActiveUsers.slice();
         const index = newActiveUsers.findIndex(
-          (e) => e.userUUID === value.userUUID
+          (e) => e.userUUID === value.userUUID,
         );
 
         if (index != -1) {
@@ -118,7 +112,7 @@ const App = () => {
       console.log("User left :(");
       setActiveUsers((prevActiveUsers) => {
         const newActiveUsers = prevActiveUsers.filter(
-          (user) => user.userUUID !== value.userUUID
+          (user) => user.userUUID !== value.userUUID,
         );
         return newActiveUsers;
       });
@@ -127,7 +121,7 @@ const App = () => {
     const onMessageEdited = (messageId: number, messageContent: string) => {
       setMessages((prevMessages) => {
         const messageIndex = prevMessages.findIndex(
-          (event) => event.messageId == messageId
+          (event) => event.messageId == messageId,
         );
         if (messageIndex != -1) {
           const newMessages = prevMessages.slice();
@@ -144,7 +138,7 @@ const App = () => {
     const onMessageDeleted = (messageId: number) => {
       setMessages((prevMessages) => {
         const messageIndex = prevMessages.findIndex(
-          (event) => event.messageId == messageId
+          (event) => event.messageId == messageId,
         );
         if (messageIndex != -1) {
           const newMessages = prevMessages.slice();
@@ -155,6 +149,11 @@ const App = () => {
           return prevMessages;
         }
       });
+    };
+
+    const onDeletedAccount = () => {
+      console.log("Account deleted! Signing out...");
+      Client?.auth.signOut();
     };
 
     if ((!isAuthLoading && session) || !import.meta.env.PROD) {
@@ -168,6 +167,7 @@ const App = () => {
       socket.on("receive active users", onActiveUsersRequestReceived);
       socket.on("new active user", onAddActiveUser);
       socket.on("remove active user", onRemoveActiveUser);
+      socket.on("deleted account", onDeletedAccount);
 
       if ((!isAuthLoading && session) || !import.meta.env.PROD) {
         socket.auth = { token: session?.access_token };
@@ -195,6 +195,7 @@ const App = () => {
       socket.off("receive active users", onActiveUsersRequestReceived);
       socket.off("new active user", onAddActiveUser);
       socket.off("remove active user", onRemoveActiveUser);
+      socket.off("deleted account", onDeletedAccount);
     };
   }, [session, isAuthLoading]);
 
@@ -221,27 +222,31 @@ const App = () => {
     setMessages((prevMessage) =>
       prevMessage.length < 200
         ? prevMessage.concat(newMessage)
-        : prevMessage.slice(1).concat(newMessage)
+        : prevMessage.slice(1).concat(newMessage),
     );
   };
 
   const handleMessageSent = (contentText: string) => {
-    if (!import.meta.env.PROD && !session?.user.id) {
+    if (!import.meta.env.PROD && !isConnected) {
       let input = createChatObject({
         newUserDisplayName: "Test User",
         newUserUUID: "1",
         newUserProfilePicture: null,
+        newUserRole: "Test",
         newMessageContent: contentText,
+        newMessageImageURL: null,
         newIsEdited: false,
       });
 
       addNewInput(input);
 
-      // socket.emit("message sent", input);
       return;
     }
 
-    if (!profile.username) return;
+    if (!profile.userUUID) {
+      console.error("No userUUID!");
+      return;
+    }
 
     if (contentText.trim() != "") {
       // Make sure the content isn't blank!
@@ -249,7 +254,9 @@ const App = () => {
         newUserDisplayName: profile.username,
         newUserUUID: profile.userUUID,
         newUserProfilePicture: profile.userProfilePicture,
+        newUserRole: profile.userRole,
         newMessageContent: contentText,
+        newMessageImageURL: null,
         newIsEdited: false,
       });
 
@@ -318,7 +325,7 @@ const App = () => {
         setIsAuthLoading(false);
         if (session) {
           setSession(session);
-          if (_event == "INITIAL_SESSION") {
+          if (_event == "INITIAL_SESSION" || _event == "SIGNED_IN") {
             retrieveUserData(session);
             retrieveRecentMessages();
             retrieveActiveUsers();
@@ -338,7 +345,7 @@ const App = () => {
         } else {
           setSession(null);
         }
-      }
+      },
     );
 
     return () => {
@@ -359,11 +366,14 @@ const App = () => {
             (isAuthLoading || session == null) && import.meta.env.PROD ? (
               <div className="chat-users-panel-container"></div>
             ) : (
-              <MiniWindow
+              <ChatWindow
                 messages={messages}
                 sendMessage={handleMessageSent}
                 clientProfile={profile}
-              ></MiniWindow>
+                isMini={true}
+                session={session}
+                isConnected={import.meta.env.PROD ? isConnected : true}
+              ></ChatWindow>
             )
           }
         ></Layout>
@@ -379,6 +389,9 @@ const App = () => {
               messages={messages}
               sendMessage={handleMessageSent}
               clientProfile={profile}
+              isMini={false}
+              session={session}
+              isConnected={import.meta.env.PROD ? isConnected : true}
             ></ChatWindow>
           ) : (
             <ChatLoggedOutWindow></ChatLoggedOutWindow>
@@ -426,7 +439,7 @@ const App = () => {
           element: (
             <div className="iframe-wrapper">
               <iframe
-                src="https://supkittymeow.github.io/plat"
+                src="https://precontation.github.io/plat"
                 className="fullscreen-game"
                 allow="fullscreen"
               ></iframe>
@@ -438,7 +451,7 @@ const App = () => {
           element: (
             <div className="iframe-wrapper">
               <iframe
-                src="https://supkittymeow.github.io/br2"
+                src="https://precontation.github.io/br2"
                 className="fullscreen-game"
                 allow="fullscreen"
               ></iframe>
@@ -450,7 +463,7 @@ const App = () => {
           element: (
             <div className="iframe-wrapper">
               <iframe
-                src="https://supkittymeow.github.io/super_secret_banana_run_3_build_thing"
+                src="https://precontation.github.io/br3"
                 className="fullscreen-game"
                 allow="fullscreen"
               ></iframe>
@@ -462,7 +475,7 @@ const App = () => {
           element: (
             <div className="iframe-wrapper">
               <iframe
-                src="https://supkittymeow.github.io/cfp"
+                src="https://precontation.github.io/cfp"
                 className="fullscreen-game"
                 allow="fullscreen"
               ></iframe>

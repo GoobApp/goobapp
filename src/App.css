@@ -23,6 +23,7 @@ body {
   display: grid;
   grid-template-columns: 1fr 5fr 1.5fr;
   grid-template-rows: min-content 15fr min-content;
+
   view-transition-name: wrapper;
 
   width: 100dvw;
@@ -65,6 +66,7 @@ body {
 
 .footnote {
   font-size: 10px;
+  text-justify: inter-cluster;
 }
 
 .panel-button {
@@ -73,6 +75,8 @@ body {
 }
 
 .chat-users-panel-container {
+  overflow: visible;
+  width: 80%;
   transform-origin: left;
   grid-column: 3;
   padding-left: 0%;
@@ -174,6 +178,40 @@ body {
 
   display: grid;
   grid-template-rows: 1fr min-content;
+}
+
+.loading {
+  place-content: center;
+  place-items: center;
+}
+
+.loading-animation {
+  animation: loading 1s infinite;
+  image-rendering: optimizeSpeed; /* STOP SMOOTHING, GIVE ME SPEED  */
+  image-rendering: -moz-crisp-edges; /* Firefox                        */
+  image-rendering: -o-crisp-edges; /* Opera                          */
+  image-rendering: -webkit-optimize-contrast; /* Chrome (and eventually Safari) */
+  image-rendering: pixelated; /* Universal support since 2021   */
+  image-rendering: optimize-contrast; /* CSS3 Proposed                  */
+  -ms-interpolation-mode: nearest-neighbor; /* IE8+   */
+  box-sizing: border-box;
+  width: 25%;
+}
+
+@keyframes loading {
+  0% {
+    scale: 100%;
+  }
+  50% {
+    scale: 125%;
+  }
+  100% {
+    scale: 100%;
+  }
+}
+
+.centered {
+  text-align: center;
 }
 
 @media screen and (max-width: 1000px) {

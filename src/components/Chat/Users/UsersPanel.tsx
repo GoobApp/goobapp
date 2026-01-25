@@ -1,6 +1,6 @@
 import "../../../App.css";
 import UserProfile from "../../../types/UserProfileObject";
-import UserDisplay from "./ActiveUser";
+import UserDisplay, { BotDisplay } from "./ActiveUser";
 
 const ChatUsersPanel = ({
   activeUsers,
@@ -12,8 +12,8 @@ const ChatUsersPanel = ({
   clientUser: UserProfile;
 }) => {
   return (
-    <div id="chatUsersPanelContainer" className="chat-users-panel-container">
-      {activeUsers.length > 0 && <p>Active users ({maxUsers})</p>}
+    <header id="chatUsersPanelContainer" className="chat-users-panel-container">
+      {activeUsers.length > 0 && <p>Active users ({maxUsers + 1})</p>}
       {activeUsers.map((value: UserProfile, index: number) => {
         return (
           <UserDisplay
@@ -24,7 +24,17 @@ const ChatUsersPanel = ({
           ></UserDisplay>
         );
       })}
-    </div>
+
+      {activeUsers.length > 0 && (
+        <BotDisplay
+          isDarkBG={activeUsers.length % 2 == 0}
+          botName="Goofy Goober"
+          botCall="@goob"
+          botProfilePicture="https://raw.githubusercontent.com/GoobApp/backend/refs/heads/main/goofy-goober.png"
+          clientUserData={clientUser}
+        ></BotDisplay>
+      )}
+    </header>
   );
 };
 

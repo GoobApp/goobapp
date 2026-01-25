@@ -16,7 +16,7 @@ const SwitcherPanel = () => {
     navigate("/", { viewTransition: true });
   };
   return (
-    <div id="switcherPanelContainer" className="switcher-panel-container">
+    <nav id="switcherPanelContainer" className="switcher-panel-container">
       <button className="panel-button" onClick={handleChatButtonPressed}>
         Chat
       </button>
@@ -40,8 +40,11 @@ const SwitcherPanel = () => {
         <Link to="/privacy" className="footnote" viewTransition={true}>
           Privacy Policy
         </Link>
+        <em className="footnote">
+          GoobApp v{import.meta.env.VITE_APP_VERSION}
+        </em>
       </div>
-    </div>
+    </nav>
   );
 };
 

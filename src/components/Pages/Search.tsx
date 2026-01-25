@@ -1,30 +1,43 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
-import { Link, useLocation, useSearchParams } from "react-router";
+import { Link, useLocation, useSearchParams } from "react-router-dom";
 import "../../App.css";
 import "./Other.css";
 
+declare global {
+  interface Window {
+    google: any;
+  }
+}
+
 const Search = () => {
   const searchInputRef = useRef<HTMLInputElement>(null);
-  const [iframeSrc, setiframeSrc] = useState("");
+  const [isSearch, setIsSearch] = useState(false);
+  const [pageURL, setPageURL] = useState("");
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
+  const urlTestRegex =
+    /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/; // AAAA THANK YOU SO MUCH TO https://gist.github.com/StaticCloud/c58069c315c9c8191f1f9ebf377bf52d
+
+  const q = searchParams.get("q");
 
   useEffect(() => {
     searchInputRef.current?.focus();
 
     const searchParam = searchParams.get("q");
     if (searchParam) {
-      if (searchInputRef.current) {
-        searchInputRef.current.value = searchParam.replace(
-          "https://www.google.com/search?q=",
-          ""
-        );
-      }
-      setiframeSrc(searchParam);
+      setPageURL(searchParam);
+      setIsSearch(!urlTestRegex.test(searchParam));
+      if (searchInputRef.current) searchInputRef.current.value = searchParam;
     } else {
       searchInputRef.current?.select();
     }
-  }, [location]);
+  }, [q]);
+
+  useEffect(() => {
+    if (!isSearch) return;
+    if (!q) return;
+    window.google.search.cse.element.getElement("results").execute(q);
+  }, [q]);
 
   const submitForm = (event: FormEvent) => {
     event.preventDefault();
@@ -32,25 +45,24 @@ const Search = () => {
     let value = searchInputRef.current?.value;
     if (!value) return;
 
-    if (
-      value.includes("https://") ||
-      value.includes("www.") ||
-      value.includes(".com") ||
-      value.includes(".org")
-    ) {
-      if (!value.includes("https://")) {
+    if (urlTestRegex.test(value)) {
+      if (!value.includes("https://") && !value.includes("http://")) {
         value = "https://" + value;
       }
-    } else {
-      value = "https://www.google.com/search?q=" + value.replaceAll(" ", "+");
     }
 
-    setiframeSrc("");
     setSearchParams({ q: value });
   };
 
+  const searchResultsRef = useRef<HTMLDivElement>(null);
+
   return (
     <div className="search-page">
+      <script
+        async
+        src="https://cse.google.com/cse.js?cx=23d18495b2d8a47f5"
+      ></script>
+
       <form onSubmit={submitForm}>
         <input
           placeholder="Search Gooble or type a URL"
@@ -63,20 +75,37 @@ const Search = () => {
           autoComplete="off"
         ></input>
       </form>
-      {iframeSrc != "" && (
-        <iframe className="search-view" sandbox="" src={iframeSrc}></iframe>
-      )}
-      {iframeSrc != "" && (
-        <p>
-          Not able to view?{" "}
-          <Link to={iframeSrc} target="_blank" viewTransition={true}>
-            Click here
-          </Link>{" "}
-          for the website to open in a new tab!{" "}
-          <Link to="/extras/search/learnmore" viewTransition={true}>
-            Learn why this happens.
-          </Link>
-        </p>
+
+      <div className={isSearch ? "search-view" : "search-view hidden"}>
+        <div
+          className={
+            isSearch
+              ? "gcse-searchresults-only"
+              : "gcse-searchresults-only hidden"
+          }
+          data-gname="results"
+          ref={searchResultsRef}
+        ></div>
+      </div>
+
+      {!isSearch && (
+        <div className="search-view">
+          {pageURL != "" && (
+            <iframe className="search-frame" src={pageURL}></iframe>
+          )}
+          {pageURL != "" && (
+            <p>
+              Not able to view?{" "}
+              <Link to={pageURL} target="_blank" viewTransition={true}>
+                Click here
+              </Link>{" "}
+              for the website to open in a new tab!{" "}
+              <Link to="/extras/search/learnmore" viewTransition={true}>
+                Learn why this happens.
+              </Link>
+            </p>
+          )}
+        </div>
       )}
     </div>
   );
