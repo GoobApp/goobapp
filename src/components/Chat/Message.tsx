@@ -241,7 +241,7 @@ const MessageDisplay = ({
 
   const deleteClicked = () => {
     const shouldDelete = window.confirm(
-      "Are you sure you want to delete this message?"
+      "Are you sure you want to delete this message?",
     );
     if (shouldDelete) {
       socket.emit("delete message", message.messageId);
