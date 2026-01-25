@@ -42,12 +42,7 @@ const ChatExtrasButton = ({
     headers.append("Authorization", `Bearer ${token}`);
     let bytes = await file.arrayBuffer();
 
-    console.log("Image data: " + bytes);
-    if (!session) {
-      console.log("Session is undefined!");
-    } else {
-      console.log("Session access token: " + session?.access_token);
-    }
+    let bytes = await file.arrayBuffer();
 
     fetch(`${SERVER_URL}/upload`, {
       method: "POST",
