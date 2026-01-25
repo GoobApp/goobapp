@@ -135,25 +135,27 @@ body {
 }
 
 .ui-popup-container {
+  scrollbar-width: none;
   width: 100%;
   overflow: auto;
-  background-color: var(--bg-dark);
+  background-color: transparent;
+  border-bottom: 1px solid black;
 }
 
 .ui-popup-element {
   display: flex;
   flex-direction: row;
   place-content: center;
+  gap: 10px;
 }
 
 .ui-popup-emoji {
-  aspect-ratio: 1 / 1;
+  /* aspect-ratio: 1 / 1; */
   height: 3em;
   width: auto;
   display: inline-block;
   white-space: nowrap;
 }
-
 
 .chat-mini-window {
   view-transition-name: chat-window;

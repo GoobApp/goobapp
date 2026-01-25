@@ -8,12 +8,12 @@ import {
   useState,
 } from "react";
 import "../../App.css";
+import EmojiList from "../../types/EmojiList";
+import createUIElement from "../../utils/UIElementCreator";
+import UIPopup from "../../utils/UIPopup";
 import ChatExtrasButton from "./ExtrasButton";
 import "./Input.css";
 import ChatSendButton from "./SendButton";
-import UIPopup from "../../utils/UIPopup";
-import EmojiList from "../../types/EmojiList";
-import createUIElement from "../../utils/UIElementCreator";
 
 const ChatInput = forwardRef(({ onSend }: { onSend: () => void }, ref) => {
   // Wrap the component with forwardRef so the parent can pass a ref;  useImperativeHandle exposes methods to that ref
@@ -143,6 +143,16 @@ const ChatInput = forwardRef(({ onSend }: { onSend: () => void }, ref) => {
     }
   }, [textAreaRef]);
 
+  useEffect(() => {
+    const match = textAreaValue.match(emojiInputRegex);
+    if (match) {
+      setEmojiStart(match[0].split(":")[1]);
+    }
+  }, [textAreaValue]);
+
+  const emojiInputRegex = /(^|\s|[(]):(?![^\s]*[\s:])[^\s]*/; // I hate regex
+  const [emojiStart, setEmojiStart] = useState<string>("");
+
   return (
     <form
       className="chat-input-form"
@@ -159,16 +169,21 @@ const ChatInput = forwardRef(({ onSend }: { onSend: () => void }, ref) => {
           ref={textAreaRef}
           onInput={onChange}
         ></div>
-        {/:[^_:\s]*$/.test(textAreaValue) && (
+        {emojiInputRegex.test(textAreaValue) && (
           <UIPopup
-            elements={
-              Object.entries(EmojiList).map(([name, emoji]) => (
-                createUIElement({newEmoji: emoji, newName: name})
-              ))
-            }
+            elements={Object.entries(EmojiList).map(([name, emoji]) => {
+              console.log(emojiStart);
+              if (name.includes(emojiStart)) {
+                return createUIElement({
+                  newEmoji: emoji,
+                  newName: name,
+                });
+              } else {
+                return null;
+              }
+            })}
           ></UIPopup>
-        )
-        }
+        )}
         {/* {/:[^_:\s]*$/.test(textAreaValue) && (
           <UIPopup
             elements={

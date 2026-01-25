@@ -1,4 +1,4 @@
 export default interface UIElement {
-    emoji: string | null;
-    name: string;
+  emoji: string | null;
+  name: string;
 }

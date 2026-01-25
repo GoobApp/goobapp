@@ -1,7 +1,7 @@
 {
   "name": "goobapp",
   "private": true,
-  "version": "1.0.0",
+  "version": "1.9.10",
   "main": "./out/main/main.js",
   "type": "module",
   "homepage": "https://goobapp.org",
