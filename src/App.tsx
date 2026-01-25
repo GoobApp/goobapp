@@ -497,6 +497,18 @@ const App = () => {
           ),
         },
         {
+          path: "/games/c&p/*",
+          element: (
+            <div className="iframe-wrapper">
+              <iframe
+                src="https://precontation.github.io/clicks_and_points"
+                className="fullscreen-game"
+                allow="fullscreen"
+              ></iframe>
+            </div>
+          ),
+        },
+        {
           path: "/games/amazing-game-idk-name-yet",
           element: (
             <div className="iframe-wrapper">

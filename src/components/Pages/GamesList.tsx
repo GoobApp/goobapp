@@ -37,6 +37,13 @@ const GamesList = () => {
 
         <button
           className="list-button"
+          onClick={() => navigate("/games/c&p", { viewTransition: true })}
+        >
+          Clicks & Points
+        </button>
+
+        <button
+          className="list-button"
           onClick={() =>
             navigate("/games/amazing-game-idk-name-yet", {
               viewTransition: true,
