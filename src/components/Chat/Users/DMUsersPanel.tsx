@@ -39,7 +39,7 @@ const DMUsersPanel = ({
 
   return (
     <header id="chatUsersPanelContainer" className="chat-users-panel-container">
-      {activeUsers.length > 0 && <p>Active users ({maxUsers + 1})</p>}
+      {activeUsers.length > 0 && <p>Users in group: ({maxUsers + 1})</p>}
       {activeUsers.map((value: UserProfile, index: number) => {
         return (
           <UserDisplay
