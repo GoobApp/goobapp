@@ -15,6 +15,7 @@ type ChatWindowProps = {
   messages: ChatMessageObject[];
   sendMessage: (contentText: string) => void;
   clientProfile: UserProfile;
+  groupId: string | null;
 };
 
 type ChatWindowRef = {
@@ -34,7 +35,7 @@ const Messages = forwardRef<ChatWindowRef, ChatWindowProps>((props, ref) => {
         scrollToBottom();
       },
     }),
-    []
+    [],
   );
 
   const handleSent = () => {
@@ -115,7 +116,7 @@ const Messages = forwardRef<ChatWindowRef, ChatWindowProps>((props, ref) => {
           if (
             prev.userUUID !== message.userUUID ||
             Math.abs(
-              prev.messageTime.getMinutes() - message.messageTime.getMinutes()
+              prev.messageTime.getMinutes() - message.messageTime.getMinutes(),
             ) > 2
           ) {
             showAvatar = true;
@@ -130,6 +131,7 @@ const Messages = forwardRef<ChatWindowRef, ChatWindowProps>((props, ref) => {
             showSpacer={showSpacer}
             key={index}
             clientProfile={props.clientProfile}
+            groupId={props.groupId}
           ></MessageDisplay>
         );
       })}

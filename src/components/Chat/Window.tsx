@@ -49,6 +49,7 @@ const ChatWindow = forwardRef<MessagesRef, ChatWindowProps>((props, ref) => {
           sendMessage={props.sendMessage}
           ref={messagesRef}
           clientProfile={props.clientProfile}
+          groupId={null}
         ></Messages>
         <ChatInput
           onSend={handleSent}

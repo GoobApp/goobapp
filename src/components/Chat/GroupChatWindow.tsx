@@ -90,6 +90,39 @@ const GroupChatWindow = forwardRef<MessagesRef, ChatWindowProps>(
       });
     };
 
+    const onDeleteDMMessage = (messageId: number) => {
+      setMessages((prevMessages) => {
+        const messageIndex = prevMessages.findIndex(
+          (event) => event.messageId == messageId,
+        );
+        if (messageIndex != -1) {
+          const newMessages = prevMessages.slice();
+          newMessages.splice(messageIndex, 1);
+
+          return newMessages;
+        } else {
+          return prevMessages;
+        }
+      });
+    };
+
+    const onEditDMMessage = (messageId: number, messageContent: string) => {
+      setMessages((prevMessages) => {
+        const messageIndex = prevMessages.findIndex(
+          (event) => event.messageId == messageId,
+        );
+        if (messageIndex != -1) {
+          const newMessages = prevMessages.slice();
+          newMessages[messageIndex].isEdited = true;
+          newMessages[messageIndex].messageContent = messageContent;
+
+          return newMessages;
+        } else {
+          return prevMessages;
+        }
+      });
+    };
+
     useEffect(() => {
       messagesRef.current?.scrollToBottom(); // Scroll to bottom when page loads
       socket.emit("join group room", params.groupId);
@@ -100,11 +133,15 @@ const GroupChatWindow = forwardRef<MessagesRef, ChatWindowProps>(
       socket.on("dm recent messages received", onRecentMessagesReceived);
       socket.on("dm all users received", onUsersRecieved);
       socket.on("DM add new user", onDMNewUser);
+      socket.on("dm deleted message", onDeleteDMMessage);
+      socket.on("dm message edited", onEditDMMessage);
       return () => {
         socket.off("dm receive message", onReceiveMessage);
         socket.off("dm recent messages received", onRecentMessagesReceived);
         socket.off("dm all users received", onUsersRecieved);
         socket.off("DM add new user", onDMNewUser);
+        socket.off("dm deleted message", onDeleteDMMessage);
+        socket.off("dm message edited", onEditDMMessage);
       };
     }, [params.groupId]);
 
@@ -124,6 +161,7 @@ const GroupChatWindow = forwardRef<MessagesRef, ChatWindowProps>(
               sendMessage={sendMessage}
               ref={messagesRef}
               clientProfile={props.clientProfile}
+              groupId={params.groupId ? params.groupId : null}
             ></Messages>
             <ChatInput
               onSend={handleSent}

@@ -23,11 +23,13 @@ const MessageDisplay = ({
   showAvatar,
   showSpacer,
   clientProfile,
+  groupId,
 }: {
   message: ChatMessage;
   showAvatar: boolean;
   showSpacer: boolean;
   clientProfile: UserProfile;
+  groupId: string | null;
 }) => {
   const [showHover, setShowHover] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -233,14 +235,18 @@ const MessageDisplay = ({
       "Are you sure you want to delete this message?",
     );
     if (shouldDelete) {
-      socket.emit("delete message", message.messageId);
+      if (groupId != null)
+        socket.emit("dm delete message", message.messageId, groupId);
+      else socket.emit("delete message", message.messageId);
     }
   };
 
   const finishEdit = () => {
     const ref = contentRef.current;
     if (!ref) return;
-    socket.emit("edit message", message.messageId, ref.innerText);
+    if (groupId != null)
+      socket.emit("dm edit message", message.messageId, ref.innerText, groupId);
+    else socket.emit("edit message", message.messageId, ref.innerText);
     cancelEdit();
   };
 
