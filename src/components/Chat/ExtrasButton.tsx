@@ -27,19 +27,15 @@ const ChatExtrasButton = ({ session }: { session: Session | null }) => {
 
     const headers = new Headers();
 
-    if (import.meta.env.PROD) {
-      headers.append("Authorization", "Bearer " + session?.access_token);
-    }
+    headers.append("Authorization", "Bearer " + session?.access_token);
 
     let bytes = await file.arrayBuffer();
 
-    if (!import.meta.env.PROD) {
-      console.log("Image data: " + bytes);
-      if (!session) {
-        console.log("Session is undefined!");
-      } else {
-        console.log("Session access token: " + session?.access_token);
-      }
+    console.log("Image data: " + bytes);
+    if (!session) {
+      console.log("Session is undefined!");
+    } else {
+      console.log("Session access token: " + session?.access_token);
     }
 
     fetch(`${SERVER_URL}/upload`, {
@@ -53,7 +49,7 @@ const ChatExtrasButton = ({ session }: { session: Session | null }) => {
           // and throw an error to trigger the .catch block.
           return response.json().then((errorData) => {
             throw new Error(
-              errorData.message || `HTTP error! status: ${response.status}`
+              errorData.message || `HTTP error! status: ${response.status}`,
             );
           });
         }

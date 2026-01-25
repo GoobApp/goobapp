@@ -368,6 +368,7 @@ const ChatInput = forwardRef(
     }, [emojiStart]);
 
     useEffect(() => {
+      if (!activeUsers) return;
       const users = activeUsers.filter((user) => {
         return user.username.toLowerCase().includes(atUsersStart.toLowerCase());
       });
@@ -382,32 +383,6 @@ const ChatInput = forwardRef(
     const [atUsersUI, setAtUsersUI] = useState<UserProfile[]>();
 
     return (
-<<<<<<< HEAD
-      <form
-        className={isGroup ? "chat-input-form" : "chat-input-form group-input"}
-        id="chatInputForm"
-        onSubmit={onSubmit}
-        autoComplete="off"
-      >
-        <ChatExtrasButton session={session}></ChatExtrasButton>
-        <div className="chat-input-div" role="textbox">
-          <div
-            contentEditable={"plaintext-only"}
-            className="chat-input"
-            id="chatInput"
-            ref={textAreaRef}
-            onInput={onChange}
-          ></div>
-          {isInputBlank && (
-            <p className="chat-input-placeholder">Type here...</p>
-          )}
-        </div>
-        <ChatSendButton
-          onSend={onSend}
-          disabled={textAreaValue.length > maxLength}
-        ></ChatSendButton>
-      </form>
-=======
       <div className="chat-input-form-container">
         {emojiInputRegex.test(textAreaValue) && activeEmojisUI && (
           <UIPopup
@@ -460,7 +435,6 @@ const ChatInput = forwardRef(
           ></ChatSendButton>
         </form>
       </div>
->>>>>>> 8e5a2a1b22daf5dfbc91353a2f81ed4df0515a6d
     );
   },
 );

@@ -1,7 +1,7 @@
 import { Session } from "@supabase/supabase-js";
 import { forwardRef, useEffect, useRef } from "react";
 import "../../App.css";
-import GooberImage from "../../assets/images/goofy_goober.png";
+import Loading from "../../Loading";
 import ChatInputRef from "../../types/ChatInputRef";
 import ChatMessageObject from "../../types/ChatMessageObject";
 import UserProfile from "../../types/UserProfileObject";
@@ -58,18 +58,7 @@ const ChatWindow = forwardRef<MessagesRef, ChatWindowProps>((props, ref) => {
         ></ChatInput>
       </main>
     );
-  } else
-    return (
-      <main
-        id="chatWindow"
-        className={props.isMini ? "chat-mini-window" : "chat-window"}
-      >
-        <div id="chatMessages" className="chat-messages loading">
-          <img className="loading-animation" src={GooberImage} />
-          <p>Loading...</p>
-        </div>
-      </main>
-    );
+  } else return <Loading isMini={props.isMini} />;
 });
 
 export default ChatWindow;
