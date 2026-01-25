@@ -23,6 +23,16 @@
   grid-column: 3;
   align-self: center;
   width: max-content;
+  display: inline;
+
+  overflow: hidden;
+
+  flex-basis: 100px;
+
+  font-size: x-small;
+  border-radius: 25px;
+  padding: 5px;
+  background-color: color-mix(in srgb, var(--bg) 80%, black 20%);
 }
 
 .top-spacer {

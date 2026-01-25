@@ -294,7 +294,7 @@ const MessageDisplay = ({
           </p>
         )}
         {showAvatar && message.userRole && (
-          <span className="chat-message-role role">{message.userRole}</span>
+          <span className="chat-message-role">{message.userRole}</span>
         )}
         {showAvatar && (
           <p className="chat-message-time">
