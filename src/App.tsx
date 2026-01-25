@@ -23,7 +23,7 @@ import createProfileObject from "./utils/UserProfileCreator";
 
 const activeBots = [
   createProfileObject({
-    newUserDisplayName: "Goofy Goober",
+    newUserDisplayName: "goob",
     newUserProfilePicture:
       "https://raw.githubusercontent.com/GoobApp/backend/refs/heads/main/goofy-goober.png",
     newUserUUID: null,
