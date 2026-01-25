@@ -62,7 +62,9 @@ const GroupChatWindow = forwardRef<MessagesRef, ChatWindowProps>(
       msg.messageTime = new Date(msg.messageTime);
 
       setMessages((prevMessages) =>
-        prevMessages.concat(msg).slice(0, maxMessages),
+        prevMessages.length < maxMessages
+          ? prevMessages.concat(msg)
+          : prevMessages.slice(1).concat(msg),
       );
     };
 
