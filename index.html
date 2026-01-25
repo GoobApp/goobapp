@@ -13,17 +13,13 @@
       default-src 'self';
       script-src 'self' https://*.cloudflare.com 'unsafe-eval' https://www.google.com https://www.gstatic.com http://cse.google.com;
       frame-src *;
-      connect-src 'self' https://www.google.com/cse/ http://localhost:3000/ ws://localhost:3000/
-      https://www.google.com/recaptcha
-      http://localhost:1234
-      ws://localhost:1234
+      connect-src 'self'
+      https://www.google.com/cse/
       https://goobapp-server.koyeb.app/
       wss://goobapp-server.koyeb.app/
       https://wfdcqaqihwsilzegcknq.supabase.co
       wss://wfdcqaqihwsilzegcknq.supabase.co
-      http://127.0.0.1:54321
-      http://localhost:3000
-      ws://localhost:3000
+      %VITE_CSP_CONNECT_SRC%
       https://picsum.photos
       https://fastly.picsum.photos;
       style-src 'self' 'unsafe-inline' https://www.google.com;
