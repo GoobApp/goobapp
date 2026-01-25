@@ -191,6 +191,15 @@ body {
   text-align: center;
 }
 
+.user-profile-picture {
+  grid-column: 1;
+  width: 35px;
+  height: 35px;
+  background-color: gray;
+  aspect-ratio: 1/1;
+  border-radius: 100%;
+}
+
 @media screen and (max-width: 1000px) {
   .chat-users-panel-container,
   .chat-mini-window,

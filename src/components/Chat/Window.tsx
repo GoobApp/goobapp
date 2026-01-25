@@ -15,6 +15,7 @@ type ChatWindowProps = {
   isMini: boolean;
   session: Session | null;
   isConnected: boolean;
+  activeUsers: UserProfile[];
 };
 
 type MessagesRef = {
@@ -53,6 +54,7 @@ const ChatWindow = forwardRef<MessagesRef, ChatWindowProps>((props, ref) => {
           onSend={handleSent}
           ref={chatInputRef}
           session={props.session}
+          activeUsers={props.activeUsers}
         ></ChatInput>
       </main>
     );

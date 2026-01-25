@@ -177,3 +177,7 @@
 .chat-message-image:hover {
   border-radius: 0;
 }
+
+.pinged {
+  background-color: color-mix(in srgb, var(--bg) 80%, lightgreen 20%);
+}

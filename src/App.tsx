@@ -29,6 +29,14 @@ const App = () => {
   const [isAuthLoading, setIsAuthLoading] = useState<boolean>(true);
 
   const [activeUsers, setActiveUsers] = useState<UserProfile[]>([]);
+  const activeBots = createProfileObject({
+    newUserDisplayName: "Goofy Goober",
+    newUserProfilePicture:
+      "https://raw.githubusercontent.com/GoobApp/backend/refs/heads/main/goofy-goober.png",
+    newUserUUID: null,
+    newUserID: null,
+    newUserRole: "Bot",
+  });
 
   const [profile, setProfile] = useState<UserProfile>(
     createProfileObject({
@@ -310,7 +318,7 @@ const App = () => {
 
       setProfile(newProfile);
 
-      setActiveUsers([newProfile, newProfile, newProfile]);
+      setActiveUsers([newProfile]);
       setIsAuthLoading(false);
       setSession(session);
     }
@@ -373,6 +381,7 @@ const App = () => {
                 isMini={true}
                 session={session}
                 isConnected={import.meta.env.PROD ? isConnected : true}
+                activeUsers={activeUsers.concat(activeBots)}
               ></ChatWindow>
             )
           }
@@ -392,6 +401,7 @@ const App = () => {
               isMini={false}
               session={session}
               isConnected={import.meta.env.PROD ? isConnected : true}
+              activeUsers={activeUsers.concat(activeBots)}
             ></ChatWindow>
           ) : (
             <ChatLoggedOutWindow></ChatLoggedOutWindow>

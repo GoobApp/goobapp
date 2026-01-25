@@ -267,7 +267,7 @@ const MessageDisplay = ({
             ? "chat-message-container-container-hover"
             : "chat-message-container-container"
         }
-        ${showSpacer && "top-spacer"}
+        ${showSpacer && "top-spacer"} ${message.messageContent.toLowerCase().includes(clientProfile.username.toLowerCase()) && "pinged"}
         `}
       onMouseOver={mouseOver}
       onMouseLeave={mouseLeave}

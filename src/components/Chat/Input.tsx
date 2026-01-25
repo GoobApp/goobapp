@@ -10,6 +10,7 @@ import {
 } from "react";
 import "../../App.css";
 import EmojiList from "../../types/EmojiList";
+import UserProfile from "../../types/UserProfileObject";
 import createUIElement from "../../utils/UIElementCreator";
 import UIPopup from "../../utils/UIPopup";
 import ChatExtrasButton from "./ExtrasButton";
@@ -18,7 +19,15 @@ import ChatSendButton from "./SendButton";
 
 const ChatInput = forwardRef(
   (
-    { onSend, session }: { onSend: () => void; session: Session | null },
+    {
+      onSend,
+      session,
+      activeUsers,
+    }: {
+      onSend: () => void;
+      session: Session | null;
+      activeUsers: UserProfile[];
+    },
     ref,
   ) => {
     // Wrap the component with forwardRef so the parent can pass a ref;  useImperativeHandle exposes methods to that ref
@@ -336,13 +345,19 @@ const ChatInput = forwardRef(
     }, [textAreaRef]);
 
     useEffect(() => {
-      const match = textAreaValue.match(emojiInputRegex);
-      if (match) {
-        setEmojiStart(match[0].split(":")[1]);
+      const emojiMatch = textAreaValue.match(emojiInputRegex);
+      if (emojiMatch) {
+        setEmojiStart(emojiMatch[0].split(":")[1]);
+      }
+
+      const atUsersMatch = textAreaValue.match(atUsersInputRegex);
+      if (atUsersMatch) {
+        setAtUsersStart(atUsersMatch[0].split("@")[1]);
       }
     }, [textAreaValue]);
 
     const [emojiStart, setEmojiStart] = useState<string>("");
+    const [atUsersStart, setAtUsersStart] = useState<string>("");
 
     useEffect(() => {
       const emojis = Object.entries(EmojiList).filter(([name, emoji]) => {
@@ -352,23 +367,44 @@ const ChatInput = forwardRef(
       setActiveEmojisUI(emojis);
     }, [emojiStart]);
 
+    useEffect(() => {
+      const users = activeUsers.filter((user) => {
+        return user.username.toLowerCase().includes(atUsersStart.toLowerCase());
+      });
+
+      setAtUsersUI(users);
+    }, [atUsersStart]);
+
     const emojiInputRegex = /(^|\s|[(]):(?![^\s]*[\s:])[^\s]*/; // I hate regex
+    const atUsersInputRegex = /(^|\s|[(])@(?![^\s]*[\s])[^\s]*/; // This is probably the worst regex you'll ever see
 
     const [activeEmojisUI, setActiveEmojisUI] = useState<[string, string][]>();
+    const [atUsersUI, setAtUsersUI] = useState<UserProfile[]>();
 
     return (
       <div className="chat-input-form-container">
         {emojiInputRegex.test(textAreaValue) && activeEmojisUI && (
           <UIPopup
             elements={activeEmojisUI.slice(0, 5).map(([name, emoji]) => {
-              if (name.includes(emojiStart)) {
-                return createUIElement({
-                  newEmoji: emoji,
-                  newName: name,
-                });
-              } else {
-                return null;
-              }
+              return createUIElement({
+                newPicture: null,
+                newEmoji: emoji,
+                newName: name,
+                newKey: name,
+              });
+            })}
+          />
+        )}
+
+        {atUsersInputRegex.test(textAreaValue) && atUsersUI && (
+          <UIPopup
+            elements={atUsersUI.slice(0, 5).map((user) => {
+              return createUIElement({
+                newPicture: user.userProfilePicture,
+                newEmoji: null,
+                newName: user.username,
+                newKey: user.userUUID,
+              });
             })}
           />
         )}

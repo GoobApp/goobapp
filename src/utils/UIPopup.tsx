@@ -9,7 +9,20 @@ const UIPopup = ({ elements }: { elements: (UIElement | null)[] }) => {
         return (
           <div key={element.name} className="ui-popup-element">
             {element.emoji && (
-              <img src={element.emoji} className="ui-popup-emoji" alt={element.name} />
+              <img
+                src={element.emoji}
+                className="ui-popup-emoji"
+                alt={element.name}
+                key={element.key}
+              />
+            )}
+            {element.picture && (
+              <img
+                src={element.picture}
+                className="user-profile-picture"
+                alt={element.name}
+                key={element.key}
+              />
             )}
             <p>{element.name}</p>
           </div>
