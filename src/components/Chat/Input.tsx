@@ -172,7 +172,6 @@ const ChatInput = forwardRef(({ onSend }: { onSend: () => void }, ref) => {
         {emojiInputRegex.test(textAreaValue) && (
           <UIPopup
             elements={Object.entries(EmojiList).map(([name, emoji]) => {
-              console.log(emojiStart);
               if (name.includes(emojiStart)) {
                 return createUIElement({
                   newEmoji: emoji,

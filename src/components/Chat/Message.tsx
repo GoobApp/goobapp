@@ -6,8 +6,8 @@ import cfp_clicked from "../../assets/images/emojis/cfp/clicked.png";
 import goob from "../../assets/images/goofy_goober.png";
 import { socket } from "../../socket";
 import ChatMessage from "../../types/ChatMessageObject";
-import UserProfile from "../../types/UserProfileObject";
 import EmojiList from "../../types/EmojiList";
+import UserProfile from "../../types/UserProfileObject";
 import "./Message.css";
 
 const MessageDisplay = ({
@@ -128,7 +128,7 @@ const MessageDisplay = ({
 
   const deleteClicked = () => {
     const shouldDelete = window.confirm(
-      "Are you sure you want to delete this message?"
+      "Are you sure you want to delete this message?",
     );
     if (shouldDelete) {
       socket.emit("delete message", message.messageId);
