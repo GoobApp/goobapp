@@ -32,12 +32,18 @@ const GroupsButton = ({
       className="list-button-container"
       onMouseOver={() => setMouseOver(true)}
       onMouseLeave={() => setMouseOver(false)}
+      onFocus={() => setMouseOver(true)}
+      onBlur={() => setMouseOver(false)}
     >
       <button className="list-button" onClick={handleClick}>
         {group.groupName}
       </button>
       {mouseOver && (
-        <button className="delete-button" onClick={startDelete}>
+        <button
+          className="delete-button"
+          onClick={startDelete}
+          aria-label={`Delete ${group.groupName}`}
+        >
           X
         </button>
       )}
