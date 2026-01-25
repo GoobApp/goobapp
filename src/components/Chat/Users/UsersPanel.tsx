@@ -4,16 +4,14 @@ import UserDisplay, { BotDisplay } from "./ActiveUser";
 
 const ChatUsersPanel = ({
   activeUsers,
-  maxUsers,
   clientUser,
 }: {
   activeUsers: UserProfile[];
-  maxUsers: number;
   clientUser: UserProfile;
 }) => {
   return (
     <header id="chatUsersPanelContainer" className="chat-users-panel-container">
-      {activeUsers.length > 0 && <p>Active users ({maxUsers + 1})</p>}
+      {activeUsers.length > 0 && <p>Active users ({activeUsers.length + 1})</p>}
       {activeUsers.map((value: UserProfile, index: number) => {
         return (
           <UserDisplay

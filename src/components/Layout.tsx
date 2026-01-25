@@ -36,14 +36,12 @@ const App: FC<LayoutProps> = ({
       {location.pathname == "/" ? (
         <ChatUsersPanel
           activeUsers={usersList}
-          maxUsers={maxUsers}
           clientUser={profileObject}
         ></ChatUsersPanel>
       ) : location.pathname.includes("/groups/") &&
         !location.pathname.endsWith("/groups/") ? (
         <DMUsersPanel
           activeUsers={DMUsersList}
-          maxUsers={maxUsers}
           clientUser={profileObject}
           groupId={location.pathname.split("/groups/")[1]} // yeah i truly gave up. i feel bad for my future self.
         ></DMUsersPanel>
