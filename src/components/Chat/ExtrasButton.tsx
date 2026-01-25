@@ -40,9 +40,6 @@ const ChatExtrasButton = ({
       return;
     }
     headers.append("Authorization", `Bearer ${token}`);
-    let bytes = await file.arrayBuffer();
-
-    let bytes = await file.arrayBuffer();
 
     fetch(`${SERVER_URL}/upload`, {
       method: "POST",
