@@ -1,0 +1,24 @@
+.list-button-container {
+  display: flex;
+  flex-direction: row;
+  gap: 5px;
+}
+
+.list-button {
+  position: relative;
+}
+
+.delete-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  width: 15px;
+  height: 100%;
+  background-color: red;
+  z-index: 1;
+}
+
+.delete-button:hover {
+  background-color: darkred;
+}

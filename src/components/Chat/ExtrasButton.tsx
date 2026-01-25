@@ -3,7 +3,13 @@ import { ChangeEvent, useRef } from "react";
 import "../../App.css";
 import { SERVER_URL } from "../../socket";
 
-const ChatExtrasButton = ({ session }: { session: Session | null }) => {
+const ChatExtrasButton = ({
+  session,
+  groupId,
+}: {
+  session: Session | null;
+  groupId: string | null;
+}) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleClick = () => {
@@ -24,23 +30,16 @@ const ChatExtrasButton = ({ session }: { session: Session | null }) => {
     }
 
     formData.append("image", file);
+    if (groupId) formData.append("groupId", groupId);
 
     const headers = new Headers();
 
-    if (import.meta.env.PROD) {
-      headers.append("Authorization", "Bearer " + session?.access_token);
+    const token = session?.access_token;
+    if (!token) {
+      console.error("Missing session token; aborting upload.");
+      return;
     }
-
-    let bytes = await file.arrayBuffer();
-
-    if (!import.meta.env.PROD) {
-      console.log("Image data: " + bytes);
-      if (!session) {
-        console.log("Session is undefined!");
-      } else {
-        console.log("Session access token: " + session?.access_token);
-      }
-    }
+    headers.append("Authorization", `Bearer ${token}`);
 
     fetch(`${SERVER_URL}/upload`, {
       method: "POST",
@@ -53,7 +52,7 @@ const ChatExtrasButton = ({ session }: { session: Session | null }) => {
           // and throw an error to trigger the .catch block.
           return response.json().then((errorData) => {
             throw new Error(
-              errorData.message || `HTTP error! status: ${response.status}`
+              errorData.message || `HTTP error! status: ${response.status}`,
             );
           });
         }

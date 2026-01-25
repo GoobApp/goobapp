@@ -23,10 +23,14 @@ const ChatInput = forwardRef(
       onSend,
       session,
       activeUsers,
+      isMini,
+      groupId,
     }: {
       onSend: () => void;
       session: Session | null;
       activeUsers: UserProfile[];
+      isMini: boolean;
+      groupId: string | null;
     },
     ref,
   ) => {
@@ -316,8 +320,8 @@ const ChatInput = forwardRef(
         }
 
         if (document.activeElement !== textAreaRef.current) {
-          if (!textAreaRef.current)
-            // Only refocus if it's not already focused
+          if (!textAreaRef.current || isMini)
+            // Only refocus if it's not already focused and not mini!!
             return; // Typescript thing to ensure safety, otherwise error. Just makes sure inputRef is not null
           textAreaRef.current.focus(); // Focus the text area
           const range = document.createRange(); // Create a new range object
@@ -368,6 +372,7 @@ const ChatInput = forwardRef(
     }, [emojiStart]);
 
     useEffect(() => {
+      if (!activeUsers) return;
       const users = activeUsers.filter((user) => {
         return user.username.toLowerCase().includes(atUsersStart.toLowerCase());
       });
@@ -415,7 +420,10 @@ const ChatInput = forwardRef(
           onSubmit={onSubmit}
           autoComplete="off"
         >
-          <ChatExtrasButton session={session}></ChatExtrasButton>
+          <ChatExtrasButton
+            session={session}
+            groupId={groupId}
+          ></ChatExtrasButton>
           <div className="chat-input-div" role="textbox">
             <div
               contentEditable={"plaintext-only"}

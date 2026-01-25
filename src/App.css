@@ -52,8 +52,7 @@ body {
   display: flex;
   flex-direction: column;
 
-  overflow-y: auto;
-  overflow-y: auto;
+  overflow: auto !important;
 
   gap: 5px;
 }
@@ -143,6 +142,7 @@ body {
   overflow: hidden;
 
   padding: 1em;
+  padding-bottom: 0;
 
   grid-column: 3;
   grid-row: 2;
@@ -160,6 +160,7 @@ body {
 .loading {
   place-content: center;
   place-items: center;
+  flex-grow: 1;
 }
 
 .loading-animation {
@@ -198,6 +199,16 @@ body {
   background-color: gray;
   aspect-ratio: 1/1;
   border-radius: 100%;
+}
+
+.error-page {
+  padding: 50px;
+}
+
+.error-message {
+  font-weight: bold;
+  font-style: italic;
+  color: red;
 }
 
 @media screen and (max-width: 1000px) {

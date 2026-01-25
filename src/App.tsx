@@ -2,7 +2,9 @@ import type { Session } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
 import { createBrowserRouter, RouterProvider } from "react-router";
 import "./App.css";
+import GroupChatWindow from "./components/Chat/GroupChatWindow";
 import ChatWindow from "./components/Chat/Window";
+import GroupsList from "./components/Groups/GroupsList";
 import Layout from "./components/Layout";
 import ChatLoggedOutWindow from "./components/Pages/ChatLoggedOutWindow";
 import EmptyPanel from "./components/Pages/EmptyPanel";
@@ -32,6 +34,8 @@ const activeBots = [
   }),
 ];
 
+export const maxMessages = 200;
+
 const App = () => {
   const [session, setSession] = useState<Session | null>(null);
   const [unreadMessageCount, setUnreadMessageCount] = useState<number>(0);
@@ -40,6 +44,7 @@ const App = () => {
   const [isAuthLoading, setIsAuthLoading] = useState<boolean>(true);
 
   const [activeUsers, setActiveUsers] = useState<UserProfile[]>([]);
+  const [DMactiveUsers, setDMActiveUsers] = useState<UserProfile[]>([]);
 
   const [profile, setProfile] = useState<UserProfile>(
     createProfileObject({
@@ -54,7 +59,6 @@ const App = () => {
   useEffect(() => {
     const onConnect = () => {
       console.log("Connected!");
-
       setIsConnected(true);
     };
 
@@ -77,20 +81,27 @@ const App = () => {
 
       if ("Notification" in window) {
         const img = value.userProfilePicture;
-        const notification = new Notification(
-          `New message from ${value.userDisplayName}`,
-          {
-            body: value.messageContent,
-            icon: img,
-          },
-        );
+        if (Notification.permission === "granted") {
+          const notification = new Notification(
+            `New message from ${value.userDisplayName}`,
+            {
+              body: value.messageContent,
+              icon: img,
+            },
+          );
+        }
       }
     };
 
     const onRecentMessagesRequestReceived = (value: ChatMessageObject[]) => {
+      console.log("Retrieved recent messages!");
       value.reverse().forEach((element) => {
-        addNewInput(element);
+        element.messageTime = new Date(element.messageTime); // Websockets can't accept Dates, so they turn them into strings. This turns it back
       });
+
+      setMessages((prevMessages) =>
+        prevMessages.concat(value).slice(0, maxMessages),
+      );
     };
 
     const onActiveUsersRequestReceived = (users: UserProfile[]) => {
@@ -167,7 +178,7 @@ const App = () => {
       Client?.auth.signOut();
     };
 
-    if ((!isAuthLoading && session) || !import.meta.env.PROD) {
+    if (!isAuthLoading && session) {
       socket.on("connect", onConnect);
       socket.on("disconnect", onDisconnect);
       socket.on("client receive message", clientReceiveMessage);
@@ -180,12 +191,8 @@ const App = () => {
       socket.on("remove active user", onRemoveActiveUser);
       socket.on("deleted account", onDeletedAccount);
 
-      if ((!isAuthLoading && session) || !import.meta.env.PROD) {
+      if (!isAuthLoading && session) {
         socket.auth = { token: session?.access_token };
-
-        if (!socket.connected) {
-          socket.connect();
-        }
       } else {
         if (socket.connected && !isAuthLoading) {
           socket.disconnect();
@@ -231,29 +238,13 @@ const App = () => {
   const addNewInput = (newMessage: ChatMessageObject) => {
     newMessage.messageTime = new Date(newMessage.messageTime); // Websockets can't accept Dates, so they turn them into strings. This turns it back
     setMessages((prevMessage) =>
-      prevMessage.length < 200
+      prevMessage.length < maxMessages
         ? prevMessage.concat(newMessage)
         : prevMessage.slice(1).concat(newMessage),
     );
   };
 
   const handleMessageSent = (contentText: string) => {
-    if (!import.meta.env.PROD && !isConnected) {
-      let input = createChatObject({
-        newUserDisplayName: "Test User",
-        newUserUUID: "1",
-        newUserProfilePicture: null,
-        newUserRole: "Test",
-        newMessageContent: contentText,
-        newMessageImageURL: null,
-        newIsEdited: false,
-      });
-
-      addNewInput(input);
-
-      return;
-    }
-
     if (!profile.userUUID) {
       console.error("No userUUID!");
       return;
@@ -310,22 +301,6 @@ const App = () => {
   };
 
   useEffect(() => {
-    if (!import.meta.env.PROD) {
-      const newProfile = createProfileObject({
-        newUserDisplayName: "Test User",
-        newUserUUID: "1",
-        newUserProfilePicture: null,
-        newUserRole: "Owner",
-        newUserID: "1",
-      });
-
-      setProfile(newProfile);
-
-      setActiveUsers([newProfile]);
-      setIsAuthLoading(false);
-      setSession(session);
-    }
-
     if (!Client) {
       setIsAuthLoading(false);
       return;
@@ -337,6 +312,9 @@ const App = () => {
         if (session) {
           setSession(session);
           if (_event == "INITIAL_SESSION" || _event == "SIGNED_IN") {
+            if (!socket.connected) {
+              socket.connect();
+            }
             retrieveUserData(session);
             retrieveRecentMessages();
             retrieveActiveUsers();
@@ -372,9 +350,10 @@ const App = () => {
           session={session}
           profileObject={profile}
           usersList={activeUsers}
+          DMUsersList={DMactiveUsers}
           maxUsers={activeUsers.length}
           chatWindow={
-            (isAuthLoading || session == null) && import.meta.env.PROD ? (
+            isAuthLoading || session == null ? (
               <div className="chat-users-panel-container"></div>
             ) : (
               <ChatWindow
@@ -383,7 +362,7 @@ const App = () => {
                 clientProfile={profile}
                 isMini={true}
                 session={session}
-                isConnected={import.meta.env.PROD ? isConnected : true}
+                isConnected={isConnected}
                 activeUsers={activeUsers.concat(activeBots)}
               ></ChatWindow>
             )
@@ -396,14 +375,14 @@ const App = () => {
           index: true,
           element: isAuthLoading ? (
             <EmptyPanel></EmptyPanel>
-          ) : session != null || !import.meta.env.PROD ? (
+          ) : session != null ? (
             <ChatWindow
               messages={messages}
               sendMessage={handleMessageSent}
               clientProfile={profile}
               isMini={false}
               session={session}
-              isConnected={import.meta.env.PROD ? isConnected : true}
+              isConnected={isConnected}
               activeUsers={activeUsers.concat(activeBots)}
             ></ChatWindow>
           ) : (
@@ -411,9 +390,31 @@ const App = () => {
           ),
         },
         {
+          path: "/groups",
+          element:
+            !isAuthLoading && session != null ? (
+              <GroupsList />
+            ) : (
+              <ChatLoggedOutWindow></ChatLoggedOutWindow>
+            ),
+        },
+        {
+          path: "/groups/:groupId",
+          element:
+            !isAuthLoading && session != null ? (
+              <GroupChatWindow
+                clientProfile={profile}
+                session={session}
+                setDMUsers={(users) => setDMActiveUsers(users)}
+              />
+            ) : (
+              <ChatLoggedOutWindow></ChatLoggedOutWindow>
+            ),
+        },
+        {
           path: "/settings/*",
           element:
-            (!isAuthLoading && session != null) || !import.meta.env.PROD ? (
+            !isAuthLoading && session != null ? (
               <SettingsPage profile={profile}></SettingsPage>
             ) : (
               <ChatLoggedOutWindow></ChatLoggedOutWindow>

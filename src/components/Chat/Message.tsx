@@ -167,6 +167,7 @@ const MessageDisplay = ({
             }
             src={EmojiList[object.content]}
             key={index}
+            draggable={false}
           />
         );
         break;
@@ -340,7 +341,6 @@ const MessageDisplay = ({
         <div className="hover-div">
           {((clientProfile.userUUID == message.userUUID &&
             message.messageId != null) ||
-            !import.meta.env.PROD ||
             clientProfile.userRole == "Owner") && (
             <button className="hover-button" onClick={editClicked}>
               Edit
@@ -353,7 +353,6 @@ const MessageDisplay = ({
 
           {((clientProfile.userUUID == message.userUUID &&
             message.messageId != null) ||
-            !import.meta.env.PROD ||
             clientProfile.userRole == "Owner") && (
             <button className="hover-button" onClick={deleteClicked}>
               Delete

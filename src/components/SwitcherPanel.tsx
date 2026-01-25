@@ -22,6 +22,12 @@ const SwitcherPanel = () => {
       </button>
       <button
         className="panel-button"
+        onClick={() => navigate("/groups", { viewTransition: true })}
+      >
+        Groups
+      </button>
+      <button
+        className="panel-button"
         onClick={() => navigate("/games", { viewTransition: true })}
       >
         Games

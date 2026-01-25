@@ -5,6 +5,7 @@ import "../App.css";
 import TopBar from "../components/Profile/TopBar";
 import SwitcherPanel from "../components/SwitcherPanel";
 import UserProfile from "../types/UserProfileObject";
+import DMUsersPanel from "./Chat/Users/DMUsersPanel";
 import ChatUsersPanel from "./Chat/Users/UsersPanel";
 
 interface LayoutProps {
@@ -12,6 +13,7 @@ interface LayoutProps {
   profileObject: UserProfile;
   chatWindow: ReactNode;
   usersList: UserProfile[];
+  DMUsersList: UserProfile[];
   maxUsers: number;
 }
 
@@ -20,6 +22,7 @@ const App: FC<LayoutProps> = ({
   profileObject,
   chatWindow,
   usersList,
+  DMUsersList,
   maxUsers,
 }) => {
   const location = useLocation();
@@ -36,6 +39,14 @@ const App: FC<LayoutProps> = ({
           maxUsers={maxUsers}
           clientUser={profileObject}
         ></ChatUsersPanel>
+      ) : location.pathname.includes("/groups/") &&
+        !location.pathname.endsWith("/groups/") ? (
+        <DMUsersPanel
+          activeUsers={DMUsersList}
+          maxUsers={maxUsers}
+          clientUser={profileObject}
+          groupId={location.pathname.split("/groups/")[1]} // yeah i truly gave up. i feel bad for my future self.
+        ></DMUsersPanel>
       ) : (
         chatWindow
       )}
