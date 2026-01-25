@@ -1,17 +1,11 @@
 import { useRef, useState } from "react";
 import { Link } from "react-router";
 import "../../App.css";
-import cfp_button from "../../assets/images/emojis/cfp/button.png";
-import cfp_clicked from "../../assets/images/emojis/cfp/clicked.png";
-import goob from "../../assets/images/goofy_goober.png";
 import { socket } from "../../socket";
 import ChatMessage from "../../types/ChatMessageObject";
+import EmojiList from "../../types/EmojiList";
 import UserProfile from "../../types/UserProfileObject";
 import "./Message.css";
-
-interface EmojiDict {
-  [key: string]: string; // Keys are strings, values are strings
-}
 
 interface MessageChunk {
   style: {
@@ -38,12 +32,6 @@ const MessageDisplay = ({
   const [showHover, setShowHover] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
   const contentRef = useRef<HTMLDivElement>(null);
-
-  const emojis: EmojiDict = {
-    goob: goob,
-    cfp_button: cfp_button,
-    cfp_clicked: cfp_clicked,
-  };
 
   if (!message.messageContent && message.messageContent != "") return null;
 
@@ -151,7 +139,7 @@ const MessageDisplay = ({
 
       if (item[0] === ":" && item[item.length - 1] === ":") {
         const emojiName = item.slice(1, item.length - 1);
-        if (emojiName in emojis) {
+        if (emojiName in EmojiList) {
           newObject.type = "emoji";
           newObject.content = emojiName;
         }
@@ -174,10 +162,10 @@ const MessageDisplay = ({
           <img
             className={
               messageChunks.length == 1
-                ? "chat-message-content-emoji-big"
+                ? "chat-message-content-emoji big-emoji"
                 : "chat-message-content-emoji"
             }
-            src={emojis[object.content]}
+            src={EmojiList[object.content]}
             key={index}
           />
         );

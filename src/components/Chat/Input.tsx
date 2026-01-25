@@ -342,48 +342,62 @@ const ChatInput = forwardRef(
       }
     }, [textAreaValue]);
 
-    const emojiInputRegex = /(^|\s|[(]):(?![^\s]*[\s:])[^\s]*/; // I hate regex
     const [emojiStart, setEmojiStart] = useState<string>("");
 
+    useEffect(() => {
+      const emojis = Object.entries(EmojiList).filter(([name, emoji]) => {
+        return name.includes(emojiStart);
+      });
+
+      setActiveEmojisUI(emojis);
+    }, [emojiStart]);
+
+    const emojiInputRegex = /(^|\s|[(]):(?![^\s]*[\s:])[^\s]*/; // I hate regex
+
+    const [activeEmojisUI, setActiveEmojisUI] = useState<[string, string][]>();
+
     return (
-      <form
-        className="chat-input-form"
-        id="chatInputForm"
-        onSubmit={onSubmit}
-        autoComplete="off"
-      >
-        <ChatExtrasButton session={session}></ChatExtrasButton>
-        <div className="chat-input-div" role="textbox">
-          <div
-            contentEditable={"plaintext-only"}
-            className="chat-input"
-            id="chatInput"
-            ref={textAreaRef}
-            onInput={onChange}
-          ></div>
-          {emojiInputRegex.test(textAreaValue) && (
-            <UIPopup
-              elements={Object.entries(EmojiList).map(([name, emoji]) => {
-                if (name.includes(emojiStart)) {
-                  return createUIElement({
-                    newEmoji: emoji,
-                    newName: name,
-                  });
-                } else {
-                  return null;
-                }
-              })}
-            ></UIPopup>
-          )}
-          {isInputBlank && (
-            <p className="chat-input-placeholder">Type here...</p>
-          )}
-        </div>
-        <ChatSendButton
-          onSend={onSend}
-          disabled={textAreaValue.length > maxLength}
-        ></ChatSendButton>
-      </form>
+      <div className="chat-input-form-container">
+        {emojiInputRegex.test(textAreaValue) && activeEmojisUI && (
+          <UIPopup
+            elements={activeEmojisUI.slice(0, 5).map(([name, emoji]) => {
+              if (name.includes(emojiStart)) {
+                return createUIElement({
+                  newEmoji: emoji,
+                  newName: name,
+                });
+              } else {
+                return null;
+              }
+            })}
+          />
+        )}
+
+        <form
+          className="chat-input-form"
+          id="chatInputForm"
+          onSubmit={onSubmit}
+          autoComplete="off"
+        >
+          <ChatExtrasButton session={session}></ChatExtrasButton>
+          <div className="chat-input-div" role="textbox">
+            <div
+              contentEditable={"plaintext-only"}
+              className="chat-input"
+              id="chatInput"
+              ref={textAreaRef}
+              onInput={onChange}
+            ></div>
+            {isInputBlank && (
+              <p className="chat-input-placeholder">Type here...</p>
+            )}
+          </div>
+          <ChatSendButton
+            onSend={onSend}
+            disabled={textAreaValue.length > maxLength}
+          ></ChatSendButton>
+        </form>
+      </div>
     );
   },
 );
