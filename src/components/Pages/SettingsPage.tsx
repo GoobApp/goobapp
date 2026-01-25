@@ -3,6 +3,7 @@ import "../../App.css";
 import { socket } from "../../socket";
 import UserProfile from "../../types/UserProfileObject";
 import { Client } from "../supabase/Client";
+import "./List.css";
 import "./SettingsPage.css";
 
 const SettingsPage = ({ profile }: { profile: UserProfile }) => {
@@ -55,7 +56,7 @@ const SettingsPage = ({ profile }: { profile: UserProfile }) => {
   const handleDeleteAccount = () => {
     if (
       window.confirm(
-        "Are you sure you want to delete your account? This action is irreversible."
+        "Are you sure you want to delete your account? This action is irreversible.",
       )
     ) {
       socket.emit("delete account", null);
@@ -73,76 +74,79 @@ const SettingsPage = ({ profile }: { profile: UserProfile }) => {
   const [profileUrlError, setProfileURLError] = useState<string>("");
 
   return (
-    <main className="settings-page">
-      <form className="setting-panel" onSubmit={handleUsernameChange}>
-        <h2 className="setting-element">Change username</h2>
-        <input
-          placeholder="Username"
-          className="setting-input"
-          onChange={(event) => setUsername(event.target.value)}
-        ></input>
-        <button
-          type="submit"
-          className="setting-button"
-          disabled={username == ""}
-        >
-          Update
+    <main className="list-window">
+      <h1>Settings</h1>
+      <div className="settings-page">
+        <form className="setting-panel" onSubmit={handleUsernameChange}>
+          <h2 className="setting-element">Change username</h2>
+          <input
+            placeholder="Username"
+            className="setting-input"
+            onChange={(event) => setUsername(event.target.value)}
+          ></input>
+          <button
+            type="submit"
+            className="setting-button"
+            disabled={username == ""}
+          >
+            Update
+          </button>
+          {usernameError != "" && (
+            <p className="setting-error">Error: {usernameError}</p>
+          )}
+        </form>
+        <form className="setting-panel" onSubmit={handlePasswordChange}>
+          <h2 className="setting-element">Change password</h2>
+          <input
+            placeholder="Password"
+            type="password"
+            className="setting-input"
+            onChange={(event) => setPassword(event.target.value)}
+          ></input>
+          <input
+            placeholder="Confirm password"
+            type="password"
+            className="setting-input"
+            onChange={(event) => setConfPassword(event.target.value)}
+          ></input>
+          <button
+            type="submit"
+            className="setting-button"
+            disabled={
+              password == "" || confPassword == "" || password != confPassword
+            }
+          >
+            Update
+          </button>
+          {password != confPassword && password != "" && confPassword != "" && (
+            <p className="setting-error">Passwords do not match!</p>
+          )}
+          {passwordError != "" && (
+            <p className="setting-error">Error: {passwordError}</p>
+          )}
+        </form>
+        <form className="setting-panel" onSubmit={handleProfilePictureChange}>
+          <h2 className="setting-element">Change profile picture</h2>
+          <input
+            placeholder="New profile picture link"
+            className="setting-input"
+            onChange={(event) => setProfileURL(event.target.value)}
+          ></input>
+          <button
+            type="submit"
+            className="setting-button"
+            disabled={profileUrl == ""}
+          >
+            Update
+          </button>
+          {profileUrlError != "" && (
+            <p className="setting-error">Error: {profileUrlError}</p>
+          )}
+        </form>
+        <button className="setting-delete-button" onClick={handleDeleteAccount}>
+          {isDeletingAccount ? "Deleting..." : "Delete Account!"}
         </button>
-        {usernameError != "" && (
-          <p className="setting-error">Error: {usernameError}</p>
-        )}
-      </form>
-      <form className="setting-panel" onSubmit={handlePasswordChange}>
-        <h2 className="setting-element">Change password</h2>
-        <input
-          placeholder="Password"
-          type="password"
-          className="setting-input"
-          onChange={(event) => setPassword(event.target.value)}
-        ></input>
-        <input
-          placeholder="Confirm password"
-          type="password"
-          className="setting-input"
-          onChange={(event) => setConfPassword(event.target.value)}
-        ></input>
-        <button
-          type="submit"
-          className="setting-button"
-          disabled={
-            password == "" || confPassword == "" || password != confPassword
-          }
-        >
-          Update
-        </button>
-        {password != confPassword && password != "" && confPassword != "" && (
-          <p className="setting-error">Passwords do not match!</p>
-        )}
-        {passwordError != "" && (
-          <p className="setting-error">Error: {passwordError}</p>
-        )}
-      </form>
-      <form className="setting-panel" onSubmit={handleProfilePictureChange}>
-        <h2 className="setting-element">Change profile picture</h2>
-        <input
-          placeholder="New profile picture link"
-          className="setting-input"
-          onChange={(event) => setProfileURL(event.target.value)}
-        ></input>
-        <button
-          type="submit"
-          className="setting-button"
-          disabled={profileUrl == ""}
-        >
-          Update
-        </button>
-        {profileUrlError != "" && (
-          <p className="setting-error">Error: {profileUrlError}</p>
-        )}
-      </form>
-      <button className="setting-delete-button" onClick={handleDeleteAccount}>
-        {isDeletingAccount ? "Deleting..." : "Delete Account!"}
-      </button>
+      </div>
     </main>
   );
 };

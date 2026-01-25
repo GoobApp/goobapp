@@ -23,6 +23,17 @@ import UserProfile from "./types/UserProfileObject";
 import createChatObject from "./utils/ChatMessageCreator";
 import createProfileObject from "./utils/UserProfileCreator";
 
+const activeBots = [
+  createProfileObject({
+    newUserDisplayName: "goob",
+    newUserProfilePicture:
+      "https://raw.githubusercontent.com/GoobApp/backend/refs/heads/main/goofy-goober.png",
+    newUserUUID: null,
+    newUserID: null,
+    newUserRole: "Bot",
+  }),
+];
+
 const App = () => {
   const [session, setSession] = useState<Session | null>(null);
   const [unreadMessageCount, setUnreadMessageCount] = useState<number>(0);
@@ -39,7 +50,7 @@ const App = () => {
       newUserUUID: null,
       newUserID: null,
       newUserRole: null,
-    })
+    }),
   );
 
   useEffect(() => {
@@ -72,7 +83,7 @@ const App = () => {
           {
             body: value.messageContent,
             icon: img,
-          }
+          },
         );
       }
     };
@@ -96,7 +107,7 @@ const App = () => {
       setActiveUsers((prevActiveUsers) => {
         const newActiveUsers = prevActiveUsers.slice();
         const index = newActiveUsers.findIndex(
-          (e) => e.userUUID === value.userUUID
+          (e) => e.userUUID === value.userUUID,
         );
 
         if (index != -1) {
@@ -113,7 +124,7 @@ const App = () => {
       console.log("User left :(");
       setActiveUsers((prevActiveUsers) => {
         const newActiveUsers = prevActiveUsers.filter(
-          (user) => user.userUUID !== value.userUUID
+          (user) => user.userUUID !== value.userUUID,
         );
         return newActiveUsers;
       });
@@ -122,7 +133,7 @@ const App = () => {
     const onMessageEdited = (messageId: number, messageContent: string) => {
       setMessages((prevMessages) => {
         const messageIndex = prevMessages.findIndex(
-          (event) => event.messageId == messageId
+          (event) => event.messageId == messageId,
         );
         if (messageIndex != -1) {
           const newMessages = prevMessages.slice();
@@ -139,7 +150,7 @@ const App = () => {
     const onMessageDeleted = (messageId: number) => {
       setMessages((prevMessages) => {
         const messageIndex = prevMessages.findIndex(
-          (event) => event.messageId == messageId
+          (event) => event.messageId == messageId,
         );
         if (messageIndex != -1) {
           const newMessages = prevMessages.slice();
@@ -223,7 +234,7 @@ const App = () => {
     setMessages((prevMessage) =>
       prevMessage.length < 200
         ? prevMessage.concat(newMessage)
-        : prevMessage.slice(1).concat(newMessage)
+        : prevMessage.slice(1).concat(newMessage),
     );
   };
 
@@ -311,7 +322,7 @@ const App = () => {
 
       setProfile(newProfile);
 
-      setActiveUsers([newProfile, newProfile, newProfile]);
+      setActiveUsers([newProfile]);
       setIsAuthLoading(false);
       setSession(session);
 
@@ -349,7 +360,7 @@ const App = () => {
         } else {
           setSession(null);
         }
-      }
+      },
     );
 
     return () => {
@@ -376,6 +387,8 @@ const App = () => {
                 clientProfile={profile}
                 isMini={true}
                 session={session}
+                isConnected={import.meta.env.PROD ? isConnected : true}
+                activeUsers={activeUsers.concat(activeBots)}
               ></ChatWindow>
             )
           }
@@ -394,6 +407,8 @@ const App = () => {
               clientProfile={profile}
               isMini={false}
               session={session}
+              isConnected={import.meta.env.PROD ? isConnected : true}
+              activeUsers={activeUsers.concat(activeBots)}
             ></ChatWindow>
           ) : (
             <ChatLoggedOutWindow></ChatLoggedOutWindow>
@@ -464,7 +479,7 @@ const App = () => {
           element: (
             <div className="iframe-wrapper">
               <iframe
-                src="https://supkittymeow.github.io/plat"
+                src="https://precontation.github.io/plat"
                 className="fullscreen-game"
                 allow="fullscreen"
               ></iframe>
@@ -476,7 +491,7 @@ const App = () => {
           element: (
             <div className="iframe-wrapper">
               <iframe
-                src="https://supkittymeow.github.io/br2"
+                src="https://precontation.github.io/br2"
                 className="fullscreen-game"
                 allow="fullscreen"
               ></iframe>
@@ -488,7 +503,7 @@ const App = () => {
           element: (
             <div className="iframe-wrapper">
               <iframe
-                src="https://supkittymeow.github.io/super_secret_banana_run_3_build_thing"
+                src="https://precontation.github.io/br3"
                 className="fullscreen-game"
                 allow="fullscreen"
               ></iframe>
@@ -500,7 +515,7 @@ const App = () => {
           element: (
             <div className="iframe-wrapper">
               <iframe
-                src="https://supkittymeow.github.io/cfp"
+                src="https://precontation.github.io/cfp"
                 className="fullscreen-game"
                 allow="fullscreen"
               ></iframe>

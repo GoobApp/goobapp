@@ -9,6 +9,10 @@ import {
   useState,
 } from "react";
 import "../../App.css";
+import EmojiList from "../../types/EmojiList";
+import UserProfile from "../../types/UserProfileObject";
+import createUIElement from "../../utils/UIElementCreator";
+import UIPopup from "../../utils/UIPopup";
 import ChatExtrasButton from "./ExtrasButton";
 import "./Input.css";
 import ChatSendButton from "./SendButton";
@@ -18,9 +22,13 @@ const ChatInput = forwardRef(
     {
       onSend,
       session,
-      isGroup,
-    }: { onSend: () => void; session: Session | null; isGroup: boolean },
-    ref
+      activeUsers,
+    }: {
+      onSend: () => void;
+      session: Session | null;
+      activeUsers: UserProfile[];
+    },
+    ref,
   ) => {
     // Wrap the component with forwardRef so the parent can pass a ref;  useImperativeHandle exposes methods to that ref
     const textAreaRef = useRef<HTMLParagraphElement>(null);
@@ -163,7 +171,7 @@ const ChatInput = forwardRef(
               document.execCommand(
                 "insertText",
                 true,
-                thingToInsert + thingToInsert
+                thingToInsert + thingToInsert,
               ); // TODO: Replace with a non-deprecated command that still has ctrl-z functionality
 
               selectionRange = selection.getRangeAt(0);
@@ -172,11 +180,11 @@ const ChatInput = forwardRef(
 
               range.setStart(
                 selectionRange.startContainer,
-                start - thingToInsert.length
+                start - thingToInsert.length,
               );
               range.setEnd(
                 selectionRange.endContainer,
-                end - thingToInsert.length
+                end - thingToInsert.length,
               );
 
               selection.removeAllRanges();
@@ -256,13 +264,13 @@ const ChatInput = forwardRef(
               selectionRange.startContainer,
               is_weird_ctrl_z_issue_thing_yeah_idk_man
                 ? start
-                : start - thingToInsertAmount
+                : start - thingToInsertAmount,
             );
             range.setEnd(
               selectionRange.endContainer,
               is_weird_ctrl_z_issue_thing_yeah_idk_man
                 ? end
-                : end + thingToInsertAmount
+                : end + thingToInsertAmount,
             );
 
             selection.removeAllRanges();
@@ -275,14 +283,14 @@ const ChatInput = forwardRef(
               is_weird_ctrl_z_issue_thing_yeah_idk_man
                 ? rangeString.substring(
                     thingToInsertAmount,
-                    rangeString.length - thingToInsertAmount
+                    rangeString.length - thingToInsertAmount,
                   )
                 : is_already_bold || is_already_italics
-                ? rangeString.substring(
-                    thingToInsertAmount,
-                    rangeString.length - thingToInsertAmount
-                  )
-                : thingToInsert + range.toString() + thingToInsert
+                  ? rangeString.substring(
+                      thingToInsertAmount,
+                      rangeString.length - thingToInsertAmount,
+                    )
+                  : thingToInsert + range.toString() + thingToInsert,
             ); // TODO: Replace with a non-deprecated command that still has ctrl-z functionality
 
             range.setStart(
@@ -290,16 +298,16 @@ const ChatInput = forwardRef(
               is_weird_ctrl_z_issue_thing_yeah_idk_man
                 ? start
                 : is_already_bold || is_already_italics
-                ? start - thingToInsert.length
-                : start + thingToInsert.length
+                  ? start - thingToInsert.length
+                  : start + thingToInsert.length,
             );
             range.setEnd(
               selectionRange.endContainer,
               is_weird_ctrl_z_issue_thing_yeah_idk_man
                 ? end - thingToInsert.length - thingToInsert.length
                 : is_already_bold || is_already_italics
-                ? end - thingToInsert.length
-                : end + thingToInsert.length
+                  ? end - thingToInsert.length
+                  : end + thingToInsert.length,
             );
 
             selection.removeAllRanges();
@@ -336,7 +344,45 @@ const ChatInput = forwardRef(
       }
     }, [textAreaRef]);
 
+    useEffect(() => {
+      const emojiMatch = textAreaValue.match(emojiInputRegex);
+      if (emojiMatch) {
+        setEmojiStart(emojiMatch[0].split(":")[1]);
+      }
+
+      const atUsersMatch = textAreaValue.match(atUsersInputRegex);
+      if (atUsersMatch) {
+        setAtUsersStart(atUsersMatch[0].split("@")[1]);
+      }
+    }, [textAreaValue]);
+
+    const [emojiStart, setEmojiStart] = useState<string>("");
+    const [atUsersStart, setAtUsersStart] = useState<string>("");
+
+    useEffect(() => {
+      const emojis = Object.entries(EmojiList).filter(([name, emoji]) => {
+        return name.includes(emojiStart);
+      });
+
+      setActiveEmojisUI(emojis);
+    }, [emojiStart]);
+
+    useEffect(() => {
+      const users = activeUsers.filter((user) => {
+        return user.username.toLowerCase().includes(atUsersStart.toLowerCase());
+      });
+
+      setAtUsersUI(users);
+    }, [atUsersStart, activeUsers]);
+
+    const emojiInputRegex = /(^|\s|[(]):(?![^\s]*[\s:])[^\s]*/; // I hate regex
+    const atUsersInputRegex = /(^|\s|[(])@(?![^\s]*[\s])[^\s]*/; // This is probably the worst regex you'll ever see
+
+    const [activeEmojisUI, setActiveEmojisUI] = useState<[string, string][]>();
+    const [atUsersUI, setAtUsersUI] = useState<UserProfile[]>();
+
     return (
+<<<<<<< HEAD
       <form
         className={isGroup ? "chat-input-form" : "chat-input-form group-input"}
         id="chatInputForm"
@@ -361,8 +407,62 @@ const ChatInput = forwardRef(
           disabled={textAreaValue.length > maxLength}
         ></ChatSendButton>
       </form>
+=======
+      <div className="chat-input-form-container">
+        {emojiInputRegex.test(textAreaValue) && activeEmojisUI && (
+          <UIPopup
+            elements={activeEmojisUI.slice(0, 5).map(([name, emoji]) => {
+              return createUIElement({
+                newPicture: null,
+                newEmoji: emoji,
+                newName: name,
+                newKey: name,
+              });
+            })}
+          />
+        )}
+
+        {atUsersInputRegex.test(textAreaValue) && atUsersUI && (
+          <UIPopup
+            elements={atUsersUI.slice(0, 5).map((user) => {
+              return createUIElement({
+                newPicture: user.userProfilePicture,
+                newEmoji: null,
+                newName: user.username,
+                newKey: user.userUUID,
+              });
+            })}
+          />
+        )}
+
+        <form
+          className="chat-input-form"
+          id="chatInputForm"
+          onSubmit={onSubmit}
+          autoComplete="off"
+        >
+          <ChatExtrasButton session={session}></ChatExtrasButton>
+          <div className="chat-input-div" role="textbox">
+            <div
+              contentEditable={"plaintext-only"}
+              className="chat-input"
+              id="chatInput"
+              ref={textAreaRef}
+              onInput={onChange}
+            ></div>
+            {isInputBlank && (
+              <p className="chat-input-placeholder">Type here...</p>
+            )}
+          </div>
+          <ChatSendButton
+            onSend={onSend}
+            disabled={textAreaValue.length > maxLength}
+          ></ChatSendButton>
+        </form>
+      </div>
+>>>>>>> 8e5a2a1b22daf5dfbc91353a2f81ed4df0515a6d
     );
-  }
+  },
 );
 ChatInput.displayName = "ChatInput";
 

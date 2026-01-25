@@ -1,6 +1,7 @@
 import { Session } from "@supabase/supabase-js";
 import { forwardRef, useEffect, useRef } from "react";
 import "../../App.css";
+import GooberImage from "../../assets/images/goofy_goober.png";
 import ChatInputRef from "../../types/ChatInputRef";
 import ChatMessageObject from "../../types/ChatMessageObject";
 import UserProfile from "../../types/UserProfileObject";
@@ -13,6 +14,8 @@ type ChatWindowProps = {
   clientProfile: UserProfile;
   isMini: boolean;
   session: Session | null;
+  isConnected: boolean;
+  activeUsers: UserProfile[];
 };
 
 type MessagesRef = {
@@ -35,25 +38,38 @@ const ChatWindow = forwardRef<MessagesRef, ChatWindowProps>((props, ref) => {
     if (value) props.sendMessage(value);
   };
 
-  return (
-    <main
-      id="chatWindow"
-      className={props.isMini ? "chat-mini-window" : "chat-window"}
-    >
-      <Messages
-        messages={props.messages}
-        sendMessage={props.sendMessage}
-        ref={messagesRef}
-        clientProfile={props.clientProfile}
-      ></Messages>
-      <ChatInput
-        onSend={handleSent}
-        ref={chatInputRef}
-        session={props.session}
-        isGroup={false}
-      ></ChatInput>
-    </main>
-  );
+  if (props.isConnected) {
+    return (
+      <main
+        id="chatWindow"
+        className={props.isMini ? "chat-mini-window" : "chat-window"}
+      >
+        <Messages
+          messages={props.messages}
+          sendMessage={props.sendMessage}
+          ref={messagesRef}
+          clientProfile={props.clientProfile}
+        ></Messages>
+        <ChatInput
+          onSend={handleSent}
+          ref={chatInputRef}
+          session={props.session}
+          activeUsers={props.activeUsers}
+        ></ChatInput>
+      </main>
+    );
+  } else
+    return (
+      <main
+        id="chatWindow"
+        className={props.isMini ? "chat-mini-window" : "chat-window"}
+      >
+        <div id="chatMessages" className="chat-messages loading">
+          <img className="loading-animation" src={GooberImage} />
+          <p>Loading...</p>
+        </div>
+      </main>
+    );
 });
 
 export default ChatWindow;

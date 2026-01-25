@@ -128,9 +128,9 @@ button:active {
 @media (prefers-color-scheme: light) {
   :root {
     /* hsl (fallback color) */
-    --bg-dark: hsl(115, 67%, 93%);
-    --bg-light: #f1f1f1;
-    --bg: hsl(0, 0%, 100%);
+    --bg-dark: hwb(115 88% 2%);
+    --bg-light: hsl(0, 0%, 100%);
+    --bg: hsl(0, 0%, 95%);
     --text: hsl(125 100% 2%);
     --text-muted: hsl(117 33% 24%);
     --highlight: hsl(116 100% 96%);
@@ -141,8 +141,8 @@ button:active {
 
     /* oklch */
     --bg-dark: oklch(0.96 0.04 143);
-    --bg-light: oklch(95.815% 0.00011 271.152);
-    --bg: oklch(100% 0.00011 271.152);
+    --bg-light: oklch(100% 0.00011 271.152);
+    --bg: oklch(95.815% 0.00011 271.152);
     --text: oklch(0.15 0.08 143);
     --text-muted: oklch(0.4 0.08 143);
     --highlight: oklch(1 0.08 143);
@@ -165,5 +165,7 @@ button:active {
 
 button {
   color: var(--text-color);
-  box-shadow: 0px 2px 2px oklch(0 0 0 / 0.2), 0px 4px 4px oklch(0 0 0 / 0.1);
+  box-shadow:
+    0px 2px 2px oklch(0 0 0 / 0.2),
+    0px 4px 4px oklch(0 0 0 / 0.1);
 }

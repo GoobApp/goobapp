@@ -1,24 +1,28 @@
-.chat-input-form {
-  view-transition-name: chat-input-form;
+.chat-input-form-container {
+  position: relative;
   grid-row: 2;
-  gap: 10px;
 
   background-color: var(--primary);
   border-radius: 30px;
 
   box-sizing: border-box;
 
-  justify-items: center;
-
-  display: flex;
-
   --input-size: 60px;
   --max-input-size: 200px;
   --input-padding: 25px;
 }
 
-.chat-input-div {
+.chat-input-form {
+  justify-items: center;
   display: flex;
+  gap: 10px;
+}
+
+.chat-input-div {
+  position: relative;
+  grid-column: 2;
+  display: flex;
+  flex-direction: column-reverse;
   align-items: center;
   align-self: center;
   width: 100%;
@@ -68,7 +72,32 @@
 
   text-align: start;
 
-  left: 1;
+  left: 0;
+}
+.ui-popup-container {
+  scrollbar-width: none;
+  width: 100%;
+  overflow: visible;
+  background-color: transparent;
+}
+
+.ui-popup-element {
+  padding-top: 10px;
+  display: flex;
+  flex-direction: row;
+  place-content: center;
+  gap: 10px;
+}
+
+.ui-popup-emoji {
+  /* aspect-ratio: 1 / 1; */
+  height: 3em;
+  width: auto;
+  display: inline-block;
+  white-space: nowrap;
+
+  image-rendering: pixelated; /* Universal support since 2021 */
+  -ms-interpolation-mode: nearest-neighbor; /* IE8+ */
 }
 
 .chat-button {

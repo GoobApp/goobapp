@@ -31,15 +31,6 @@
   gap: 10px;
 }
 
-.user-profile-picture {
-  grid-column: 1;
-  width: 35px;
-  height: 35px;
-  background-color: gray;
-  aspect-ratio: 1/1;
-  border-radius: 100%;
-}
-
 .username {
   flex-basis: 100%;
   text-align: start;
