@@ -3,7 +3,13 @@ import { ChangeEvent, useRef } from "react";
 import "../../App.css";
 import { SERVER_URL } from "../../socket";
 
-const ChatExtrasButton = ({ session }: { session: Session | null }) => {
+const ChatExtrasButton = ({
+  session,
+  groupId,
+}: {
+  session: Session | null;
+  groupId: string | null;
+}) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const handleClick = () => {
@@ -24,6 +30,7 @@ const ChatExtrasButton = ({ session }: { session: Session | null }) => {
     }
 
     formData.append("image", file);
+    if (groupId) formData.append("groupId", groupId);
 
     const headers = new Headers();
 

@@ -1,13 +1,11 @@
 import "./App.css";
 import GooberImage from "./assets/images/goofy_goober.png";
+import "./components/Pages/List.css";
 
-const Loading = ({ isMini }: { isMini: boolean }) => {
+const Loading = ({ className }: { className: string }) => {
   return (
-    <main
-      id="chatWindow"
-      className={isMini ? "chat-mini-window" : "chat-window"}
-    >
-      <div id="chatMessages" className="chat-messages loading">
+    <main className={className}>
+      <div className={"chat-messages loading"}>
         <img className="loading-animation" src={GooberImage} />
         <p>Loading...</p>
       </div>

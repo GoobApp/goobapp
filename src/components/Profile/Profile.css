@@ -99,12 +99,6 @@
   margin: 0;
 }
 
-.error-message {
-  font-weight: bold;
-  font-style: italic;
-  color: red;
-}
-
 .password-error-text {
   position: initial;
   font-size: 10px;

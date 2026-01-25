@@ -4,13 +4,13 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import "./App.css";
 import GroupChatWindow from "./components/Chat/GroupChatWindow";
 import ChatWindow from "./components/Chat/Window";
+import GroupsList from "./components/Groups/GroupsList";
 import Layout from "./components/Layout";
 import ChatLoggedOutWindow from "./components/Pages/ChatLoggedOutWindow";
 import EmptyPanel from "./components/Pages/EmptyPanel";
 import ErrorPage from "./components/Pages/ErrorPage";
 import ExtrasList from "./components/Pages/ExtrasList";
 import GamesList from "./components/Pages/GamesList";
-import GroupsList from "./components/Pages/GroupsList";
 import IFrameLearnMore from "./components/Pages/iframeLearnMore";
 import PrivacyPolicy from "./components/Pages/PrivacyPolicy";
 import Search from "./components/Pages/Search";
@@ -34,7 +34,7 @@ const activeBots = [
   }),
 ];
 
-const maxMessages = 200;
+export const maxMessages = 200;
 
 const App = () => {
   const [session, setSession] = useState<Session | null>(null);
@@ -44,6 +44,7 @@ const App = () => {
   const [isAuthLoading, setIsAuthLoading] = useState<boolean>(true);
 
   const [activeUsers, setActiveUsers] = useState<UserProfile[]>([]);
+  const [DMactiveUsers, setDMActiveUsers] = useState<UserProfile[]>([]);
 
   const [profile, setProfile] = useState<UserProfile>(
     createProfileObject({
@@ -192,10 +193,6 @@ const App = () => {
 
       if (!isAuthLoading && session) {
         socket.auth = { token: session?.access_token };
-
-        // if (!socket.connected) {
-        //   socket.connect();
-        // }
       } else {
         if (socket.connected && !isAuthLoading) {
           socket.disconnect();
@@ -353,6 +350,7 @@ const App = () => {
           session={session}
           profileObject={profile}
           usersList={activeUsers}
+          DMUsersList={DMactiveUsers}
           maxUsers={activeUsers.length}
           chatWindow={
             isAuthLoading || session == null ? (
@@ -401,14 +399,13 @@ const App = () => {
             ),
         },
         {
-          path: "/groups/*",
+          path: "/groups/:groupId",
           element:
             !isAuthLoading && session != null ? (
               <GroupChatWindow
-                messages={messages}
-                sendMessage={handleMessageSent}
                 clientProfile={profile}
                 session={session}
+                setDMUsers={(users) => setDMActiveUsers(users)}
               />
             ) : (
               <ChatLoggedOutWindow></ChatLoggedOutWindow>

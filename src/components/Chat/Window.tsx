@@ -55,10 +55,13 @@ const ChatWindow = forwardRef<MessagesRef, ChatWindowProps>((props, ref) => {
           ref={chatInputRef}
           session={props.session}
           activeUsers={props.activeUsers}
+          isMini={props.isMini}
+          groupId={null}
         ></ChatInput>
       </main>
     );
-  } else return <Loading isMini={props.isMini} />;
+  } else
+    return <Loading className={`chat${props.isMini ? "-mini" : ""}-window`} />;
 });
 
 export default ChatWindow;
