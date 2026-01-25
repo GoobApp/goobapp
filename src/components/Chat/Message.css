@@ -60,7 +60,8 @@
   grid-row: 2;
   grid-column: 2;
   font-weight: bold;
-  font-family: "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
+  font-family:
+    "Lucida Sans", "Lucida Sans Regular", "Lucida Grande",
     "Lucida Sans Unicode", Geneva, Verdana, sans-serif;
 }
 
@@ -87,13 +88,17 @@
   width: auto;
   display: inline-block;
   white-space: nowrap;
+  image-rendering: optimizeSpeed; /* STOP SMOOTHING, GIVE ME SPEED  */
+  image-rendering: -moz-crisp-edges; /* Firefox                        */
+  image-rendering: -o-crisp-edges; /* Opera                          */
+  image-rendering: -webkit-optimize-contrast; /* Chrome (and eventually Safari) */
+  image-rendering: pixelated; /* Universal support since 2021   */
+  image-rendering: optimize-contrast; /* CSS3 Proposed                  */
+  -ms-interpolation-mode: nearest-neighbor; /* IE8+ */
 }
 
-.chat-message-content-emoji-big {
+.big-emoji {
   height: 3em;
-  width: auto;
-  display: inline-block;
-  white-space: nowrap;
 }
 
 .chat-message-content-text {
