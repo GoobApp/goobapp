@@ -104,7 +104,7 @@ const GroupChatWindow = forwardRef<MessagesRef, ChatWindowProps>(
         socket.off("dm all users received", onUsersRecieved);
         socket.off("DM add new user", onDMNewUser);
       };
-    }, []);
+    }, [params.groupId]);
 
     const handleSent = () => {
       if (!chatInputRef) return;
