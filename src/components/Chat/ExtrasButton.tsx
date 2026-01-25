@@ -34,8 +34,12 @@ const ChatExtrasButton = ({
 
     const headers = new Headers();
 
-    headers.append("Authorization", "Bearer " + session?.access_token);
-
+    const token = session?.access_token;
+    if (!token) {
+      console.error("Missing session token; aborting upload.");
+      return;
+    }
+    headers.append("Authorization", `Bearer ${token}`);
     let bytes = await file.arrayBuffer();
 
     console.log("Image data: " + bytes);
