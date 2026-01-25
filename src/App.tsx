@@ -21,6 +21,17 @@ import UserProfile from "./types/UserProfileObject";
 import createChatObject from "./utils/ChatMessageCreator";
 import createProfileObject from "./utils/UserProfileCreator";
 
+const activeBots = [
+  createProfileObject({
+    newUserDisplayName: "Goofy Goober",
+    newUserProfilePicture:
+      "https://raw.githubusercontent.com/GoobApp/backend/refs/heads/main/goofy-goober.png",
+    newUserUUID: null,
+    newUserID: null,
+    newUserRole: "Bot",
+  }),
+];
+
 const App = () => {
   const [session, setSession] = useState<Session | null>(null);
   const [unreadMessageCount, setUnreadMessageCount] = useState<number>(0);
@@ -29,14 +40,6 @@ const App = () => {
   const [isAuthLoading, setIsAuthLoading] = useState<boolean>(true);
 
   const [activeUsers, setActiveUsers] = useState<UserProfile[]>([]);
-  const activeBots = createProfileObject({
-    newUserDisplayName: "Goofy Goober",
-    newUserProfilePicture:
-      "https://raw.githubusercontent.com/GoobApp/backend/refs/heads/main/goofy-goober.png",
-    newUserUUID: null,
-    newUserID: null,
-    newUserRole: "Bot",
-  });
 
   const [profile, setProfile] = useState<UserProfile>(
     createProfileObject({

@@ -373,7 +373,7 @@ const ChatInput = forwardRef(
       });
 
       setAtUsersUI(users);
-    }, [atUsersStart]);
+    }, [atUsersStart, activeUsers]);
 
     const emojiInputRegex = /(^|\s|[(]):(?![^\s]*[\s:])[^\s]*/; // I hate regex
     const atUsersInputRegex = /(^|\s|[(])@(?![^\s]*[\s])[^\s]*/; // This is probably the worst regex you'll ever see
