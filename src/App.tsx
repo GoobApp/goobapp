@@ -501,7 +501,7 @@ const App = () => {
           element: (
             <div className="iframe-wrapper">
               <iframe
-                src="https://precontation.github.io/clicks_and_points"
+                src="https://precontation.github.io/clicks-and-points"
                 className="fullscreen-game"
                 allow="fullscreen"
               ></iframe>
