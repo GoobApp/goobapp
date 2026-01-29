@@ -1,0 +1,65 @@
+name: create-tauri-app
+on: [workflow_dispatch]
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup node
+        uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install dependencies
+        run: npm install
+      - name: Build with Tauri
+        run: npx tauri build
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v6
+        with:
+          name: linux
+          path: src-tauri/target/release/bundle/
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - name: Setup node
+        uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install dependencies
+        run: npm install
+      - name: Build with Tauri
+        run: npx tauri build
+      - name: Upload .dmg
+        uses: actions/upload-artifact@v6
+        with:
+          name: macos-portable
+          path: src-tauri/target/release/bundle/*/*.app
+      - name: Upload .app
+        uses: actions/upload-artifact@v6
+        with:
+          name: macos-installer
+          path: src-tauri/target/release/bundle/*/*.dmg
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - name: Setup node
+        uses: actions/checkout@v5
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - name: Install dependencies
+        run: npm install
+      - name: Build with Tauri
+        run: npx tauri build
+      - name: Upload .msi (if found)
+        uses: actions/upload-artifact@v6
+        with:
+          name: windows-installer
+          path: src-tauri/target/release/bundle/*/*.msi
+      - name: Upload .exe
+        uses: actions/upload-artifact@v6
+        with:
+          name: windows
+          path: src-tauri/target/release/bundle/*/*.exe

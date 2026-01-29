@@ -11,7 +11,7 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  overscroll-behavior-y: none;
+  overscroll-behavior: none;
 }
 
 ::-webkit-scrollbar {
