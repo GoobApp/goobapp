@@ -6,6 +6,10 @@ on:
   push:
     branches: main
 
+concurrency:
+  group: publish
+  cancel-in-progress: true
+
 # This is the example from the readme.
 # On each push to the `release` branch it will create or update a GitHub release, build your app, and upload the artifacts to the release.
 
