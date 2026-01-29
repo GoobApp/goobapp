@@ -16,7 +16,7 @@ const Search = () => {
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
   const urlTestRegex =
-    /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/; // AAAA THANK YOU SO MUCH TO https://gist.github.com/StaticCloud/c58069c315c9c8191f1f9ebf377bf52d
+    /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})[\/\w .-]*\/?$/; // AAAA THANK YOU SO MUCH TO https://gist.github.com/StaticCloud/c58069c315c9c8191f1f9ebf377bf52d
 
   const q = searchParams.get("q");
 
