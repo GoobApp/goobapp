@@ -10,7 +10,18 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: "20"
-      - name: Install dependencies
+      - name: Install apt dependencies
+        run: sudo apt update
+          sudo apt install libwebkit2gtk-4.1-dev \
+          build-essential \
+          curl \
+          wget \
+          file \
+          libxdo-dev \
+          libssl-dev \
+          libayatana-appindicator3-dev \
+          librsvg2-dev
+      - name: Install npm dependencies
         run: npm install
       - name: Build with Tauri
         run: npx tauri build
