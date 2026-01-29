@@ -1,6 +1,6 @@
-import "./App.css";
-import GooberImage from "./assets/images/goofy_goober.png";
-import "./components/Pages/List.css";
+import "../App.css";
+import GooberImage from "../assets/images/goofy_goober.png";
+import "../components/Pages/List.css";
 
 const Loading = ({ className }: { className: string }) => {
   return (

@@ -1,13 +1,8 @@
-import {
-  FocusEvent,
-  FocusEventHandler,
-  MouseEvent,
-  useEffect,
-  useRef,
-} from "react";
+import { MouseEvent, useEffect } from "react";
 import "../../../App.css";
-import { socket } from "../../../socket";
+import useClickOutside from "../../../hooks/useClickOutside";
 import UserProfileObject from "../../../types/UserProfileObject";
+import { socket } from "../../../utils/Socket";
 import "./Users.css";
 
 const UserPanel = ({
@@ -17,7 +12,7 @@ const UserPanel = ({
 }: {
   user: UserProfileObject;
   clientUser: UserProfileObject;
-  onClose: FocusEventHandler<HTMLDivElement> | undefined;
+  onClose: () => void;
 }) => {
   const giveRole = () => {
     const role = window.prompt("Role name to give?");
@@ -26,46 +21,37 @@ const UserPanel = ({
     }
   };
 
-  const panelRef = useRef<HTMLDivElement | null>(null);
+  const panelRef = useClickOutside(onClose);
 
   useEffect(() => {
     const panel = panelRef.current;
     if (panel) panel.focus();
   }, []);
 
-  const handleBlur = (event: FocusEvent<HTMLDivElement>) => {
-    if (!panelRef.current?.contains(event.relatedTarget)) {
-      onClose?.(event);
-    }
-  };
-
   return (
-    <div
-      className="user-panel-div"
-      onBlur={handleBlur}
-      tabIndex={-1}
-      ref={panelRef}
-    >
-      <div className="user-panel-background">
+    <div>
+      <div className="panel-form user-panel-div" tabIndex={-1} ref={panelRef}>
+        <div className="user-panel-background">
+          <img
+            draggable={false}
+            src={user.userProfilePicture}
+            className="user-panel-background-image"
+          ></img>
+        </div>
+        <p className="user-panel-username">{user.username}</p>
         <img
-          draggable={false}
           src={user.userProfilePicture}
-          className="user-panel-background-image"
+          className="user-panel-profile-picture"
         ></img>
+        {user.userRole && (
+          <span className="user-panel-role">{user.userRole}</span>
+        )}
+        {clientUser.userRole == "Owner" && (
+          <button className="user-panel-button" onClick={giveRole}>
+            Give user role
+          </button>
+        )}
       </div>
-      <p className="user-panel-username">{user.username}</p>
-      <img
-        src={user.userProfilePicture}
-        className="user-panel-profile-picture"
-      ></img>
-      {user.userRole && (
-        <span className="user-panel-role">{user.userRole}</span>
-      )}
-      {clientUser.userRole == "Owner" && (
-        <button className="user-panel-button" onClick={giveRole}>
-          Give user role
-        </button>
-      )}
     </div>
   );
 };
@@ -83,20 +69,14 @@ export const BotPanel = ({
   profile_picture: string;
   bot_call: string;
   clientUser: UserProfileObject;
-  onClose: FocusEventHandler<HTMLDivElement> | undefined;
+  onClose: () => void;
 }) => {
-  const panelRef = useRef<HTMLDivElement | null>(null);
+  const panelRef = useClickOutside(onClose);
 
   useEffect(() => {
     const panel = panelRef.current;
     if (panel) panel.focus();
   }, []);
-
-  const handleBlur = (event: FocusEvent<HTMLDivElement>) => {
-    if (!panelRef.current?.contains(event.relatedTarget)) {
-      onClose?.(event);
-    }
-  };
 
   const customSystemPrompt = (event: MouseEvent<HTMLButtonElement>) => {
     const prompt = window.prompt("What do you want to set the prompt to?");
@@ -107,7 +87,7 @@ export const BotPanel = ({
 
   const addToSystemPrompt = (event: MouseEvent<HTMLButtonElement>) => {
     const prompt = window.prompt(
-      "What do you want to add the prompt to? NOTE: This will remove the original added prompt"
+      "What do you want to add the prompt to? NOTE: This will remove the original added prompt",
     );
     if (prompt !== null) {
       socket.emit("add to system prompt", prompt);
@@ -117,7 +97,7 @@ export const BotPanel = ({
   const resetSystemPrompt = (event: MouseEvent<HTMLButtonElement>) => {
     if (
       window.confirm(
-        "Are you sure you want to reset the system prompt back to default?"
+        "Are you sure you want to reset the system prompt back to default?",
       )
     ) {
       socket.emit("reset system prompt");
@@ -125,38 +105,35 @@ export const BotPanel = ({
   };
 
   return (
-    <div
-      className="user-panel-div"
-      onBlur={handleBlur}
-      tabIndex={-1}
-      ref={panelRef}
-    >
-      <div className="user-panel-background">
-        <img
-          src={profile_picture}
-          draggable={false}
-          className="user-panel-background-image"
-        ></img>
+    <div>
+      <div className="panel-form user-panel-div" tabIndex={-1} ref={panelRef}>
+        <div className="user-panel-background">
+          <img
+            src={profile_picture}
+            draggable={false}
+            className="user-panel-background-image"
+          ></img>
+        </div>
+        <p className="user-panel-username">{username}</p>
+        <img src={profile_picture} className="user-panel-profile-picture"></img>
+        <span className="user-panel-role">Bot</span>
+        <p>Use {bot_call} to ask</p>
+        {clientUser.userRole == "Owner" && (
+          <button className="user-panel-button" onClick={customSystemPrompt}>
+            Custom system prompt (this commit only)
+          </button>
+        )}
+        {clientUser.userRole == "Owner" && (
+          <button className="user-panel-button" onClick={addToSystemPrompt}>
+            Add to system prompt (this commit only)
+          </button>
+        )}
+        {clientUser.userRole == "Owner" && (
+          <button className="user-panel-button" onClick={resetSystemPrompt}>
+            Reset system prompt
+          </button>
+        )}
       </div>
-      <p className="user-panel-username">{username}</p>
-      <img src={profile_picture} className="user-panel-profile-picture"></img>
-      <span className="user-panel-role">Bot</span>
-      <p>Use {bot_call} to ask</p>
-      {clientUser.userRole == "Owner" && (
-        <button className="user-panel-button" onClick={customSystemPrompt}>
-          Custom system prompt (this commit only)
-        </button>
-      )}
-      {clientUser.userRole == "Owner" && (
-        <button className="user-panel-button" onClick={addToSystemPrompt}>
-          Add to system prompt (this commit only)
-        </button>
-      )}
-      {clientUser.userRole == "Owner" && (
-        <button className="user-panel-button" onClick={resetSystemPrompt}>
-          Reset system prompt
-        </button>
-      )}
     </div>
   );
 };

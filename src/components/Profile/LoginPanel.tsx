@@ -2,23 +2,14 @@
 
 import { Turnstile, TurnstileInstance } from "@marsidev/react-turnstile";
 import { Provider } from "@supabase/supabase-js";
-import {
-  FocusEvent,
-  FocusEventHandler,
-  FormEvent,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { FormEvent, useEffect, useRef, useState } from "react";
 import "../../App.css";
+import useClickOutside from "../../hooks/useClickOutside";
+import isTauri from "../../utils/EnvironmentInfo";
 import { Client } from "../supabase/Client";
 import "./Profile.css";
 
-const LoginPanel = ({
-  onClose,
-}: {
-  onClose: FocusEventHandler<HTMLDivElement> | undefined;
-}) => {
+const LoginPanel = ({ onClose }: { onClose: () => void }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -41,7 +32,7 @@ const LoginPanel = ({
       if (error) throw error;
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "An error occurred during sign in"
+        err instanceof Error ? err.message : "An error occurred during sign in",
       );
     } finally {
       setLogInLoading(false);
@@ -63,29 +54,30 @@ const LoginPanel = ({
       if (error) throw error;
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "An error occurred during sign up"
+        err instanceof Error ? err.message : "An error occurred during sign up",
       );
     } finally {
       setLogInLoading(false);
     }
   };
 
-  const panelRef = useRef<HTMLDivElement | null>(null);
-
   useEffect(() => {
     const panel = panelRef.current;
     if (panel) panel.focus();
   }, []);
 
-  const handleBlur = (event: FocusEvent<HTMLDivElement>) => {
-    if (!panelRef.current?.contains(event.relatedTarget)) {
-      onClose?.(event);
-    }
-  };
+  const panelRef = useClickOutside(onClose);
 
   return (
-    <div onBlur={handleBlur} tabIndex={-1} ref={panelRef}>
-      <form className="login-panel-form" onSubmit={handleLogIn}>
+    <div tabIndex={-1} ref={panelRef}>
+      <form
+        className={
+          isTauri
+            ? "login-panel-form panel-form tauri-panel-form"
+            : "login-panel-form panel-form"
+        }
+        onSubmit={handleLogIn}
+      >
         <Turnstile
           siteKey="0x4AAAAAACDL09dyN0WgJyZL"
           onSuccess={(token) => {
@@ -108,7 +100,7 @@ const LoginPanel = ({
           disabled={logInLoading}
           className="login-signup-input"
         />
-        <br></br>
+        <br />
         <button
           type="submit"
           disabled={logInLoading || email == "" || password == ""}
@@ -116,19 +108,23 @@ const LoginPanel = ({
         >
           {logInLoading ? "Loading..." : "Sign In"}
         </button>
-        <hr className="login-signup-panel-divider"></hr>or
-        <button
-          type="button"
-          onClick={() => handleSignInWithProvider("google")}
-        >
-          Sign in with Google
-        </button>
-        <button
-          type="button"
-          onClick={() => handleSignInWithProvider("github")}
-        >
-          Sign in with GitHub
-        </button>
+        <hr className="login-signup-panel-divider"></hr>
+        <div className="flex-horizontal">
+          <button
+            type="button"
+            className="OAuth-button"
+            onClick={() => handleSignInWithProvider("google")}
+          >
+            Google
+          </button>
+          <button
+            type="button"
+            className="OAuth-button"
+            onClick={() => handleSignInWithProvider("github")}
+          >
+            GitHub
+          </button>
+        </div>
         {error && <div className="error-message">{error}</div>}
       </form>
     </div>

@@ -118,7 +118,7 @@
   background-color: var(--bg) !important;
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 800px) {
   .other-page,
   .search-page {
     grid-column: 1 / span 3;

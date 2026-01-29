@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "../../../App.css";
-import { socket } from "../../../socket";
 import UserProfile from "../../../types/UserProfileObject";
+import { socket } from "../../../utils/Socket";
 import UserDisplay from "./ActiveUser";
 
 const DMUsersPanel = ({

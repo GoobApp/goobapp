@@ -2,7 +2,6 @@
   background-color: var(--bg);
   border-bottom: 1px solid white;
   font-size: 1rem;
-  padding: 1em;
 
   z-index: 2;
 
@@ -15,15 +14,39 @@
   word-break: break-word;
   border-radius: 100px;
 
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-
   grid-column: 1 / span 3;
   justify-self: center;
   width: 100%;
 
   grid-row: 1;
+
+  margin-top: env(safe-area-inset-top);
+  padding-left: calc(1em + env(safe-area-inset-left));
+  padding-right: calc(1em + env(safe-area-inset-right));
+}
+
+.tauri-bar {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  border-radius: 0px;
+  height: 50px;
+  border-bottom: none;
+  background-color: transparent;
+  padding-top: 10px;
+}
+
+.top-bar-content {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 15px;
+}
+
+.tauri-top-bar-content {
+  width: fit-content;
 }
 
 .login-signup-div {
@@ -72,8 +95,6 @@
 .profile-panel-div {
   z-index: 3;
   position: absolute;
-  top: 100%;
-  right: 0;
   background-color: var(--bg);
   width: auto;
   height: auto;
@@ -82,14 +103,20 @@
   flex-wrap: wrap;
   place-items: center;
   gap: 10px;
+  margin-top: 5px;
   padding: 50px;
   box-shadow: 0px 0px 10px var(--primary);
   overflow: hidden;
 }
 
+.profile-panel-not-tauri {
+  right: 0;
+}
+
 .login-signup-button {
-  position: relative;
+  width: max-content;
   width: auto;
+  position: relative;
 }
 
 .profile-panel-username {
@@ -118,21 +145,18 @@
   color: rgb(200, 0, 0);
 }
 
-.signup-panel-form,
-.login-panel-form {
-  position: absolute;
-  right: 25px;
-  top: 75px;
-  background-color: var(--bg);
-  width: 250px;
-  height: auto;
-  display: flex;
-  flex-wrap: wrap;
-  justify-items: center;
-  gap: 10px;
-  margin-top: 15px;
-  padding: 50px;
-  box-shadow: 0px 0px 10px var(--primary);
+.tauri-panel-form {
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.login-signup-panel-button {
+  flex-basis: 100%;
+}
+
+.login-signup-panel-button,
+.OAuth-button {
+  width: max-content;
 }
 
 .login-signup-input {
@@ -195,7 +219,7 @@
   flex-basis: 100%;
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 800px) {
   .profile-top-bar {
     grid-column: 1;
   }

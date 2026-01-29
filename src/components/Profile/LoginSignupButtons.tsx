@@ -25,26 +25,31 @@ const LoginSignupButtons = () => {
 
   return (
     <div className="login-signup-div">
-      <button className="login-signup-button" onClick={handleLoginClick}>
-        Log In
-      </button>
-      <button className="login-signup-button" onClick={handleSignUpClick}>
-        Sign Up
-      </button>
-      {loginOpened && (
-        <LoginPanel
-          onClose={() => {
-            setLoginOpened(false);
-          }}
-        ></LoginPanel>
-      )}
-      {signupOpened && (
-        <SignupPanel
-          onClose={() => {
-            setSignupOpened(false);
-          }}
-        ></SignupPanel>
-      )}
+      <div className="login-signup-button">
+        <button className="login-signup-button" onClick={handleLoginClick}>
+          Log In
+        </button>
+        {loginOpened && (
+          <LoginPanel
+            onClose={() => {
+              setLoginOpened(false);
+            }}
+          ></LoginPanel>
+        )}
+      </div>
+
+      <div className="login-signup-button">
+        <button className="login-signup-button" onClick={handleSignUpClick}>
+          Sign Up
+        </button>
+        {signupOpened && (
+          <SignupPanel
+            onClose={() => {
+              setSignupOpened(false);
+            }}
+          ></SignupPanel>
+        )}
+      </div>
     </div>
   );
 };

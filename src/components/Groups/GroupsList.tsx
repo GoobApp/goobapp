@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "../../App.css";
-import Loading from "../../Loading";
-import { socket } from "../../socket";
+import Loading from "../../utils/Loading";
+import { socket } from "../../utils/Socket";
 import "../Pages/List.css";
 import GroupsButton from "./GroupsButton";
 

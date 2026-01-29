@@ -3,8 +3,6 @@ import { forwardRef, useEffect, useRef, useState } from "react";
 import { useParams } from "react-router";
 import { maxMessages } from "../../App";
 import "../../App.css";
-import Loading from "../../Loading";
-import { socket } from "../../socket";
 import ChatInputRef from "../../types/ChatInputRef";
 import {
   default as ChatMessage,
@@ -12,6 +10,8 @@ import {
 } from "../../types/ChatMessageObject";
 import UserProfile from "../../types/UserProfileObject";
 import createChatObject from "../../utils/ChatMessageCreator";
+import Loading from "../../utils/Loading";
+import { socket } from "../../utils/Socket";
 import ChatInput from "./Input";
 import Messages from "./Messages";
 

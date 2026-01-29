@@ -1,7 +1,9 @@
-import { FocusEvent, useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import "../../App.css";
+import useClickOutside from "../../hooks/useClickOutside";
 import UserProfileObject from "../../types/UserProfileObject";
+import isTauri from "../../utils/EnvironmentInfo";
 import { Client } from "../supabase/Client";
 import "./Profile.css";
 
@@ -36,23 +38,20 @@ const ProfilePanel = ({
     }
   };
 
-  const panelRef = useRef<HTMLDivElement | null>(null);
-
   useEffect(() => {
     const panel = panelRef.current;
     if (panel) panel.focus();
   }, []);
 
-  const handleBlur = (event: FocusEvent<HTMLDivElement>) => {
-    if (!panelRef.current?.contains(event.relatedTarget)) {
-      onClose();
-    }
-  };
+  const panelRef = useClickOutside(onClose);
 
   return (
     <div
-      className="profile-panel-div"
-      onBlur={handleBlur}
+      className={
+        isTauri
+          ? "profile-panel-div panel-div tauri-panel-form"
+          : "profile-panel-div profile-panel-not-tauri"
+      }
       tabIndex={-1}
       ref={panelRef}
     >

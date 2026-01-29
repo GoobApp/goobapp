@@ -2,25 +2,15 @@
 
 import { Turnstile, TurnstileInstance } from "@marsidev/react-turnstile";
 import { Provider } from "@supabase/supabase-js";
-import {
-  ChangeEvent,
-  FocusEvent,
-  FocusEventHandler,
-  FormEvent,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import "../../App.css";
+import useClickOutside from "../../hooks/useClickOutside";
+import isTauri from "../../utils/EnvironmentInfo";
 import { Client } from "../supabase/Client";
 import "./Profile.css";
 
-const SignupPanel = ({
-  onClose,
-}: {
-  onClose: FocusEventHandler<HTMLDivElement> | undefined;
-}) => {
+const SignupPanel = ({ onClose }: { onClose: () => void }) => {
   const [email, setEmail] = useState("");
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -53,7 +43,7 @@ const SignupPanel = ({
       if (error) throw error;
     } catch (err) {
       setError(
-        err instanceof Error ? err.message : "An error occurred during sign up"
+        err instanceof Error ? err.message : "An error occurred during sign up",
       );
     } finally {
       setSignUpLoading(false);
@@ -76,7 +66,7 @@ const SignupPanel = ({
     } catch (err) {
       print();
       setError(
-        err instanceof Error ? err.message : "An error occurred during sign up"
+        err instanceof Error ? err.message : "An error occurred during sign up",
       );
     } finally {
       setSignUpLoading(false);
@@ -93,22 +83,23 @@ const SignupPanel = ({
     setPasswordsMatch(password == e.target.value);
   };
 
-  const panelRef = useRef<HTMLDivElement | null>(null);
-
   useEffect(() => {
     const panel = panelRef.current;
     if (panel) panel.focus();
   }, []);
 
-  const handleBlur = (event: FocusEvent<HTMLDivElement>) => {
-    if (!panelRef.current?.contains(event.relatedTarget)) {
-      onClose?.(event);
-    }
-  };
+  const panelRef = useClickOutside(onClose);
 
   return (
-    <div onBlur={handleBlur} tabIndex={-1} ref={panelRef}>
-      <form className="signup-panel-form" onSubmit={handleSignUp}>
+    <div tabIndex={-1} ref={panelRef}>
+      <form
+        className={
+          isTauri
+            ? "signup-panel-form panel-form tauri-panel-form"
+            : "signup-panel-form panel-form"
+        }
+        onSubmit={handleSignUp}
+      >
         <Turnstile
           siteKey="0x4AAAAAACDL09dyN0WgJyZL"
           onSuccess={(token) => {
@@ -170,19 +161,23 @@ const SignupPanel = ({
         >
           {signUpLoading ? "Loading..." : "Sign Up"}
         </button>
-        <hr className="login-signup-panel-divider"></hr>or
-        <button
-          type="button"
-          onClick={() => handleSignUpWithProvider("google")}
-        >
-          Sign up with Google
-        </button>
-        <button
-          type="button"
-          onClick={() => handleSignUpWithProvider("github")}
-        >
-          Sign up with GitHub
-        </button>
+        <hr className="login-signup-panel-divider"></hr>
+        <div className="flex-horizontal">
+          <button
+            type="button"
+            className="OAuth-button"
+            onClick={() => handleSignUpWithProvider("google")}
+          >
+            Google
+          </button>
+          <button
+            type="button"
+            className="OAuth-button"
+            onClick={() => handleSignUpWithProvider("github")}
+          >
+            GitHub
+          </button>
+        </div>
         {error && <div className="error-message">{error}</div>}
         <p className="footnote">
           By using GoobApp, you agree to the{" "}

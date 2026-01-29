@@ -1,10 +1,10 @@
 import { useRef, useState } from "react";
 import { Link } from "react-router";
 import "../../App.css";
-import { socket } from "../../socket";
 import ChatMessage from "../../types/ChatMessageObject";
 import EmojiList from "../../types/EmojiList";
 import UserProfile from "../../types/UserProfileObject";
+import { socket } from "../../utils/Socket";
 import "./Message.css";
 
 interface MessageChunk {

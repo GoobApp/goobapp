@@ -17,10 +17,10 @@ import Search from "./components/Pages/Search";
 import SettingsPage from "./components/Pages/SettingsPage";
 import TOS from "./components/Pages/TOS";
 import { Client } from "./components/supabase/Client";
-import { socket } from "./socket";
 import ChatMessageObject from "./types/ChatMessageObject";
 import UserProfile from "./types/UserProfileObject";
 import createChatObject from "./utils/ChatMessageCreator";
+import { socket } from "./utils/Socket";
 import createProfileObject from "./utils/UserProfileCreator";
 
 const activeBots = [

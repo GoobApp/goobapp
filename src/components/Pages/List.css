@@ -43,7 +43,7 @@
   place-self: start;
 }
 
-@media screen and (max-width: 1000px) {
+@media screen and (max-width: 800px) {
   .list {
     grid-column: 1 / span 3;
   }

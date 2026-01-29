@@ -1,10 +1,10 @@
 import { Session } from "@supabase/supabase-js";
 import { forwardRef, useEffect, useRef } from "react";
 import "../../App.css";
-import Loading from "../../Loading";
 import ChatInputRef from "../../types/ChatInputRef";
 import ChatMessageObject from "../../types/ChatMessageObject";
 import UserProfile from "../../types/UserProfileObject";
+import Loading from "../../utils/Loading";
 import ChatInput from "./Input";
 import Messages from "./Messages";
 

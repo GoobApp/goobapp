@@ -1,7 +1,7 @@
 import { Session } from "@supabase/supabase-js";
 import { ChangeEvent, useRef } from "react";
 import "../../App.css";
-import { SERVER_URL } from "../../socket";
+import { SERVER_URL } from "../../utils/Socket";
 
 const ChatExtrasButton = ({
   session,

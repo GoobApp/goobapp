@@ -5,6 +5,7 @@ import "../App.css";
 import TopBar from "../components/Profile/TopBar";
 import SwitcherPanel from "../components/SwitcherPanel";
 import UserProfile from "../types/UserProfileObject";
+import isTauri from "../utils/EnvironmentInfo";
 import DMUsersPanel from "./Chat/Users/DMUsersPanel";
 import ChatUsersPanel from "./Chat/Users/UsersPanel";
 
@@ -28,7 +29,7 @@ const App: FC<LayoutProps> = ({
   const location = useLocation();
 
   return (
-    <div className="wrapper">
+    <div className={isTauri ? "wrapper tauri-wrapper" : "wrapper"}>
       <TopBar profile={profileObject} session={session}></TopBar>
       <SwitcherPanel></SwitcherPanel>
       <Outlet></Outlet>

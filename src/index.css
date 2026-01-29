@@ -157,6 +157,7 @@ button:active {
 
 :root {
   --roundness: 8px;
+  --max-width-before-phone-mode: 800px;
 }
 
 ::placeholder {
