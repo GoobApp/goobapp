@@ -1,79 +1,81 @@
-name: create-tauri-app
-on: [workflow_dispatch]
+# Taken from https://github.com/tauri-apps/tauri-action/blob/dev/examples/publish-to-auto-release-universal-macos-app-with-signing-certificate.yml
+
+name: "publish"
+
+on:
+  push:
+    branches:
+      - release
+
+# This is the example for publishing a Universal macOS app with a signing certificate.
+# On each push to the `release` branch it will create or update a GitHub release, build your app, and upload the artifacts to the release.
 
 jobs:
-  build-linux:
-    runs-on: ubuntu-latest
+  publish-tauri:
+    permissions:
+      contents: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # for Universal macOS builds (arm64 and x86_64)
+          - platform: "macos-latest"
+            args: "--target universal-apple-darwin"
+
+    runs-on: ${{ matrix.platform }}
     steps:
-      - name: Setup node
-        uses: actions/checkout@v5
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+
+      - name: setup node
+        uses: actions/setup-node@v4
         with:
-          node-version: "20"
-      - name: Install apt dependencies
-        run: sudo apt update
-          sudo apt install libwebkit2gtk-4.1-dev \
-          build-essential \
-          curl \
-          wget \
-          file \
-          libxdo-dev \
-          libssl-dev \
-          libayatana-appindicator3-dev \
-          librsvg2-dev
-      - name: Install npm dependencies
-        run: npm install
-      - name: Build with Tauri
-        run: npx tauri build
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v6
+          node-version: lts/*
+
+      - name: install Rust stable
+        uses: dtolnay/rust-toolchain@stable
         with:
-          name: linux
-          path: src-tauri/target/release/bundle/
-  build-macos:
-    runs-on: macos-latest
-    steps:
-      - name: Setup node
-        uses: actions/checkout@v5
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-      - name: Install dependencies
-        run: npm install
-      - name: Build with Tauri
-        run: npx tauri build
+          targets: ${{ matrix.platform == 'macos-latest' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
+
+      - name: install frontend dependencies
+        run: yarn install # change this to npm, pnpm or bun depending on which one you use.
+
+      - name: import Apple Developer Certificate
+        # Prevents keychain from locking automatically for 3600 seconds.
         env:
-          TAURI_SIGNING_IDENTITY: ${{ secrets.TauriSigningIdentity }}
-          TAURI_DEVELOPMENT_TEAM: ${{ secrets.TauriDevelopmentTeam }}
-      - name: Upload .dmg
-        uses: actions/upload-artifact@v6
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          KEYCHAIN_PASSWORD: ${{ secrets.KEYCHAIN_PASSWORD }}
+        run: |
+          echo $APPLE_CERTIFICATE | base64 --decode > certificate.p12
+          security create-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
+          security default-keychain -s build.keychain
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" build.keychain
+          security set-keychain-settings -t 3600 -u build.keychain
+          security import certificate.p12 -k build.keychain -P "$APPLE_CERTIFICATE_PASSWORD" -T /usr/bin/codesign
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" build.keychain
+          security find-identity -v -p codesigning build.keychain
+
+      - name: verify certificate
+        run: |
+          CERT_INFO=$(security find-identity -v -p codesigning build.keychain | grep "Developer ID Application")
+          CERT_ID=$(echo "$CERT_INFO" | awk -F'"' '{print $2}')
+          echo "CERT_ID=$CERT_ID" >> $GITHUB_ENV
+          echo "Certificate imported."
+
+      - name: build and publish
+        uses: tauri-apps/tauri-action@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_SIGNING_IDENTITY: ${{ env.CERT_ID }}
         with:
-          name: macos-portable
-          path: src-tauri/target/release/bundle/*/*.app
-      - name: Upload .app
-        uses: actions/upload-artifact@v6
-        with:
-          name: macos-installer
-          path: src-tauri/target/release/bundle/*/*.dmg
-  build-windows:
-    runs-on: windows-latest
-    steps:
-      - name: Setup node
-        uses: actions/checkout@v5
-      - uses: actions/setup-node@v4
-        with:
-          node-version: "20"
-      - name: Install dependencies
-        run: npm install
-      - name: Build with Tauri
-        run: npx tauri build
-      - name: Upload .msi (if found)
-        uses: actions/upload-artifact@v6
-        with:
-          name: windows-installer
-          path: src-tauri/target/release/bundle/*/*.msi
-      - name: Upload .exe
-        uses: actions/upload-artifact@v6
-        with:
-          name: windows
-          path: src-tauri/target/release/bundle/*/*.exe
+          tagName: app-v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
+          releaseName: "App v__VERSION__"
+          releaseBody: "See the assets to download this version and install."
+          releaseDraft: true
+          prerelease: false
+          args: ${{ matrix.args }}
