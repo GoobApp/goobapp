@@ -53,6 +53,8 @@ jobs:
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          VITE_SUPABASE_KEY: ${{ secrets.VITE_SUPABASE_KEY}}
+          VITE_SUPABASE_URL: ${{secrets.VITE_SUPABASE_URL}}
         with:
           tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
           releaseName: "GoobApp v__VERSION__"
@@ -121,6 +123,8 @@ jobs:
           APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
           APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
           APPLE_SIGNING_IDENTITY: ${{ env.CERT_ID }}
+          VITE_SUPABASE_KEY: ${{ secrets.VITE_SUPABASE_KEY}}
+          VITE_SUPABASE_URL: ${{secrets.VITE_SUPABASE_URL}}
         with:
           tagName: v__VERSION__ # the action automatically replaces \_\_VERSION\_\_ with the app version.
           releaseName: "GoobApp v__VERSION__"

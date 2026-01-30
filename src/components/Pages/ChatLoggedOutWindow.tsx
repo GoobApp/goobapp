@@ -1,4 +1,6 @@
+import { Link } from "react-router";
 import goober from "../../assets/images/goofy_goober.png";
+import isTauri from "../../utils/EnvironmentInfo";
 import "./Other.css";
 
 const ChatLoggedOutWindow = () => {
@@ -25,6 +27,11 @@ const ChatLoggedOutWindow = () => {
           View Project on GitHub
         </button>
       </a>
+      {!isTauri && (
+        <Link to="/get" viewTransition={true}>
+          <button className="github-link-container">Get the app!</button>
+        </Link>
+      )}
 
       <img src={goober} className="goofy-goober"></img>
     </main>

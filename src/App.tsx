@@ -11,6 +11,7 @@ import EmptyPanel from "./components/Pages/EmptyPanel";
 import ErrorPage from "./components/Pages/ErrorPage";
 import ExtrasList from "./components/Pages/ExtrasList";
 import GamesList from "./components/Pages/GamesList";
+import Get from "./components/Pages/Get";
 import IFrameLearnMore from "./components/Pages/iframeLearnMore";
 import PrivacyPolicy from "./components/Pages/PrivacyPolicy";
 import Search from "./components/Pages/Search";
@@ -419,6 +420,10 @@ const App = () => {
             ) : (
               <ChatLoggedOutWindow></ChatLoggedOutWindow>
             ),
+        },
+        {
+          path: "/get/*",
+          element: <Get></Get>,
         },
         {
           path: "/tos/*",

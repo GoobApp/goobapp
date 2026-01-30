@@ -1,5 +1,6 @@
 import { Link, useNavigate } from "react-router";
 import "../App.css";
+import isTauri from "../utils/EnvironmentInfo";
 const SwitcherPanel = () => {
   const navigate = useNavigate();
 
@@ -40,6 +41,11 @@ const SwitcherPanel = () => {
       </button>
 
       <div className="footnotes">
+        {!isTauri && (
+          <Link to="/get" className="footnote unique" viewTransition={true}>
+            Get the app!
+          </Link>
+        )}
         <Link to="/tos" className="footnote" viewTransition={true}>
           Terms Of Service
         </Link>
