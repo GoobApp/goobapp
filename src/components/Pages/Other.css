@@ -30,12 +30,13 @@
   background-color: var(--bg);
   font-size: 1rem;
   padding: 1em;
-  margin-top: 1em;
   overflow: hidden;
   word-break: break-word;
 
   display: flex;
   flex-direction: column;
+
+  height: 100%;
 }
 
 .github-link-container {
