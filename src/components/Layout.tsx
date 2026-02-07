@@ -58,32 +58,17 @@ const App: FC<LayoutProps> = ({
           className="content-panel"
         >
           {location.pathname == "/" ? (
-            usersList.length > 0 ? (
-              <ChatUsersPanel
-                activeUsers={usersList}
-                clientUser={profileObject}
-              />
-            ) : (
-              <ChatUsersPanel
-                activeUsers={[profileObject]}
-                clientUser={profileObject}
-              />
-            )
+            <ChatUsersPanel
+              activeUsers={usersList}
+              clientUser={profileObject}
+            />
           ) : location.pathname.includes("/groups/") &&
             !location.pathname.endsWith("/groups/") ? (
-            DMUsersList.length > 0 ? (
-              <DMUsersPanel
-                activeUsers={DMUsersList}
-                clientUser={profileObject}
-                groupId={location.pathname.split("/groups/")[1]} // yeah i truly gave up. i feel bad for my future self.
-              ></DMUsersPanel>
-            ) : (
-              <DMUsersPanel
-                activeUsers={[profileObject]}
-                clientUser={profileObject}
-                groupId={location.pathname.split("/groups/")[1]} // yeah i truly gave up. i feel bad for my future self.
-              ></DMUsersPanel>
-            )
+            <DMUsersPanel
+              activeUsers={DMUsersList}
+              clientUser={profileObject}
+              groupId={location.pathname.split("/groups/")[1]} // yeah i truly gave up. i feel bad for my future self.
+            ></DMUsersPanel>
           ) : (
             chatWindow
           )}
