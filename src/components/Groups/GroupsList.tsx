@@ -84,7 +84,7 @@ const GroupsList = () => {
           </button>
         </>
       ) : (
-        <Loading className="list-window" />
+        <Loading className="list-window-loading" />
       )}
     </main>
   );

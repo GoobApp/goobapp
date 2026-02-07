@@ -42,9 +42,13 @@ const SwitcherPanel = () => {
 
       <div className="footnotes">
         {!isTauri && (
-          <Link to="/get" className="footnote unique" viewTransition={true}>
+          <a
+            href="https://github.com/GoobApp/goobapp/releases/latest/"
+            target="_blank"
+            className="footnote"
+          >
             Get the app!
-          </Link>
+          </a> // TODO: make this a custom thing instead of opening that
         )}
         <Link to="/tos" className="footnote" viewTransition={true}>
           Terms Of Service

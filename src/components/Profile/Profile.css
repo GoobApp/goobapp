@@ -219,9 +219,3 @@
 .login-signup-panel-divider {
   flex-basis: 100%;
 }
-
-@media screen and (max-width: 800px) {
-  .profile-top-bar {
-    grid-column: 1;
-  }
-}

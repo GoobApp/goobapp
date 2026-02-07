@@ -63,10 +63,5 @@ input {
   grid-template-rows: 1fr 1fr;
   grid-template-columns: 1fr 1fr;
   gap: 10px;
-}
-
-@media screen and (max-width: 800px) {
-  .settings-page {
-    grid-column: 1 / span 3;
-  }
+  height: 100%;
 }

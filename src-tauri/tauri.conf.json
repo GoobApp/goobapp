@@ -1,7 +1,7 @@
 {
   "$schema": "../node_modules/@tauri-apps/cli/config.schema.json",
   "productName": "GoobApp",
-  "version": "2.0.2",
+  "version": "2.0.3",
   "identifier": "org.goobapp.goobapp",
   "build": {
     "frontendDist": "../dist",
@@ -15,7 +15,7 @@
         "title": "GoobApp",
         "width": 1300,
         "height": 840,
-        "minWidth": 800,
+        "minWidth": 850,
         "minHeight": 400,
         "titleBarStyle": "Overlay",
         "hiddenTitle": true,

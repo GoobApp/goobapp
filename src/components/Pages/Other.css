@@ -12,6 +12,8 @@
   grid-column-end: 3;
 
   grid-row: 2;
+
+  height: 100%;
 }
 
 .hidden {
@@ -116,11 +118,4 @@
 
 .gsc-cursor-page {
   background-color: var(--bg) !important;
-}
-
-@media screen and (max-width: 800px) {
-  .other-page,
-  .search-page {
-    grid-column: 1 / span 3;
-  }
 }

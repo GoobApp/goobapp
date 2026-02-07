@@ -4,6 +4,15 @@
   padding: 1em;
   background-color: var(--bg);
   font-size: 1rem;
+  overflow-y: auto;
+  word-break: break-word;
+  height: 100%;
+}
+
+.list-window-loading {
+  padding: 1em;
+  background-color: var(--bg);
+  font-size: 1rem;
   margin-top: 1em;
   overflow-y: auto;
   word-break: break-word;
@@ -41,10 +50,4 @@
 
 .no-list-notice {
   place-self: start;
-}
-
-@media screen and (max-width: 800px) {
-  .list {
-    grid-column: 1 / span 3;
-  }
 }

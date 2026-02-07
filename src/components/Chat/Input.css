@@ -68,11 +68,13 @@
   align-self: center;
   pointer-events: none;
 
-  z-index: 1;
-
   text-align: start;
 
   left: 0;
+
+  text-overflow: clip;
+  white-space: nowrap;
+  overflow: hidden;
 }
 .ui-popup-container {
   scrollbar-width: none;

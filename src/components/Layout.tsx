@@ -1,5 +1,6 @@
 import type { Session } from "@supabase/supabase-js";
 import { FC, ReactNode } from "react";
+import { Group, Panel, Separator } from "react-resizable-panels";
 import { Outlet, useLocation } from "react-router";
 import "../App.css";
 import TopBar from "../components/Profile/TopBar";
@@ -27,28 +28,67 @@ const App: FC<LayoutProps> = ({
   maxUsers,
 }) => {
   const location = useLocation();
+  const sideMinSize = 100;
+  const sideMaxSize = 500;
+  const sideDefaultSize = 200;
 
   return (
     <div className={isTauri ? "wrapper tauri-wrapper" : "wrapper"}>
       <TopBar profile={profileObject} session={session}></TopBar>
-      <SwitcherPanel></SwitcherPanel>
-      <Outlet></Outlet>
 
-      {location.pathname == "/" ? (
-        <ChatUsersPanel
-          activeUsers={usersList}
-          clientUser={profileObject}
-        ></ChatUsersPanel>
-      ) : location.pathname.includes("/groups/") &&
-        !location.pathname.endsWith("/groups/") ? (
-        <DMUsersPanel
-          activeUsers={DMUsersList}
-          clientUser={profileObject}
-          groupId={location.pathname.split("/groups/")[1]} // yeah i truly gave up. i feel bad for my future self.
-        ></DMUsersPanel>
-      ) : (
-        chatWindow
-      )}
+      <Group className="content-group" orientation="horizontal">
+        <Panel
+          minSize={sideMinSize}
+          defaultSize={sideDefaultSize}
+          maxSize={sideMaxSize}
+          className="content-panel"
+        >
+          <SwitcherPanel></SwitcherPanel>
+        </Panel>
+        <Separator className="content-group-separator" />
+        <Panel className="content-panel">
+          <Outlet></Outlet>
+        </Panel>
+
+        <Separator className="content-group-separator" />
+        <Panel
+          minSize={sideMinSize}
+          defaultSize={sideDefaultSize}
+          maxSize={sideMaxSize}
+          className="content-panel"
+        >
+          {location.pathname == "/" ? (
+            usersList.length > 0 ? (
+              <ChatUsersPanel
+                activeUsers={usersList}
+                clientUser={profileObject}
+              />
+            ) : (
+              <ChatUsersPanel
+                activeUsers={[profileObject]}
+                clientUser={profileObject}
+              />
+            )
+          ) : location.pathname.includes("/groups/") &&
+            !location.pathname.endsWith("/groups/") ? (
+            DMUsersList.length > 0 ? (
+              <DMUsersPanel
+                activeUsers={DMUsersList}
+                clientUser={profileObject}
+                groupId={location.pathname.split("/groups/")[1]} // yeah i truly gave up. i feel bad for my future self.
+              ></DMUsersPanel>
+            ) : (
+              <DMUsersPanel
+                activeUsers={[profileObject]}
+                clientUser={profileObject}
+                groupId={location.pathname.split("/groups/")[1]} // yeah i truly gave up. i feel bad for my future self.
+              ></DMUsersPanel>
+            )
+          ) : (
+            chatWindow
+          )}
+        </Panel>
+      </Group>
     </div>
   );
 };
