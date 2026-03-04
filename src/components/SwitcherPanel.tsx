@@ -5,7 +5,7 @@ import isTauri from "../utils/EnvironmentInfo";
 
 const SwitcherPanel = () => {
   const navigate = useNavigate();
-  const { trigger } = useWebHaptics();
+  const { trigger } = useWebHaptics({ debug: true });
 
   const handleButtonPressed = (location: String) => {
     if (!("Notification" in window)) {
@@ -40,7 +40,7 @@ const SwitcherPanel = () => {
       </button>
       <button
         className="panel-button"
-        onClick={() => navigate("/extras", { viewTransition: true })}
+        onClick={() => handleButtonPressed("/games")}
       >
         Extras
       </button>
