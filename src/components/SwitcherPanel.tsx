@@ -1,10 +1,13 @@
 import { Link, useNavigate } from "react-router";
+import { useWebHaptics } from "web-haptics/react";
 import "../App.css";
 import isTauri from "../utils/EnvironmentInfo";
+
 const SwitcherPanel = () => {
   const navigate = useNavigate();
+  const { trigger } = useWebHaptics();
 
-  const handleChatButtonPressed = () => {
+  const handleButtonPressed = (location: String) => {
     if (!("Notification" in window)) {
       console.log("This browser does not support notifications.");
       return;
@@ -14,22 +17,24 @@ const SwitcherPanel = () => {
       console.log(result);
     });
 
+    trigger();
     navigate("/", { viewTransition: true });
   };
+
   return (
     <nav id="switcherPanelContainer" className="switcher-panel-container">
-      <button className="panel-button" onClick={handleChatButtonPressed}>
+      <button className="panel-button" onClick={() => handleButtonPressed("/")}>
         Chat
       </button>
       <button
         className="panel-button"
-        onClick={() => navigate("/groups", { viewTransition: true })}
+        onClick={() => handleButtonPressed("/groups")}
       >
         Groups
       </button>
       <button
         className="panel-button"
-        onClick={() => navigate("/games", { viewTransition: true })}
+        onClick={() => handleButtonPressed("/games")}
       >
         Games
       </button>
