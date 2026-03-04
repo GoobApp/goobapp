@@ -13,7 +13,7 @@ export const HapticButton = ({
   className?: string;
   children?: React.ReactNode;
 }) => {
-  const { trigger } = useWebHaptics({ debug: true });
+  const { trigger } = useWebHaptics({ debug: false });
 
   const handleButtonPressed = (e: React.MouseEvent) => {
     trigger();
