@@ -6,7 +6,7 @@ import { HapticButton } from "./ui/HapticButton";
 const SwitcherPanel = () => {
   const navigate = useNavigate();
 
-  const handleButtonPressed = (location: String) => {
+  const handleButtonPressed = (location: string) => {
     if (!("Notification" in window)) {
       console.log("This browser does not support notifications.");
       return;
@@ -16,7 +16,7 @@ const SwitcherPanel = () => {
       console.log(result);
     });
 
-    navigate("/", { viewTransition: true });
+    navigate(location, { viewTransition: true });
   };
 
   return (
@@ -41,7 +41,7 @@ const SwitcherPanel = () => {
       </HapticButton>
       <HapticButton
         className="panel-button"
-        onClick={() => handleButtonPressed("/games")}
+        onClick={() => handleButtonPressed("/extras")}
       >
         Extras
       </HapticButton>
