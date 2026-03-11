@@ -91,8 +91,8 @@ importers:
         specifier: ^7.0.1
         version: 7.0.1(eslint@9.39.3)
       eslint-plugin-react-refresh:
-        specifier: ^0.4.24
-        version: 0.4.26(eslint@9.39.3)
+        specifier: ^0.5.0
+        version: 0.5.2(eslint@9.39.3)
       gh-pages:
         specifier: ^6.3.0
         version: 6.3.0
@@ -100,8 +100,8 @@ importers:
         specifier: ^17.2.0
         version: 17.4.0
       supabase:
-        specifier: ^2.76.17
-        version: 2.76.17
+        specifier: ^2.78.1
+        version: 2.78.1
       typescript-eslint:
         specifier: ^8.54.0
         version: 8.56.1(eslint@9.39.3)(typescript@5.9.3)
@@ -1149,10 +1149,10 @@ packages:
     peerDependencies:
       eslint: ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0 || ^8.0.0-0 || ^9.0.0
 
-  eslint-plugin-react-refresh@0.4.26:
-    resolution: {integrity: sha512-1RETEylht2O6FM/MvgnyvT+8K21wLqDNg4qD51Zj3guhjt433XbnnkVttHMyaVyAFD03QSV4LPS5iE3VQmO7XQ==}
+  eslint-plugin-react-refresh@0.5.2:
+    resolution: {integrity: sha512-hmgTH57GfzoTFjVN0yBwTggnsVUF2tcqi7RJZHqi9lIezSs4eFyAMktA68YD4r5kNw1mxyY4dmkyoFDb3FIqrA==}
     peerDependencies:
-      eslint: '>=8.40'
+      eslint: ^9 || ^10
 
   eslint-plugin-react@7.37.5:
     resolution: {integrity: sha512-Qteup0SqU15kdocexFNAJMvCJEfa2xUKNV4CC1xsVMrIIqEy3SQ/rqyxCWNzfrd3/ldy6HMlD2e0JDVpDg2qIA==}
@@ -2044,8 +2044,8 @@ packages:
     resolution: {integrity: sha512-k55yxKHwaXnpYGsOzg4Vl8+tDrWylxDEpknGjhTiZB8dFRU5rTo9CAzeycivxV3s+zlTKwrs6WxMxR95n26kwg==}
     engines: {node: '>=0.10.0'}
 
-  supabase@2.76.17:
-    resolution: {integrity: sha512-e7RFs8EXXQKBQKVnN1TQwgVQjsDvwjxgdFBQ7RGNv+qv5VL+d/dzqTEVX9FYaOTTkeoSNJ8iw2qPO1gvKs+9vg==}
+  supabase@2.78.1:
+    resolution: {integrity: sha512-fCIE/LTTr1IGrrYLqYBI3w89QU1qW+mRVtUi/Dmrtj+oXtDX4E8VgfFlXZpoYsXy86cfE9RZXUJVAGgvdNfTPg==}
     engines: {npm: '>=8'}
     hasBin: true
 
@@ -2057,8 +2057,8 @@ packages:
     resolution: {integrity: sha512-ot0WnXS9fgdkgIcePe6RHNk1WA8+muPa6cSjeR3V8K27q9BB1rTE3R1p7Hv0z1ZyAc8s6Vvv8DIyWf681MAt0w==}
     engines: {node: '>= 0.4'}
 
-  tar@7.5.10:
-    resolution: {integrity: sha512-8mOPs1//5q/rlkNSPcCegA6hiHJYDmSLEI8aMH/CdSQJNWztHC9WHNam5zdQlfpTwB9Xp7IBEsHfV5LKMJGVAw==}
+  tar@7.5.11:
+    resolution: {integrity: sha512-ChjMH33/KetonMTAtpYdgUFr0tbz69Fp2v7zWxQfYZX4g5ZN2nOBXm1R2xyA+lMIKrLKIoKAwFj93jE/avX9cQ==}
     engines: {node: '>=18'}
 
   tinyglobby@0.2.15:
@@ -3409,7 +3409,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-plugin-react-refresh@0.4.26(eslint@9.39.3):
+  eslint-plugin-react-refresh@0.5.2(eslint@9.39.3):
     dependencies:
       eslint: 9.39.3
 
@@ -4459,12 +4459,12 @@ snapshots:
     dependencies:
       escape-string-regexp: 1.0.5
 
-  supabase@2.76.17:
+  supabase@2.78.1:
     dependencies:
       bin-links: 6.0.0
       https-proxy-agent: 7.0.6
       node-fetch: 3.3.2
-      tar: 7.5.10
+      tar: 7.5.11
     transitivePeerDependencies:
       - supports-color
 
@@ -4474,7 +4474,7 @@ snapshots:
 
   supports-preserve-symlinks-flag@1.0.0: {}
 
-  tar@7.5.10:
+  tar@7.5.11:
     dependencies:
       '@isaacs/fs-minipass': 4.0.1
       chownr: 3.0.0
