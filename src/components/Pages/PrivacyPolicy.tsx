@@ -4,7 +4,7 @@ const PrivacyPolicy = () => {
   return (
     <main className="other-page">
       <h1>Privacy Policy</h1>
-      <h4>Last updated: January 11, 2026</h4>
+      <h4>Last updated: Mar 16, 2026</h4>
       <h2>Welcome to GoobApp!</h2>
       <div>
         The GoobApp developers ("we", "us", or "our") respect your privacy.
@@ -81,9 +81,9 @@ const PrivacyPolicy = () => {
           </a>
         </li>
         <li>
-          The backend server is hosted on Koyeb.{" "}
+          The backend server is hosted on Render.{" "}
           <a
-            href="https://community.koyeb.com/privacy"
+            href="https://render.com/privacy"
             target="_blank"
             rel="noopener noreferrer"
           >
