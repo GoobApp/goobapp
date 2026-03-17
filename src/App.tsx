@@ -529,7 +529,7 @@ const App = () => {
     },
   ];
 
-  const router = createHashRouter(routes, {
+  const router = createBrowserRouter(routes, {
     basename: import.meta.env.BASE_URL,
   });
 
