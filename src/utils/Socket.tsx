@@ -1,7 +1,7 @@
 import { io } from "socket.io-client";
 
 const URL = import.meta.env.PROD
-  ? "https://api.precontation.meapi"
+  ? "https://api.precontation.me"
   : "http://localhost:3000";
 
 export const SERVER_URL = URL;
