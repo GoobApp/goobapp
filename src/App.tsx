@@ -1,6 +1,6 @@
 import type { Session } from "@supabase/supabase-js";
 import { useEffect, useState } from "react";
-import { createBrowserRouter, RouterProvider } from "react-router";
+import { createBrowserRouter, createHashRouter, RouterProvider } from "react-router";
 import "./App.css";
 import GroupChatWindow from "./components/Chat/GroupChatWindow";
 import ChatWindow from "./components/Chat/Window";
@@ -529,7 +529,7 @@ const App = () => {
     },
   ];
 
-  const router = createBrowserRouter(routes, {
+  const router = createHashRouter(routes, {
     basename: import.meta.env.BASE_URL,
   });
 
