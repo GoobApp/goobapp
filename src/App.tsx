@@ -458,7 +458,7 @@ const App = () => {
           element: (
             <div className="iframe-wrapper">
               <iframe
-                src="https://precontation.github.io/plat"
+                src="plat.precontation.github.io"
                 className="fullscreen-game"
                 allow="fullscreen"
               ></iframe>
@@ -470,7 +470,7 @@ const App = () => {
           element: (
             <div className="iframe-wrapper">
               <iframe
-                src="https://precontation.github.io/br2"
+                src="br2.precontation.github.io"
                 className="fullscreen-game"
                 allow="fullscreen"
               ></iframe>
@@ -482,7 +482,7 @@ const App = () => {
           element: (
             <div className="iframe-wrapper">
               <iframe
-                src="https://precontation.github.io/br3"
+                src="br3.precontation.github.io"
                 className="fullscreen-game"
                 allow="fullscreen"
               ></iframe>
@@ -494,7 +494,7 @@ const App = () => {
           element: (
             <div className="iframe-wrapper">
               <iframe
-                src="https://precontation.github.io/cfp"
+                src="cfp.precontation.github.io"
                 className="fullscreen-game"
                 allow="fullscreen"
               ></iframe>
@@ -506,7 +506,7 @@ const App = () => {
           element: (
             <div className="iframe-wrapper">
               <iframe
-                src="https://precontation.github.io/clicks-and-points"
+                src="clicks-and-points.precontation.github.io"
                 className="fullscreen-game"
                 allow="fullscreen"
               ></iframe>
