@@ -41,7 +41,7 @@ const UserDisplay = ({
           onClose={() => {
             setOpenedUserMenu(false);
           }}
-        ></UserPanel>
+        />
       )}
     </main>
   );
