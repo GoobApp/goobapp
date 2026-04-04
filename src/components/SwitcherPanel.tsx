@@ -1,6 +1,5 @@
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import "../App.css";
-import isTauri from "../utils/EnvironmentInfo";
 import { HapticButton } from "./ui/HapticButton";
 
 const SwitcherPanel = () => {
@@ -46,7 +45,7 @@ const SwitcherPanel = () => {
         Extras
       </HapticButton>
 
-      <div className="footnotes">
+      {/* <div className="footnotes">
         {!isTauri && (
           <a
             href="https://github.com/GoobApp/goobapp/releases/latest/"
@@ -65,7 +64,7 @@ const SwitcherPanel = () => {
         <em className="footnote">
           GoobApp v{import.meta.env.VITE_APP_VERSION}
         </em>
-      </div>
+      </div> */}
     </nav>
   );
 };
