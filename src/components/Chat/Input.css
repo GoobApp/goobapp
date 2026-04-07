@@ -76,19 +76,25 @@
   white-space: nowrap;
   overflow: hidden;
 }
+
 .ui-popup-container {
   scrollbar-width: none;
   width: 100%;
-  overflow: visible;
+  overflow: clip;
   background-color: transparent;
 }
 
 .ui-popup-element {
   padding-top: 10px;
+  border-radius: 30px;
   display: flex;
   flex-direction: row;
   place-content: center;
   gap: 10px;
+}
+
+.selected-element {
+  background-color: var(--secondary);
 }
 
 .ui-popup-emoji {

@@ -66,8 +66,15 @@ h1 {
 iframe,
 form,
 main,
-div {
+div,
+textarea {
   border-radius: var(--roundness);
+}
+
+textarea {
+  resize: none;
+  background-color: var(--primary);
+  border: none;
 }
 
 button {

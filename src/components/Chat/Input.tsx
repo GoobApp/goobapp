@@ -1,6 +1,5 @@
 import { Session } from "@supabase/supabase-js";
 import {
-  ChangeEvent,
   FormEvent,
   forwardRef,
   useEffect,
@@ -35,14 +34,15 @@ const ChatInput = forwardRef(
     ref,
   ) => {
     // Wrap the component with forwardRef so the parent can pass a ref;  useImperativeHandle exposes methods to that ref
-    const textAreaRef = useRef<HTMLParagraphElement>(null);
+    const textAreaRef = useRef<HTMLTextAreaElement>(null);
     const [textAreaValue, setTextAreaValue] = useState(""); // useState is used to make React update stuff on the screen when something changes
     const [isInputBlank, setIsInputBlank] = useState(true);
     const maxLength: number = 1201;
 
-    const onChange = (event: ChangeEvent<HTMLParagraphElement>) => {
-      setIsInputBlank(event.target.textContent == "");
-      setTextAreaValue(event.target.innerText); // for some reason React makes setting vars a function with useState. probably because it needs to update the page
+    const onChange = (event: FormEvent<HTMLTextAreaElement>) => {
+      const target = event.currentTarget;
+      setIsInputBlank(target.value == "");
+      setTextAreaValue(target.value); // for some reason React makes setting vars a function with useState. probably because it needs to update the page
     };
 
     const onSubmit = (event: FormEvent | KeyboardEvent) => {
@@ -50,6 +50,7 @@ const ChatInput = forwardRef(
       if (textAreaValue.length <= maxLength) {
         if (!isInputBlank) {
           onSend(); // This will send the onSend function up to the parent
+          if (textAreaRef.current) textAreaRef.current.value = "";
         }
       }
     };
@@ -59,7 +60,6 @@ const ChatInput = forwardRef(
       getInputValueToSend: () => {
         // This is one of these methods, and adding more is like adding to a dictionary. This one just returns the current value.
         if (!textAreaRef.current) return; // Typescript thing to ensure safety, otherwise error. Just makes sure inputRef is not null
-        textAreaRef.current.innerHTML = "<br>";
         setTextAreaValue("");
         setIsInputBlank(true);
         return textAreaValue;
@@ -87,7 +87,10 @@ const ChatInput = forwardRef(
 
         if (event.key == "Enter" && !event.shiftKey) {
           if (textAreaRef.current) {
-            onSubmit(event);
+            if (document.activeElement == textAreaRef.current) {
+              // Check to make sure it's the focused element before you submit!!
+              onSubmit(event);
+            }
           }
 
           event.preventDefault(); // Prevent the default beheivor of stuff (textarea, form, etc). In this case its for textarea
@@ -138,16 +141,16 @@ const ChatInput = forwardRef(
           return; // Don't refocus if it's not a valid character
         }
 
+        textAreaRef.current?.focus(); // Focus the text area if everythings good!
+
         if (
           ((navigator.userAgent.includes("Mac") && event.metaKey) ||
             (!navigator.userAgent.includes("Mac") && event.ctrlKey)) &&
           ["b", "i"].includes(event.key.toLowerCase())
         ) {
           event.preventDefault();
-          if (textAreaRef.current) {
-            const selection = window.getSelection();
-            if (!selection) return;
-
+          const textArea = textAreaRef.current;
+          if (textArea) {
             let thingToInsert = "*";
             switch (event.key) {
               case "b":
@@ -160,162 +163,21 @@ const ChatInput = forwardRef(
                 break;
             }
 
-            // FIXME: These next ~130 lines are some of the worst code I've ever written in my life. Be warned
-            let selectionRange = selection.getRangeAt(0);
-            let start = selectionRange.startOffset;
-            let end = selectionRange.endOffset;
-            let is_already_bold = false;
-            let is_already_italics = false;
-            let is_weird_ctrl_z_issue_thing_yeah_idk_man = false;
-            let thingToInsertAmount = 0;
+            const start = textArea.selectionStart;
+            const end = textArea.selectionEnd;
+            const selection = textArea.value.slice(start, end);
 
-            const range = document.createRange();
+            // TODO: press ctrl b/i if already italics should undo italics
+            const replacement = thingToInsert + selection + thingToInsert;
 
-            if (selectionRange.toString() == "") {
-              document.execCommand(
-                "insertText",
-                true,
-                thingToInsert + thingToInsert,
-              ); // TODO: Replace with a non-deprecated command that still has ctrl-z functionality
-
-              selectionRange = selection.getRangeAt(0);
-              start = selectionRange.startOffset;
-              end = selectionRange.endOffset;
-
-              range.setStart(
-                selectionRange.startContainer,
-                start - thingToInsert.length,
-              );
-              range.setEnd(
-                selectionRange.endContainer,
-                end - thingToInsert.length,
-              );
-
-              selection.removeAllRanges();
-              selection.addRange(range);
-              return;
-            }
-
-            selectionRange = selection.getRangeAt(0);
-            start = selectionRange.startOffset;
-            end = selectionRange.endOffset;
-            range.setStart(selectionRange.startContainer, start - 1); // Checking for if already created
-            range.setEnd(selectionRange.endContainer, end + 1); // Checking for if already created
-            let rangeString = range.toString();
-            if (
-              rangeString[0] == "*" &&
-              rangeString[rangeString.length - 1] == "*"
-            ) {
-              is_already_italics = true;
-              thingToInsertAmount = 1;
-              range.setStart(selectionRange.startContainer, start - 2); // Checking for if already created
-              range.setEnd(selectionRange.endContainer, end + 2); // Checking for if already created
-              rangeString = range.toString();
-              if (
-                rangeString[0] == "*" &&
-                rangeString[rangeString.length - 1] == "*"
-              ) {
-                is_already_italics = false;
-                is_already_bold = true;
-                thingToInsertAmount = 2;
-                range.setStart(selectionRange.startContainer, start - 3); // Checking for if already created
-                range.setEnd(selectionRange.endContainer, end + 3); // Checking for if already created
-                rangeString = range.toString();
-                if (
-                  rangeString[0] == "*" &&
-                  rangeString[rangeString.length - 1] == "*"
-                ) {
-                  is_already_italics = true;
-                  thingToInsertAmount = 3;
-                }
-              }
-            }
-
-            range.setStart(selectionRange.startContainer, start); // Checking for if already created
-            range.setEnd(selectionRange.endContainer, end); // Checking for if already created
-            rangeString = range.toString();
-            if (
-              rangeString[0] == "*" &&
-              rangeString[rangeString.length - 1] == "*"
-            ) {
-              is_weird_ctrl_z_issue_thing_yeah_idk_man = true;
-              is_already_italics = true;
-              thingToInsertAmount = 1;
-              range.setStart(selectionRange.startContainer, start + 1); // Checking for if already created
-              range.setEnd(selectionRange.endContainer, end - 1); // Checking for if already created
-              rangeString = range.toString();
-              if (
-                rangeString[0] == "*" &&
-                rangeString[rangeString.length - 1] == "*"
-              ) {
-                is_already_italics = false;
-                is_already_bold = true;
-                thingToInsertAmount = 2;
-                range.setStart(selectionRange.startContainer, start + 2); // Checking for if already created
-                range.setEnd(selectionRange.endContainer, end - 2); // Checking for if already created
-                rangeString = range.toString();
-                if (
-                  rangeString[0] == "*" &&
-                  rangeString[rangeString.length - 1] == "*"
-                ) {
-                  is_already_italics = true;
-                  thingToInsertAmount = 3;
-                }
-              }
-            }
-
-            range.setStart(
-              selectionRange.startContainer,
-              is_weird_ctrl_z_issue_thing_yeah_idk_man
-                ? start
-                : start - thingToInsertAmount,
+            // Use insertText to replace the selection and preserve the undo stack.
+            // i hate javascript
+            // Otherwise, I'd just use textArea.setRangeText()
+            document.execCommand("insertText", false, replacement);
+            textArea.setSelectionRange(
+              start + thingToInsert.length,
+              end + thingToInsert.length,
             );
-            range.setEnd(
-              selectionRange.endContainer,
-              is_weird_ctrl_z_issue_thing_yeah_idk_man
-                ? end
-                : end + thingToInsertAmount,
-            );
-
-            selection.removeAllRanges();
-            selection.addRange(range);
-
-            rangeString = range.toString();
-            document.execCommand(
-              "insertText",
-              true,
-              is_weird_ctrl_z_issue_thing_yeah_idk_man
-                ? rangeString.substring(
-                    thingToInsertAmount,
-                    rangeString.length - thingToInsertAmount,
-                  )
-                : is_already_bold || is_already_italics
-                  ? rangeString.substring(
-                      thingToInsertAmount,
-                      rangeString.length - thingToInsertAmount,
-                    )
-                  : thingToInsert + range.toString() + thingToInsert,
-            ); // TODO: Replace with a non-deprecated command that still has ctrl-z functionality
-
-            range.setStart(
-              selectionRange.startContainer,
-              is_weird_ctrl_z_issue_thing_yeah_idk_man
-                ? start
-                : is_already_bold || is_already_italics
-                  ? start - thingToInsert.length
-                  : start + thingToInsert.length,
-            );
-            range.setEnd(
-              selectionRange.endContainer,
-              is_weird_ctrl_z_issue_thing_yeah_idk_man
-                ? end - thingToInsert.length - thingToInsert.length
-                : is_already_bold || is_already_italics
-                  ? end - thingToInsert.length
-                  : end + thingToInsert.length,
-            );
-
-            selection.removeAllRanges();
-            selection.addRange(range);
           }
         }
 
@@ -341,12 +203,6 @@ const ChatInput = forwardRef(
         document.removeEventListener("keydown", handleKeyDown);
       }; // Once everything is done and cleaning up, remove the event listener. Not a great garbage collection in react/js D:
     }, [textAreaValue]);
-
-    useEffect(() => {
-      if (textAreaRef.current?.innerText == "") {
-        textAreaRef.current.innerHTML = "<br>";
-      }
-    }, [textAreaRef]);
 
     useEffect(() => {
       const emojiMatch = textAreaValue.match(emojiInputRegex);
@@ -390,12 +246,15 @@ const ChatInput = forwardRef(
       <div className="chat-input-form-container">
         {emojiInputRegex.test(textAreaValue) && activeEmojisUI && (
           <UIPopup
+            startingChar=":"
+            textAreaRef={textAreaRef}
             elements={activeEmojisUI.slice(0, 5).map(([name, emoji]) => {
               return createUIElement({
                 newPicture: null,
                 newEmoji: emoji,
                 newName: name,
                 newKey: name,
+                newSurroundingChar: ":",
               });
             })}
           />
@@ -403,12 +262,15 @@ const ChatInput = forwardRef(
 
         {atUsersInputRegex.test(textAreaValue) && atUsersUI && (
           <UIPopup
+            startingChar="@"
+            textAreaRef={textAreaRef}
             elements={atUsersUI.slice(0, 5).map((user) => {
               return createUIElement({
                 newPicture: user.userProfilePicture,
                 newEmoji: null,
                 newName: user.username,
                 newKey: user.userUUID,
+                newSurroundingChar: null,
               });
             })}
           />
@@ -425,13 +287,12 @@ const ChatInput = forwardRef(
             groupId={groupId}
           ></ChatExtrasButton>
           <div className="chat-input-div" role="textbox">
-            <div
-              contentEditable={"plaintext-only"}
+            <textarea
               className="chat-input"
               id="chatInput"
               ref={textAreaRef}
               onInput={onChange}
-            ></div>
+            />
             {isInputBlank && (
               <p className="chat-input-placeholder">Type here...</p>
             )}

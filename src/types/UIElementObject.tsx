@@ -3,4 +3,5 @@ export default interface UIElement {
   emoji: string | null;
   name: string;
   key: string | number;
+  surroundingChar: string | null;
 }
