@@ -33,10 +33,13 @@ const GroupChatWindow = forwardRef<MessagesRef, ChatWindowProps>(
     const [messages, setMessages] = useState<ChatMessage[]>([]);
     const [users, setUsers] = useState<UserProfile[]>([]);
     const params = useParams();
+    let groupId: number | null = params.groupId
+      ? Number.parseInt(params.groupId)
+      : null;
     const [finishedLoadingMessages, setFinishedLoadingMessages] =
       useState(false);
 
-    const sendMessage = (contentText: string) => {
+    const sendMessage = (contentText: string, replyingTo: number | null) => {
       if (!props.clientProfile.userUUID) {
         console.error("No userUUID!");
         return;
@@ -52,9 +55,11 @@ const GroupChatWindow = forwardRef<MessagesRef, ChatWindowProps>(
           newMessageContent: contentText,
           newMessageImageURL: null,
           newIsEdited: false,
+          newReplyingTo: replyingTo,
+          newIsReply: replyingTo !== null,
         });
 
-        socket.emit("dm message sent", message, params.groupId);
+        socket.emit("dm message sent", message, groupId);
       }
     };
 
@@ -124,10 +129,12 @@ const GroupChatWindow = forwardRef<MessagesRef, ChatWindowProps>(
     };
 
     useEffect(() => {
+      groupId = params.groupId ? Number.parseInt(params.groupId) : null;
+
       messagesRef.current?.scrollToBottom(); // Scroll to bottom when page loads
-      socket.emit("join group room", params.groupId);
-      socket.emit("dm request recent messages", params.groupId);
-      socket.emit("dm request all users", params.groupId);
+      socket.emit("join group room", groupId);
+      socket.emit("dm request recent messages", groupId);
+      socket.emit("dm request all users", groupId);
 
       socket.on("dm receive message", onReceiveMessage);
       socket.on("dm recent messages received", onRecentMessagesReceived);
@@ -149,8 +156,13 @@ const GroupChatWindow = forwardRef<MessagesRef, ChatWindowProps>(
       if (!chatInputRef) return;
       const value = chatInputRef.current?.getInputValueToSend();
       messagesRef.current?.scrollToBottom();
-      if (value) sendMessage(value);
+      if (value)
+        sendMessage(value, replyMessage ? replyMessage.messageId : null);
     };
+
+    const [replyMessage, setReplyMessage] = useState<ChatMessageObject | null>(
+      null,
+    );
 
     return (
       <main id="groupChatWindow" className={"chat-window group"}>
@@ -158,10 +170,12 @@ const GroupChatWindow = forwardRef<MessagesRef, ChatWindowProps>(
           <>
             <Messages
               messages={messages}
-              sendMessage={sendMessage}
               ref={messagesRef}
               clientProfile={props.clientProfile}
-              groupId={params.groupId ? params.groupId : null}
+              groupId={groupId}
+              setReplyingTarget={(message) => {
+                setReplyMessage(message);
+              }}
             ></Messages>
             <ChatInput
               onSend={handleSent}
@@ -169,7 +183,11 @@ const GroupChatWindow = forwardRef<MessagesRef, ChatWindowProps>(
               session={props.session}
               activeUsers={users}
               isMini={false}
-              groupId={params.groupId ? params.groupId : null} // Probably should error out but whatever
+              groupId={groupId}
+              replyMessage={replyMessage}
+              removeReplyMessage={() => {
+                setReplyMessage(null);
+              }}
             ></ChatInput>
           </>
         ) : (

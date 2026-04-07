@@ -11,7 +11,7 @@ const DMUsersPanel = ({
 }: {
   activeUsers: UserProfile[];
   clientUser: UserProfile;
-  groupId: string;
+  groupId: number;
 }) => {
   const addUser = () => {
     const user = prompt("Please enter the user's name (case sensitive)");

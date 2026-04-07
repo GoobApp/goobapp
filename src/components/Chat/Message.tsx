@@ -1,7 +1,10 @@
 import { useRef, useState } from "react";
 import { Link } from "react-router";
 import "../../App.css";
-import ChatMessage from "../../types/ChatMessageObject";
+import {
+  default as ChatMessage,
+  default as ChatMessageObject,
+} from "../../types/ChatMessageObject";
 import EmojiList from "../../types/EmojiList";
 import UserProfile from "../../types/UserProfileObject";
 import { socket } from "../../utils/Socket";
@@ -24,12 +27,17 @@ const MessageDisplay = ({
   showSpacer,
   clientProfile,
   groupId,
+  setReplyingTarget,
 }: {
   message: ChatMessage;
   showAvatar: boolean;
   showSpacer: boolean;
   clientProfile: UserProfile;
-  groupId: string | null;
+  groupId: number | null;
+  setReplyingTarget: (
+    message: ChatMessageObject,
+    groupId: number | null,
+  ) => void;
 }) => {
   const [showHover, setShowHover] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -227,6 +235,7 @@ const MessageDisplay = ({
   };
 
   const replyClicked = () => {
+    setReplyingTarget(message, groupId);
     console.warn("Reply not implemented!");
   };
 
@@ -267,106 +276,127 @@ const MessageDisplay = ({
   };
 
   return (
-    <div
-      className={`
+    <>
+      <div
+        className={`
         ${
           showHover
             ? "chat-message-container-container-hover"
             : "chat-message-container-container"
         }
-        ${showSpacer && "top-spacer"} ${message.messageContent?.toLowerCase().includes("@" + clientProfile.username?.toLowerCase()) && "pinged"}
+        ${showSpacer && "top-spacer"} ${message.messageContent?.toLowerCase().includes("@" + clientProfile.username?.toLowerCase()) || (message.replyingTo && "pinged")}
         `}
-      onMouseOver={mouseOver}
-      onMouseLeave={mouseLeave}
-    >
-      <div className={"chat-message-container"}>
-        {showAvatar ? (
-          <img
-            src={
-              message.userProfilePicture == ""
-                ? undefined
-                : message.userProfilePicture
-            }
-            alt=""
-            className="chat-message-profile-picture"
-            referrerPolicy="no-referrer"
-            loading="lazy"
-          />
-        ) : (
-          <div className="chat-message-no-avatar"></div>
-        )}
-        {showAvatar && (
-          <p className="chat-message-display-name">
-            {message.userUUID == "" ? "Deleted user" : message.userDisplayName}
-          </p>
-        )}
-        {showAvatar && message.userRole && (
-          <span className="chat-message-role">{message.userRole}</span>
-        )}
-        {showAvatar && (
-          <p className="chat-message-time">
-            {message.messageTime.toLocaleString(undefined, {
-              dateStyle:
-                new Date().getDate() != message.messageTime.getDate()
-                  ? "medium"
-                  : undefined,
-              timeStyle: "short",
-            })}
-          </p>
-        )}
+        // TODO: also ping when the above is @ed OORRR if the reply was to you
 
-        <div className="chat-message-content">
-          <div className="chat-message-content" ref={contentRef}>
-            {isEditing ? message.messageContent : styledContent}
-          </div>
-          {message.isEdited && <p className="chat-message-edited"> (edited)</p>}
-          {message.messageImageUrl && (
-            <div>
-              <br />
-              <img
-                loading="lazy"
-                src={message.messageImageUrl}
-                className="chat-message-image"
-              />
+        onMouseOver={mouseOver}
+        onMouseLeave={mouseLeave}
+      >
+        <div className="w-full">
+          {/* TODO: not use ↩, i think that's either browser or os inconsistent */}
+          {message.isReply && (
+            <div className="class-message-reply-div">
+              {message.replyingTo ? (
+                <p className="class-message-reply-text">
+                  ↩ Replying to <b>TODO AAAAA</b>
+                </p>
+              ) : (
+                <p className="class-message-reply-text">↩ Deleted message</p>
+              )}
             </div>
           )}
-        </div>
-      </div>
+          <div className={"chat-message-container"}>
+            {showAvatar ? (
+              <img
+                src={
+                  message.userProfilePicture == ""
+                    ? undefined
+                    : message.userProfilePicture
+                }
+                alt=""
+                className="chat-message-profile-picture"
+                referrerPolicy="no-referrer"
+                loading="lazy"
+              />
+            ) : (
+              <div className="chat-message-no-avatar"></div>
+            )}
+            {showAvatar && (
+              <p className="chat-message-display-name">
+                {message.userUUID == ""
+                  ? "Deleted user"
+                  : message.userDisplayName}
+              </p>
+            )}
+            {showAvatar && message.userRole && (
+              <span className="chat-message-role">{message.userRole}</span>
+            )}
+            {showAvatar && (
+              <p className="chat-message-time">
+                {message.messageTime.toLocaleString(undefined, {
+                  dateStyle:
+                    new Date().getDate() != message.messageTime.getDate()
+                      ? "medium"
+                      : undefined,
+                  timeStyle: "short",
+                })}
+              </p>
+            )}
 
-      {isEditing && (
-        <div className="editing-hover-div">
-          <button className="hover-button" onClick={finishEdit}>
-            Edit
-          </button>
-          <button className="hover-button" onClick={cancelEdit}>
-            Cancel
-          </button>
+            <div className="chat-message-content">
+              <div className="chat-message-content" ref={contentRef}>
+                {isEditing ? message.messageContent : styledContent}
+              </div>
+              {message.isEdited && (
+                <p className="chat-message-edited"> (edited)</p>
+              )}
+              {message.messageImageUrl && (
+                <div>
+                  <br />
+                  <img
+                    loading="lazy"
+                    src={message.messageImageUrl}
+                    className="chat-message-image"
+                  />
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-      )}
-      {!isEditing && showHover && (
-        <div className="hover-div">
-          {((clientProfile.userUUID == message.userUUID &&
-            message.messageId != null) ||
-            clientProfile.userRole == "Owner") && (
-            <button className="hover-button" onClick={editClicked}>
+
+        {isEditing && (
+          <div className="editing-hover-div">
+            <button className="hover-button" onClick={finishEdit}>
               Edit
             </button>
-          )}
-          {/* <button className="hover-button" onClick={replyClicked}>
-            Reply
-          </button>
-          */}
-
-          {((clientProfile.userUUID == message.userUUID &&
-            message.messageId != null) ||
-            clientProfile.userRole == "Owner") && (
-            <button className="hover-button" onClick={deleteClicked}>
-              Delete
+            <button className="hover-button" onClick={cancelEdit}>
+              Cancel
             </button>
-          )}
-        </div>
-      )}
-    </div>
+          </div>
+        )}
+        {!isEditing && showHover && (
+          <div className="hover-div">
+            {((clientProfile.userUUID == message.userUUID &&
+              message.messageId != null) ||
+              clientProfile.userRole == "Owner") && (
+              <button className="hover-button" onClick={editClicked}>
+                Edit
+              </button>
+            )}
+            <button className="hover-button" onClick={replyClicked}>
+              Reply
+            </button>
+
+            {((clientProfile.userUUID == message.userUUID &&
+              message.messageId != null) ||
+              clientProfile.userRole == "Owner") && (
+              <button className="hover-button" onClick={deleteClicked}>
+                Delete
+              </button>
+            )}
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

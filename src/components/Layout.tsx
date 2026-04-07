@@ -67,7 +67,7 @@ const App: FC<LayoutProps> = ({
             <DMUsersPanel
               activeUsers={DMUsersList}
               clientUser={profileObject}
-              groupId={location.pathname.split("/groups/")[1]} // yeah i truly gave up. i feel bad for my future self.
+              groupId={Number.parseInt(location.pathname.split("/groups/")[1])} // yeah i truly gave up. i feel bad for my future self.
             ></DMUsersPanel>
           ) : (
             chatWindow

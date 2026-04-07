@@ -8,6 +8,8 @@ const createChatObject = ({
   newMessageContent,
   newMessageImageURL,
   newIsEdited = false,
+  newReplyingTo,
+  newIsReply,
 }: {
   newUserDisplayName: string;
   newUserUUID: string;
@@ -16,6 +18,8 @@ const createChatObject = ({
   newMessageContent: string;
   newMessageImageURL: string | null;
   newIsEdited: boolean;
+  newReplyingTo: number | null;
+  newIsReply: boolean;
 }) => {
   let inputObject = {
     userDisplayName: newUserDisplayName,
@@ -27,6 +31,8 @@ const createChatObject = ({
     messageTime: new Date(),
     messageId: Date.now(), // This gets autoset by supabase but no reason not to set it also here (local testing)
     isEdited: newIsEdited,
+    replyingTo: newReplyingTo,
+    isReply: newIsReply,
   } as ChatMessageObject;
 
   return inputObject;

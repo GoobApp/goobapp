@@ -11,9 +11,7 @@ const SwitcherPanel = () => {
       return;
     }
 
-    Notification.requestPermission().then((result) => {
-      console.log(result);
-    });
+    Notification.requestPermission();
 
     navigate(location, { viewTransition: true });
   };

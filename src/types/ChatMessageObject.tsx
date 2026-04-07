@@ -8,4 +8,6 @@ export default interface ChatMessage {
   messageTime: Date;
   messageId: number;
   isEdited: boolean;
+  replyingTo: number | null;
+  isReply: boolean;
 }

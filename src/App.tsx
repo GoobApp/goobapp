@@ -245,7 +245,10 @@ const App = () => {
     );
   };
 
-  const handleMessageSent = (contentText: string) => {
+  const handleMessageSent = (
+    contentText: string,
+    replyMessageId: number | null,
+  ) => {
     if (!profile.userUUID) {
       console.error("No userUUID!");
       return;
@@ -261,6 +264,8 @@ const App = () => {
         newMessageContent: contentText,
         newMessageImageURL: null,
         newIsEdited: false,
+        newReplyingTo: replyMessageId,
+        newIsReply: replyMessageId !== null,
       });
 
       socket.emit("message sent", message);

@@ -1,5 +1,5 @@
 import { Session } from "@supabase/supabase-js";
-import { forwardRef, useEffect, useRef } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
 import "../../App.css";
 import ChatInputRef from "../../types/ChatInputRef";
 import ChatMessageObject from "../../types/ChatMessageObject";
@@ -10,7 +10,7 @@ import Messages from "./Messages";
 
 type ChatWindowProps = {
   messages: ChatMessageObject[];
-  sendMessage: (contentText: string) => void;
+  sendMessage: (contentText: string, replyMessageId: number | null) => void;
   clientProfile: UserProfile;
   isMini: boolean;
   session: Session | null;
@@ -27,6 +27,10 @@ const ChatWindow = forwardRef<MessagesRef, ChatWindowProps>((props, ref) => {
   const chatInputRef = useRef<ChatInputRef>(null);
   const messagesRef = useRef<MessagesRef>(null);
 
+  const [replyMessage, setReplyMessage] = useState<ChatMessageObject | null>(
+    null,
+  );
+
   useEffect(() => {
     messagesRef.current?.scrollToBottom(); // Scroll to bottom when page loads
   }, []);
@@ -35,7 +39,8 @@ const ChatWindow = forwardRef<MessagesRef, ChatWindowProps>((props, ref) => {
     if (!chatInputRef) return;
     const value = chatInputRef.current?.getInputValueToSend();
     messagesRef.current?.scrollToBottom();
-    if (value) props.sendMessage(value);
+    if (value)
+      props.sendMessage(value, replyMessage ? replyMessage.messageId : null);
   };
 
   if (props.isConnected) {
@@ -46,10 +51,12 @@ const ChatWindow = forwardRef<MessagesRef, ChatWindowProps>((props, ref) => {
       >
         <Messages
           messages={props.messages}
-          sendMessage={props.sendMessage}
           ref={messagesRef}
           clientProfile={props.clientProfile}
           groupId={null}
+          setReplyingTarget={(message, groupId) => {
+            setReplyMessage(message);
+          }}
         ></Messages>
         <ChatInput
           onSend={handleSent}
@@ -58,6 +65,10 @@ const ChatWindow = forwardRef<MessagesRef, ChatWindowProps>((props, ref) => {
           activeUsers={props.activeUsers}
           isMini={props.isMini}
           groupId={null}
+          replyMessage={replyMessage}
+          removeReplyMessage={() => {
+            setReplyMessage(null);
+          }}
         ></ChatInput>
       </main>
     );

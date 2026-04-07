@@ -8,7 +8,7 @@ const ChatExtrasButton = ({
   groupId,
 }: {
   session: Session | null;
-  groupId: string | null;
+  groupId: number | null;
 }) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
 
@@ -30,7 +30,7 @@ const ChatExtrasButton = ({
     }
 
     formData.append("image", file);
-    if (groupId) formData.append("groupId", groupId);
+    if (groupId) formData.append("groupId", groupId.toString());
 
     const headers = new Headers();
 

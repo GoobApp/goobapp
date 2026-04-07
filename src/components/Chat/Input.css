@@ -77,6 +77,32 @@
   overflow: hidden;
 }
 
+.reply-container {
+  justify-self: center;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.reply-text {
+  text-align: start;
+  padding-left: 70px;
+  font-size: small;
+  flex-basis: 100%;
+}
+
+.cancel-reply-button {
+  display: flex;
+  justify-content: center;
+  aspect-ratio: 1 / 1;
+  padding: none;
+  width: 41px;
+  height: 41px;
+  background-color: none;
+  box-shadow: none;
+  border-radius: 100%;
+}
+
 .ui-popup-container {
   scrollbar-width: none;
   width: 100%;

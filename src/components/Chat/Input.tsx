@@ -8,6 +8,7 @@ import {
   useState,
 } from "react";
 import "../../App.css";
+import ChatMessage from "../../types/ChatMessageObject";
 import EmojiList from "../../types/EmojiList";
 import UserProfile from "../../types/UserProfileObject";
 import createUIElement from "../../utils/UIElementCreator";
@@ -24,12 +25,16 @@ const ChatInput = forwardRef(
       activeUsers,
       isMini,
       groupId,
+      replyMessage,
+      removeReplyMessage,
     }: {
       onSend: () => void;
       session: Session | null;
       activeUsers: UserProfile[];
       isMini: boolean;
-      groupId: string | null;
+      groupId: number | null;
+      replyMessage: ChatMessage | null;
+      removeReplyMessage: () => void;
     },
     ref,
   ) => {
@@ -50,6 +55,7 @@ const ChatInput = forwardRef(
       if (textAreaValue.length <= maxLength) {
         if (!isInputBlank) {
           onSend(); // This will send the onSend function up to the parent
+          removeReplyMessage();
           if (textAreaRef.current) textAreaRef.current.value = "";
         }
       }
@@ -274,6 +280,21 @@ const ChatInput = forwardRef(
               });
             })}
           />
+        )}
+
+        {replyMessage !== null && (
+          <div className="reply-container">
+            {/* TODO: not use ↩, i think that's either browser or os inconsistent */}
+            <p className="reply-text">
+              ↩ Replying to {replyMessage.userDisplayName}
+            </p>
+            <button
+              className="cancel-reply-button"
+              onClick={removeReplyMessage}
+            >
+              x
+            </button>
+          </div>
         )}
 
         <form

@@ -13,9 +13,12 @@ import MessageDisplay from "./Message";
 
 type ChatWindowProps = {
   messages: ChatMessageObject[];
-  sendMessage: (contentText: string) => void;
+  setReplyingTarget: (
+    message: ChatMessageObject,
+    groupId: number | null,
+  ) => void;
   clientProfile: UserProfile;
-  groupId: string | null;
+  groupId: number | null;
 };
 
 type ChatWindowRef = {
@@ -37,12 +40,6 @@ const Messages = forwardRef<ChatWindowRef, ChatWindowProps>((props, ref) => {
     }),
     [],
   );
-
-  const handleSent = () => {
-    if (!chatInputRef) return;
-    const value = chatInputRef.current?.getInputValueToSend();
-    if (value) props.sendMessage(value);
-  };
 
   useEffect(() => {
     const el = scrollContainerRef.current;
@@ -132,6 +129,9 @@ const Messages = forwardRef<ChatWindowRef, ChatWindowProps>((props, ref) => {
             key={index}
             clientProfile={props.clientProfile}
             groupId={props.groupId}
+            setReplyingTarget={(message, groupId) =>
+              props.setReplyingTarget(message, groupId)
+            }
           ></MessageDisplay>
         );
       })}
