@@ -176,7 +176,7 @@ const MessageDisplay = ({
       case "link":
         node = (
           <Link
-            to={`/extras/search/?q=${object.content}`}
+            to={`${object.content}`}
             viewTransition={true}
             key={index}
           >
