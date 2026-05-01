@@ -38,12 +38,12 @@ const SwitcherPanel = () => {
       >
         Games
       </HapticButton>
-      <HapticButton
+      {/* <HapticButton
         className="panel-button"
         onClick={() => handleButtonPressed("/extras")}
       >
         Extras
-      </HapticButton>
+      </HapticButton> */}
 
       {/* <div className="footnotes">
         {!isTauri && (
