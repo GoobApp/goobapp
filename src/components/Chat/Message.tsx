@@ -175,10 +175,12 @@ const MessageDisplay = ({
         break;
       case "link":
         node = (
-          <Link
-            to={`${object.content}`}
+          <Link 
+            to={`${object.content}`} 
             viewTransition={true}
             key={index}
+            target="_blank" 
+            rel="noreferrer"
           >
             {object.content}
           </Link>
